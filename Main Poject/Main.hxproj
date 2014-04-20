@@ -18,10 +18,10 @@
     <class path="src" />
     <class path="lib\MassiveUnit-master\src" />
     <class path="lib\MassiveLib-master\src" />
-    <class path="..\HaxeFlixel" />
-    <class path="..\HaxeFlixel\tests\src" />
     <class path="..\openfl" />
     <class path="..\lime\lime" />
+    <class path="..\flixel" />
+    <class path="..\flixel\tests" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -55,6 +55,7 @@
     <hidden path="..\lime\LICENSE.md" />
     <hidden path="..\lime\README.md" />
     <hidden path="..\lime\run.n" />
+    <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />
@@ -64,6 +65,7 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Default" />
+    <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
   <storage />
