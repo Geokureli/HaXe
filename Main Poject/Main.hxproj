@@ -16,12 +16,12 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
-    <class path="lib\flixel-master\tests\src" />
-    <class path="lib\flixel-master" />
-    <class path="lib\openfl" />
     <class path="lib\MassiveUnit-master\src" />
     <class path="lib\MassiveLib-master\src" />
     <class path="..\HaxeFlixel" />
+    <class path="..\HaxeFlixel\tests\src" />
+    <class path="..\openfl" />
+    <class path="..\lime\lime" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -46,8 +46,15 @@
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
     <hidden path="..\HaxeFlixel\haxelib.json" />
+    <hidden path="..\HaxeFlixel\README.md" />
     <hidden path="..\HaxeFlixel\CHANGELOG.md" />
+    <hidden path="..\HaxeFlixel\tests\test.sh" />
+    <hidden path="..\HaxeFlixel\tests\FlixelUnitTests.hxproj" />
     <hidden path="..\HaxeFlixel\LICENSE.md" />
+    <hidden path="..\lime\CONTRIBUTING.md" />
+    <hidden path="..\lime\LICENSE.md" />
+    <hidden path="..\lime\README.md" />
+    <hidden path="..\lime\run.n" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />
