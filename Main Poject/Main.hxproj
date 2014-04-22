@@ -56,6 +56,13 @@
     <hidden path="..\lime\README.md" />
     <hidden path="..\lime\run.n" />
     <hidden path="obj" />
+    <hidden path="..\openfl\run.n" />
+    <hidden path="..\openfl\Thumbs.db" />
+    <hidden path="..\openfl\README.md" />
+    <hidden path="..\openfl\LICENSE.md" />
+    <hidden path="..\flixel\README.md" />
+    <hidden path="..\flixel\LICENSE.md" />
+    <hidden path="..\flixel\CHANGELOG.md" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />
@@ -65,7 +72,6 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Default" />
-    <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
   <storage />
