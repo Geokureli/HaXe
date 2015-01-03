@@ -1,7 +1,0 @@
-# Neko
--main TestMain
--cp test
--cp src
--cp ../src
--lib mlib
--neko ../bin/test/tool/munit_tool_test.n

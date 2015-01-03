@@ -1,9 +1,0 @@
-.svn
-report/
-bin/
-.DS_Store
-.mcover
-/mlib.sublime-workspace
-.temp/
-.temp/
-/lib/

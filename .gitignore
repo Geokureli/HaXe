@@ -1,8 +1,5 @@
 # Build and Release Folders
-bin/
-bin-debug/
-bin-release/
-*.fla
+export/*
 
 # Other files and folders
 .settings/
