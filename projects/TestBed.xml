@@ -2,7 +2,7 @@
 <project>
 	<!------------------------------APPLICATION SETTINGS---------------------------->
 	
-	<app title="test" file="testbed" main="com.geokureli.testbed.Main" version="0.0.1" company="GeoKureli" />
+	<app title="test" file="testbed" main="com.geokureli.testbed.Main" version="0.0.1" company="GeoKureli" package="com.geokureli.testbed" />
 	
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 	<!--or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"!-->
@@ -14,7 +14,7 @@
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
-	<window width="640" height="480" fps="60" background="#000000" hardware="true" vsync="true" />
+	<window width="384" height="384" fps="60" background="#5c94fc" hardware="true" vsync="true" />
 	
 	<!--Web-specific-->
 	<window if="web" orientation="portrait"  />
@@ -28,8 +28,14 @@
 	<!--------------------------------PATHS SETTINGS-------------------------------->
 	
 	<set name="BUILD_DIR" value="../export" />
+	
 	<classpath name="../source" />
-	<assets path="../assets" />
+	<assets path="../assets/test" />
+	<!--assets path="../assets/test/music" include=".mp3" if="flash" />
+	<assets path="../assets/test/music" include=".ogg" unless="flash" /-->
+	
+	<app path="../export/release" />
+	<app path="../export" if="debug" />
 	
 	<!--------------------------------LIBRARIES------------------------------------->
 

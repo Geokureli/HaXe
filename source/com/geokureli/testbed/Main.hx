@@ -1,7 +1,9 @@
 package com.geokureli.testbed;
 
-import com.geokureli.krakel.data.TilemapData;
+import com.geokureli.astley.data.AssetPaths;
 import com.geokureli.krakel.Shell;
+import com.geokureli.testbed.looptile.TestLoopingTilemap;
+
 import flash.events.Event;
 
 /**
@@ -9,21 +11,12 @@ import flash.events.Event;
  * @author George
  */
 class Main extends Shell {
-
-	static inline var map1:String = "1,0,\r0,1,"
-	;
-	static inline var map2:String = '{"map":"X \r X\r", "legend":" OX"}';
 	
-	private function new() { super(null); }
+	private function new() { super(TestLoopingTilemap); }
 	
 	override function setDefaults():Void {
 		super.setDefaults();
 		
-	}
-	
-	override function init(?e:Event):Void 
-	{
-		super.init(e);
-		
+		AssetPaths.quickInit("../assets/test");
 	}
 }
