@@ -1,23 +1,35 @@
 package com.geokureli.astley;
 
-import com.geokureli.astley.art.RickLite;
-import com.geokureli.astley.AssetPaths.ImagePaths;
-import com.geokureli.astley.AssetPaths.MusicPaths;
+import com.geokureli.astley.data.AssetPaths;
 import com.geokureli.krakel.Game;
+import com.geokureli.krakel.Shell;
 import com.geokureli.krakel.State;
+import flash.Lib;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxState;
-import flash.Lib;
-import flixel.plugin.TweenManager;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxRect;
-
 /**
  * ...
  * @author George
  */
+class Main extends Shell {
+	
+	public static function main():Void
+	{
+		Lib.current.addChild(new Main());
+	}
+	
+	public function new() { super(AstleyGame); }
+	
+	override function setDefaults():Void {
+		super.setDefaults();
+		
+		AssetPaths.quickInit("../assets/astley");
+	}
+	
+}
 class AstleyGame extends Game {
 	
 	static public inline var SCALE:Int = 2;
@@ -36,22 +48,19 @@ class AstleyGame extends Game {
 
 class IntroState extends State {
 	
-	static inline var TITLE:String = ImagePaths.TEXT_PATH + "gassy_rick_astley.png";
-	static inline var INSTRUCTIONS:String = ImagePaths.TEXT_PATH + "press_any_key.png";
-	
 	var _title:FlxSprite;
 	var _instructions:FlxSprite;
 	
 	override public function create():Void {
 		super.create();
 		
-		add(_title = new FlxSprite(0, 0, TITLE));
+		add(_title = new FlxSprite(0, 0, AssetPaths.text("gassy_rick_astley")));
 		centerX(_title).y = -_title.height;
 		
-		add(new FlxSprite(100, 123, ImagePaths.PATH + "tap.png"));
-		add(new FlxSprite(45, 128, ImagePaths.PATH + "keys.png"));
+		add(new FlxSprite(100, 123, AssetPaths.image("tap")));
+		add(new FlxSprite(45, 128, AssetPaths.image("keys")));
 		
-		add(_instructions = new FlxSprite(0, 160, INSTRUCTIONS));
+		add(_instructions = new FlxSprite(0, 160, AssetPaths.text("press_any_key")));
 		centerX(_instructions).visible = false;
 		
 		FlxTween.tween(_title, { y:52 }, 1, { type:FlxTween.ONESHOT, ease:FlxEase.sineOut, complete:onIntroComplete } );
@@ -69,7 +78,7 @@ class IntroState extends State {
 		FlxG.camera.bgColor = 0xFF5c94fc;
 		FlxG.camera.bounds = new FlxRect(0, 0, FlxG.width, FlxG.height);
 		
-		_musicName = MusicPaths.PATH + "intro.mp3";
+		_musicName = AssetPaths.music("intro");
 	}
 	
 	private function centerX(sprite:FlxSprite):FlxSprite {
