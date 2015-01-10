@@ -1,7 +1,7 @@
 package com.geokureli.astley.art;
 
-import com.geokureli.astley.data.AssetPaths;
-import com.geokureli.astley.data.AssetPaths.ImagePaths;
+import com.geokureli.krakel.data.AssetPaths;
+import com.geokureli.krakel.data.AssetPaths.ImagePaths;
 import flixel.FlxSprite;
 
 /**

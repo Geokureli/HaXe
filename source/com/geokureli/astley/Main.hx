@@ -1,6 +1,6 @@
 package com.geokureli.astley;
 
-import com.geokureli.astley.data.AssetPaths;
+import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.Game;
 import com.geokureli.krakel.Shell;
 import com.geokureli.krakel.State;

@@ -1,4 +1,5 @@
-package com.geokureli.astley.data;
+package com.geokureli.krakel.data;
+import com.geokureli.krakel.data.BuildInfo;
 import com.geokureli.krakel.data.DataHolder;
 import haxe.ds.StringMap;
 
@@ -24,6 +25,8 @@ class AssetPaths {
 	var defaultSoundExt:String;
 	var defaultImageExt:String;
 	var defaultDataExt:String;
+	
+	var varMap:Map <String, String>;
 	
 	var fileExt(default, null):Map<String, String>;
 	
@@ -54,6 +57,10 @@ class AssetPaths {
 		defaultSoundExt = ".mp3";
 		defaultImageExt = ".png";
 		defaultDataExt = ".json";
+		
+		varMap = new Map <String, String> ();
+		varMap["build"] = BuildInfo.BUILD_TARGET;
+		varMap["inputType"] = BuildInfo.INPUT_TYPE;
 	}
 	
 	function init():Void {
@@ -92,6 +99,8 @@ class AssetPaths {
 	
 	static public function auto(fileName:String):String {
 		
+		fileName = parse(fileName);
+		
 		if (EXT_REGX.match(fileName)) {
 			
 			var ext:String = EXT_REGX.matched(0);
@@ -105,16 +114,28 @@ class AssetPaths {
 		return fileName;
 	}
 	
+	static var tokenFinder:EReg = ~/\{([^{}]+)\}/;
+	static function parse(name:String):String { 
+		
+		var token:String;
+		while (tokenFinder.match(name)) {
+			
+			name = name.split(tokenFinder.matched(0)).join(instance.varMap[tokenFinder.matched(1)]);
+		}
+		
+		return name;
+	}
+	
 	static public function addExtensionHandler(extension:String, path:String):Void {
 		
 		instance.addExtHandler(extension, path);
 	}
 	
-	static public function music(name:String):String { return instance.musicFolder + name + instance.defaultSoundExt; }
-	static public function sound(name:String):String { return instance.soundFolder + name + instance.defaultSoundExt; }
-	static public function image(name:String):String { return instance.imageFolder + name + instance.defaultImageExt; }
-	static public function text(name:String):String  { return instance.textFolder  + name + instance.defaultImageExt; }
-	static public function data(name:String):String  { return instance.dataFolder  + name + instance.defaultDataExt;  }
+	static public function music(name:String):String { return MUSIC_PATH + parse(name) + instance.defaultSoundExt; }
+	static public function sound(name:String):String { return SOUND_PATH + parse(name) + instance.defaultSoundExt; }
+	static public function image(name:String):String { return IMAGE_PATH + parse(name) + instance.defaultImageExt; }
+	static public function text(name:String):String  { return TEXT_PATH  + parse(name) + instance.defaultImageExt; }
+	static public function data(name:String):String  { return DATA_PATH  + parse(name) + instance.defaultDataExt;  }
 	
 	static public function get_MUSIC_PATH():String { return instance.musicFolder; }
 	static public function get_SOUND_PATH():String { return instance.soundFolder; }
