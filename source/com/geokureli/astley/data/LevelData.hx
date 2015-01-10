@@ -1,27 +1,30 @@
 package com.geokureli.astley.data;
 
-import org.flixel.FlxG;
+import flixel.FlxG;
 
 /**
  * ...
  * @author George
  */
-class LevelData{
-
-	/**
-	 * ...
-	 * @author George
-	 */
-	public class LevelData {
+class LevelData {
+	
+	//static public inline var SCORE_BOARD_ID:String = "Gassy_Rick_Astley";
+	static public inline var TILE_SIZE:Float = 16;
+	static public inline var FLOOR_BUFFER:Float = 3;
+	static public var ROWS(default, null):Float;
+	static public var COLUMNS(default, null):Float;
+	static public var FLOOR_HEIGHT(default, null):Float;
+	static public var SKY_ROWS(default, null):Float;
+	static public var SKY_HEIGHT(default, null):Float;
+	static public var PIPES(default, null):Array<Int>;
+	
+	static public function init():Void {
 		
-		static public inline var TILE_SIZE:int = 16;
-		static public inline var ROWS:int = FlxG.height / TILE_SIZE;
-		static public inline var COLUMNS:int = FlxG.width / TILE_SIZE;
-		static public inline var FLOOR_BUFFER:int = 2;
-		static public inline var FLOOR_HEIGHT:int = FLOOR_BUFFER * TILE_SIZE;
-		static public inline var SKY_ROWS:int = ROWS - FLOOR_BUFFER;
-		static public inline var SKY_HEIGHT:int = FlxG.height - FLOOR_HEIGHT;
-		static public inline var PIPES:Array<Int> = [];
-		static public inline var SCORE_BOARD_ID:String = "Gassy_Rick_Astley";
+		ROWS = FlxG.height / TILE_SIZE;
+		COLUMNS = FlxG.width / TILE_SIZE;
+		FLOOR_HEIGHT = FLOOR_BUFFER * TILE_SIZE;
+		SKY_ROWS = ROWS - FLOOR_BUFFER;
+		SKY_HEIGHT = FlxG.height - FLOOR_HEIGHT;
+		PIPES = [];
 	}
 }

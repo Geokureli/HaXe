@@ -1,6 +1,9 @@
 package com.geokureli.astley;
 
+import com.geokureli.astley.art.Grass;
 import com.geokureli.krakel.data.AssetPaths;
+import com.geokureli.astley.data.LevelData;
+import com.geokureli.krakel.art.LoopingTilemap;
 import com.geokureli.krakel.Game;
 import com.geokureli.krakel.Shell;
 import com.geokureli.krakel.State;
@@ -54,6 +57,8 @@ class IntroState extends State {
 	override public function create():Void {
 		super.create();
 		
+		LevelData.init();
+		
 		add(_title = new FlxSprite(0, 0, AssetPaths.text("gassy_rick_astley")));
 		centerX(_title).y = -_title.height;
 		
@@ -62,6 +67,8 @@ class IntroState extends State {
 		
 		add(_instructions = new FlxSprite(0, 160, AssetPaths.text("press_any_key")));
 		centerX(_instructions).visible = false;
+		
+		add(new Grass());
 		
 		FlxTween.tween(_title, { y:52 }, 1, { type:FlxTween.ONESHOT, ease:FlxEase.sineOut, complete:onIntroComplete } );
 	}
