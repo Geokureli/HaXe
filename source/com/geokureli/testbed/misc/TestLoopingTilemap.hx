@@ -1,6 +1,6 @@
-package com.geokureli.testbed.looptile;
+package com.geokureli.testbed.misc;
 
-import com.geokureli.astley.data.AssetPaths;
+import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.art.LoopingTilemap;
 import com.geokureli.krakel.Game;
 import com.geokureli.krakel.State;

@@ -1,8 +1,10 @@
 package com.geokureli.testbed;
 
-import com.geokureli.astley.data.AssetPaths;
+import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.Shell;
-import com.geokureli.testbed.looptile.TestLoopingTilemap;
+
+import com.geokureli.testbed.misc.TestEReg;
+//import com.geokureli.testbed.misc.TestLoopingTilemap;
 
 import flash.events.Event;
 
@@ -12,7 +14,7 @@ import flash.events.Event;
  */
 class Main extends Shell {
 	
-	private function new() { super(TestLoopingTilemap); }
+	private function new() { super(TestEReg); }
 	
 	override function setDefaults():Void {
 		super.setDefaults();
