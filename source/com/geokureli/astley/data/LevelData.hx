@@ -1,5 +1,8 @@
 package com.geokureli.astley.data;
 
+import com.geokureli.astley.art.Cloud;
+import com.geokureli.astley.art.Shrub;
+import com.geokureli.astley.art.Tilemap;
 import flixel.FlxG;
 
 /**
@@ -10,7 +13,7 @@ class LevelData {
 	
 	//static public inline var SCORE_BOARD_ID:String = "Gassy_Rick_Astley";
 	static public inline var TILE_SIZE:Float = 16;
-	static public inline var FLOOR_BUFFER:Float = 3;
+	static public inline var FLOOR_BUFFER:Float = 2;
 	static public var ROWS(default, null):Float;
 	static public var COLUMNS(default, null):Float;
 	static public var FLOOR_HEIGHT(default, null):Float;
@@ -26,5 +29,9 @@ class LevelData {
 		SKY_ROWS = ROWS - FLOOR_BUFFER;
 		SKY_HEIGHT = FlxG.height - FLOOR_HEIGHT;
 		PIPES = [];
+		
+		Shrub.init();
+		Cloud.init();
+		Tilemap.init();
 	}
 }
