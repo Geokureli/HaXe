@@ -34,59 +34,64 @@ class BuildInfo{
 		"desktop";
 	#end
 	
+	static public var buildInfo:String;
+	
 	static function __init__() { 
 		
-		trace(
-		"Compilational constants: "
-		
+		buildInfo = "Compilational constants: ";
+		var flags:Array<String> = [
 		#if web
-		 + "\nweb"
+		"web",
 		#end
 		#if mobile
-		 + "\nmobile"
+		"mobile",
 		#end
 		#if desktop
-		 + "\ndesktop"
+		"desktop",
 		#end
 		#if native
-		 + "\nnative"
+		"native",
 		#end
 		#if ios
-		 + "\nios"
+		"ios",
 		#end
 		#if android
-		 + "\nandroid"
+		"android",
 		#end
 		#if blackberry
-		 + "\nblackberry"
+		"blackberry",
 		#end
 		#if webos
-		 + "\nwebos"
+		"webos",
 		#end
 		#if windows
-		 + "\nwindows"
+		"windows",
 		#end
 		#if mac
-		 + "\nmac"
+		"mac",
 		#end
 		#if linux
-		 + "\nlinux"
+		"linux",
 		#end
 		#if html5
-		 + "\nhtml5"
+		"html5",
 		#end
 		#if flash
-		 + "\nflash"
+		"flash",
 		#end
 		#if cpp
-		 + "\ncpp"
+		"cpp",
 		#end
 		#if neko
-         + "\nneko"
+        "neko",
 		#end
 		#if js
-		 + "\njs"
+		"js",
 		#end
-		);
+		""];
+		
+		flags.pop();
+		
+		buildInfo += flags.join(", ");
 	}
 }

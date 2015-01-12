@@ -43,6 +43,8 @@ class Shell extends Sprite {
 	{
 		if (e != null) removeEventListener(e.type, init);
 		
+		trace(BuildInfo.buildInfo);
+		
 		if (gameClass != null) setupGame();
 	}
 	
