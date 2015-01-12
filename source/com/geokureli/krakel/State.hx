@@ -4,6 +4,8 @@ package com.geokureli.krakel;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxGroup;
+import flixel.group.FlxTypedGroup;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
@@ -22,6 +24,11 @@ class State extends FlxState {
 	var _fadeInMusic:Bool;
 	var _fadeOutMusic:Bool;
 	
+	var _defaultLayerType:Class<FlxGroup>;
+	var _bg:FlxGroup;
+	var _mg:FlxGroup;
+	var _fg:FlxGroup;
+	
 	var _nextState:FlxState;
 	
 	var _musicName:Dynamic;
@@ -32,6 +39,10 @@ class State extends FlxState {
 		super.create();
 		
 		setDefaults();
+		
+		addBG();
+		addMG();
+		addFG();
 		
 		startMusic();
 		
@@ -44,11 +55,17 @@ class State extends FlxState {
 	
 	function setDefaults():Void {
 		
+		_defaultLayerType = FlxGroup;
+		
 		_fadeInColor = _fadeOutColor = FlxColor.BLACK;
 		_fadeInTime = _fadeOutTime = 0;
 		_fadeInMusic = false;
 		_fadeOutMusic = true;
 	}
+	
+	function addBG():Void { add(_bg = Type.createInstance(_defaultLayerType, [])); }
+	function addMG():Void { add(_mg = Type.createInstance(_defaultLayerType, [])); }
+	function addFG():Void { add(_fg = Type.createInstance(_defaultLayerType, [])); }
 	
 	function startMusic():Void {
 		
