@@ -1,14 +1,13 @@
 package com.geokureli.astley.art;
 
 import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.data.AssetPaths.ImagePaths;
 import flixel.FlxSprite;
 
 /**
  * ...
  * @author George
  */
-class RickLite extends FlxSprite{
+class RickLite extends FlxSprite {
 	
 	static public inline var WIDTH:Int = 16;
 	
@@ -16,7 +15,7 @@ class RickLite extends FlxSprite{
 		super(x, y);
 		
 		loadGraphic(
-			AssetPaths.auto("rick"),
+			AssetPaths.image("rick"),
 			true,
 			WIDTH,
 			32
