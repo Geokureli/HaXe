@@ -4,6 +4,7 @@ export/
 # Other files and folders
 .settings/
 *.TTF.hash
+*.hxproj
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
