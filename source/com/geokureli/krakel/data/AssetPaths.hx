@@ -1,6 +1,8 @@
 package com.geokureli.krakel.data;
 import com.geokureli.krakel.data.BuildInfo;
 import com.geokureli.krakel.data.DataHolder;
+import flixel.FlxG;
+import flixel.system.FlxSound;
 import haxe.ds.StringMap;
 
 class AssetPaths {
@@ -136,6 +138,9 @@ class AssetPaths {
 	static public function image(name:String):String { return IMAGE_PATH + parse(name) + instance.defaultImageExt; }
 	static public function text(name:String):String  { return TEXT_PATH  + parse(name) + instance.defaultImageExt; }
 	static public function data(name:String):String  { return DATA_PATH  + parse(name) + instance.defaultDataExt;  }
+	
+	static public function play(name:String):FlxSound { return FlxG.sound.play(sound(name)); }
+	static public function playMusic(name:String):Void { FlxG.sound.playMusic(music(name)); }
 	
 	static public function get_MUSIC_PATH():String { return instance.musicFolder; }
 	static public function get_SOUND_PATH():String { return instance.soundFolder; }
