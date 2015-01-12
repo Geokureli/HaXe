@@ -1,12 +1,15 @@
 package com.geokureli.astley;
 
 import com.geokureli.astley.art.Grass;
+import com.geokureli.astley.states.BaseState;
+import com.geokureli.astley.states.RollinState;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.astley.data.LevelData;
 import com.geokureli.krakel.art.LoopingTilemap;
 import com.geokureli.krakel.Game;
 import com.geokureli.krakel.Shell;
 import com.geokureli.krakel.State;
+import com.geokureli.astley.data.FartControl;
 import flash.Lib;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -19,33 +22,20 @@ import flixel.util.FlxRect;
  */
 class Main extends Shell {
 	
-	public static function main():Void
-	{
-		Lib.current.addChild(new Main());
-	}
+	//public static function main():Void
+	//{
+		//Lib.current.addChild(new Main());
+	//}
 	
-	public function new() { super(AstleyGame); }
+	public function new() { super(); }
 	
 	override function setDefaults():Void {
 		super.setDefaults();
 		
-		AssetPaths.quickInit("../assets/astley");
-	}
-	
-}
-class AstleyGame extends Game {
-	
-	static public inline var SCALE:Int = 2;
-	
-	public function new() {
+		_scale = 2;
+		_introState = IntroState;
 		
-		super(
-			Std.int(Lib.current.stage.stageWidth / SCALE),
-			Std.int(Lib.current.stage.stageHeight / SCALE),
-			IntroState,
-			SCALE,
-			30, 30
-		);
+		AssetPaths.quickInit("assets/astley");
 	}
 }
 
@@ -58,6 +48,8 @@ class IntroState extends State {
 		super.create();
 		
 		LevelData.init();
+		FartControl.create();
+		FartControl.enabled = false;
 		
 		add(_title = new FlxSprite(0, 0, AssetPaths.text("gassy_rick_astley")));
 		centerX(_title).y = -_title.height;
@@ -73,12 +65,6 @@ class IntroState extends State {
 		FlxTween.tween(_title, { y:52 }, 1, { type:FlxTween.ONESHOT, ease:FlxEase.sineOut, complete:onIntroComplete } );
 	}
 	
-	function onIntroComplete(tween:FlxTween):Void {
-		
-		_instructions.visible = true;
-		FlxTween.tween(_title, { y:46 }, 60 / 115.14, { type:FlxTween.PINGPONG, ease:FlxEase.sineOut } );
-	}
-	
 	override function setDefaults():Void {
 		super.setDefaults();
 		
@@ -86,6 +72,23 @@ class IntroState extends State {
 		FlxG.camera.bounds = new FlxRect(0, 0, FlxG.width, FlxG.height);
 		
 		_musicName = AssetPaths.music("intro");
+	}
+	
+	function onIntroComplete(tween:FlxTween):Void {
+		
+		_instructions.visible = true;
+		FlxTween.tween(_title, { y:46 }, 60 / 115.14, { type:FlxTween.PINGPONG, ease:FlxEase.sineOut } );
+		
+		FartControl.enabled = true;
+	}
+	
+	override public function update():Void {
+		super.update();
+		
+		if (FartControl.down) {
+			
+			switchState(new RollinState());
+		}
 	}
 	
 	private function centerX(sprite:FlxSprite):FlxSprite {
