@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="projects\GassyRickAstley.xml" />
+    <movie path="GassyRickAstley.xml" />
     <movie fps="30" />
     <movie width="320" />
     <movie height="512" />
@@ -16,15 +16,15 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="C:\HaxeToolkit\haxe\lib\flixel-addons\1,1,0" />
-    <class path="C:\HaxeToolkit\haxe\lib\openfl\2,1,8" />
+    <class path="C:\HaxeToolkit\haxe\lib\openfl\2,2,2" />
     <class path="C:\HaxeToolkit\haxe\lib\flixel\3,3,6" />
-    <class path="C:\HaxeToolkit\haxe\lib\lime\2,0,2" />
+    <class path="C:\HaxeToolkit\haxe\lib\lime\2,0,4" />
     <class path="source" />
-    <class path="export\flash\haxe" />
+    <class path="export\release\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel-addons=1.1.0&#xA;openfl=2.1.8&#xA;flixel=3.3.6&#xA;lime=2.0.2&#xA;tools=2.0.2&#xA;FLX_NO_DEBUG&#xA;no-compilation&#xA;NAPE_RELEASE_BUILD&#xA;openfl-flash&#xA;FLX_RENDER_BLIT&#xA;web" />
+    <option directives="flixel-addons=1.1.0&#xA;openfl=2.2.2&#xA;flixel=3.3.6&#xA;lime=2.0.4&#xA;tools=2.0.4&#xA;FLX_NO_DEBUG&#xA;no-compilation&#xA;NAPE_RELEASE_BUILD&#xA;openfl-flash&#xA;FLX_RENDER_BLIT&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
