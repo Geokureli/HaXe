@@ -122,7 +122,7 @@ class Rick extends RickLite {
 		//~endRecording();
 	}
 	
-	public function playWinAnim(targetX:Int, targetY:Int, callback:Void->Void):Void {
+	public function playWinAnim(targetX:Float, targetY:Float, callback:Void->Void):Void {
 		
 		x = targetX - width;
 		acceleration.y = 0;

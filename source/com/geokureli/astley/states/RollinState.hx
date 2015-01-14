@@ -1,9 +1,11 @@
 package com.geokureli.astley.states;
 
+import com.geokureli.astley.art.ui.DeathUI;
 import com.geokureli.astley.art.Rick;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.krakel.data.AssetPaths;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 /**
@@ -20,8 +22,8 @@ class RollinState extends BaseState {
 	var _hero:Rick;
 	
 	//var _scoreTxt:ScoreText;
-	//var _introUI:IntroUI;
-	//var _deathUI:DeathUI;
+	var _introUI:IntroUI;
+	var _deathUI:DeathUI;
 	//var _songReversed:KrkSound;
 	//var _sndRecordScratch:KrkSound;
 	//var _resetPanTween:TweenMax;
@@ -57,7 +59,10 @@ class RollinState extends BaseState {
 	override function addMG():Void {
 		super.addMG();
 		
+		add(_introUI = new IntroUI());
 		add(_hero);
+		add(_deathUI = new DeathUI()).visible = false;
+		//_deathUI.onTimeOut = showEndScreen;
 	}
 	
 	override function onFadeInComplete():Void {
@@ -91,7 +96,7 @@ class RollinState extends BaseState {
 			if (_score >= _map.numPipes) {
 				
 				_isEnd = true;
-				//_hero.playWinAnim(_endPipe.x, _endPipe.y + 5, onPipeCentered);
+				_hero.playWinAnim(_endPipe.x, _endPipe.y + 5, onPipeCentered);
 				//BestSave.best = _map.numPipes;
 				//API.postScore(LevelData.SCORE_BOARD_ID, _map.numPipes);
 			}
@@ -102,18 +107,18 @@ class RollinState extends BaseState {
 			
 			if (_isGameOver && !_isResetting) {
 				
-				//_deathUI.x = FlxG.camera.scroll.x + _hero.resetPos.x;
+				_deathUI.x = FlxG.camera.scroll.x;// + _hero.resetPos.x;
 				
-				//if (_hero.isTouching(FlxObject.DOWN))
-					//_hero.drag.x = 200
+				if (_hero.isTouching(FlxObject.DOWN))
+					_hero.drag.x = 200;
 			}
 			
 			if (FartControl.down) {
-				//if (_isResetting)
-					//skipResetTween();
-				//else if (_isGameOver && _deathUI.canRestart)
-					//startResetPan();
-				/*else*/ if (!_isGameOver)
+				if (_isResetting)
+					skipResetTween();
+				else if (_isGameOver && _deathUI.canRestart)
+					startResetPan();
+				else if (!_isGameOver)
 					onStart();
 			}
 			
@@ -259,7 +264,7 @@ class RollinState extends BaseState {
 	function resetGame():Void {
 		
 		//_deathUI.visible = false;
-		//_introUI.visible = true;
+		_introUI.visible = true;
 		_hero.moves = false;
 		_hero.reset(0, 0);// --- POSITION SET INTERNALLY
 		_isGameOver = false;
@@ -287,8 +292,8 @@ class IntroUI extends FlxGroup {
 	public function new() {
 		super(2);
 		
-		add(centerX(_instructions = new FlxSprite(0, 160, AssetPaths.image("press_or_click"))));
-		add(centerX(_getReady = new FlxSprite(0, 32, AssetPaths.image("get_ready"))));
+		add(centerX(_instructions = new FlxSprite(0, 160, AssetPaths.text("press_or_click"))));
+		add(centerX(_getReady = new FlxSprite(0, 32, AssetPaths.text("get_ready"))));
 	}
 	
 	private function centerX(sprite:FlxSprite):FlxSprite {

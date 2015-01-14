@@ -15,10 +15,10 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="C:\HaxeToolkit\haxe\lib\flixel-addons\1,1,0" />
-    <class path="C:\HaxeToolkit\haxe\lib\openfl\2,2,2" />
-    <class path="C:\HaxeToolkit\haxe\lib\flixel\3,3,6" />
-    <class path="C:\HaxeToolkit\haxe\lib\lime\2,0,4" />
+    <class path="C:\Windows\System32\windows\flixel-addons\1,1,0" />
+    <class path="C:\Windows\System32\windows\openfl\2,2,2" />
+    <class path="C:\Windows\System32\windows\flixel\3,3,6" />
+    <class path="C:\Windows\System32\windows\lime\2,0,4" />
     <class path="source" />
     <class path="export\release\flash\haxe" />
   </classpaths>
@@ -53,7 +53,7 @@
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->
   <options>
-    <option showHiddenPaths="False" />
+    <option showHiddenPaths="True" />
     <option testMovie="Custom" />
     <option testMovieCommand="" />
   </options>
