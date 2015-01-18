@@ -19,8 +19,6 @@ class Rick extends RickLite {
 	static inline var FART_2:String =	"fart_2";
 	static inline var FART_3:String =	"fart_3";
 	static inline var FART_4:String =	"fart_4";
-	static inline var HIT:String =		"hit";
-	static inline var SOUND_PIPE:String="smb_pipe";
 	
 	static var FARTS:Array<String> = [
 		FART_0, FART_1, FART_2, FART_3, FART_4
@@ -34,12 +32,12 @@ class Rick extends RickLite {
 	
 	public var canFart:Bool;
 	public var playSounds:Bool;
+	public var resetPos(default, null):FlxPoint;
 	
 	//protected var _recorder:FlxReplay;
 	
 	var _input:FartControl;
 	var _recordSeed:Int;
-	var resetPos(default, null):FlxPoint;
 	
 	public function new(x:Float = 0, y:Float = 0) {
 		super(x, y);
@@ -79,7 +77,7 @@ class Rick extends RickLite {
 		if (isTouching(FlxObject.DOWN)) {
 			
 			if ((wasTouching & FlxObject.DOWN) == 0)
-				AssetPaths.play(HIT);
+				AssetPaths.play("hit");
 			
 			drag.x = 200;
 		}
@@ -140,7 +138,7 @@ class Rick extends RickLite {
 	private function onPipeCentered(callback:Void->Void):Void {
 		
 		velocity.x = 30;
-		AssetPaths.play(SOUND_PIPE);
+		AssetPaths.play("smb_pipe");
 		callback();
 	}
 	
