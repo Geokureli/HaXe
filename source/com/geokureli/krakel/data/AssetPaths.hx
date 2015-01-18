@@ -3,7 +3,10 @@ import com.geokureli.krakel.data.BuildInfo;
 import com.geokureli.krakel.data.DataHolder;
 import flixel.FlxG;
 import flixel.system.FlxSound;
+import flixel.text.pxText.PxBitmapFont;
 import haxe.ds.StringMap;
+import openfl.display.BitmapData;
+import openfl.Assets;
 
 class AssetPaths {
 	
@@ -138,6 +141,78 @@ class AssetPaths {
 	static public function image(name:String):String { return IMAGE_PATH + parse(name) + instance.defaultImageExt; }
 	static public function text(name:String):String  { return TEXT_PATH  + parse(name) + instance.defaultImageExt; }
 	static public function data(name:String):String  { return DATA_PATH  + parse(name) + instance.defaultDataExt;  }
+	
+	static public function bitmapData(name:String):BitmapData { return Assets.getBitmapData(image(name), false); }
+	static public function bitmapFont(name:String, ?letters:String, width:Int = 0, height:Int = 0):PxBitmapFont {
+		var pxFont:PxBitmapFont = PxBitmapFont.fetch(name);
+		if (pxFont == null) {
+			// --- CREATE BITMAP DATA
+			var bmData:BitmapData = Assets.getBitmapData(text(name), false);
+			//pxFont = new PxBitmapFont().loadPixelizer(Assets.getBitmapData(text(name), false), letters);
+			pxFont = new PxBitmapFont().loadAngelCode(
+				bmData,
+				generateAngelCode(bmData, letters, text(name))
+			);
+			trace(pxFont);
+			PxBitmapFont.store(name, pxFont);
+		}
+		return pxFont;
+	}
+	
+	static public function generateAngelCode(bmData:BitmapData, letters:String, pageName:String, width:Int = 0, height:Int = 0):Xml {
+		
+		if (width == 0) {
+			
+			width = Std.int(bmData.width/letters.length);
+		}
+		
+		if (height == 0) {
+			
+			height = bmData.height;
+		}
+		
+		var x:Int = 0;
+		var y:Int = 0;
+		var xmlData:Xml = Xml.createElement("font");
+		var pages:Xml = Xml.createElement("pages");
+		var page:Xml = Xml.createElement("page");
+		pages.addChild(page);
+		xmlData.addChild(pages);
+		page.set('id', '0');
+		page.set('file', pageName);
+		var chars:Xml = Xml.createElement("chars");
+		chars.set('count', Std.string(letters.length));
+		xmlData.addChild(chars);
+    
+		var char:Xml;
+		for (i in 0 ... letters.length)
+		{
+			char = Xml.createElement("char");
+			char.set('id', Std.string(letters.charCodeAt(i)));
+			char.set('x', Std.string(x));
+			char.set('y', Std.string(y));
+			char.set('width', Std.string(width));
+			char.set('height', Std.string(height));
+			char.set('xadvance', Std.string(width));
+			char.set('xoffset', "0");
+			char.set('yoffset', "0");
+			char.set('page', "0");
+			char.set('chnl', "0");
+			char.set('letter', letters.charAt(i));
+			chars.addChild(char);
+			
+			x += width;
+			if (x + width > bmData.width) {
+				y += height;
+				x = 0;
+			}
+		}
+		
+		trace(xmlData.toString());
+		var rootXML:Xml = Xml.createElement("font");
+		rootXML.addChild(xmlData);
+		return rootXML;
+	}
 	
 	static public function play(name:String):FlxSound { return FlxG.sound.play(sound(name)); }
 	static public function playMusic(name:String):Void { FlxG.sound.playMusic(music(name)); }
