@@ -24,7 +24,7 @@
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel-addons=1.1.0&#xA;openfl=2.2.2&#xA;flixel=3.3.6&#xA;lime=2.0.4&#xA;tools=2.0.4&#xA;FLX_NO_DEBUG&#xA;no-compilation&#xA;NAPE_RELEASE_BUILD&#xA;openfl-flash&#xA;FLX_RENDER_BLIT&#xA;web" />
+    <option directives="flixel-addons=1.1.0&#xA;openfl=2.1.8&#xA;flixel=3.3.6&#xA;lime=2.0.5&#xA;tools=2.0.5&#xA;FLX_NO_DEBUG&#xA;no-compilation&#xA;NAPE_RELEASE_BUILD&#xA;openfl-flash&#xA;FLX_RENDER_BLIT&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
@@ -46,6 +46,7 @@
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
     <hidden path="obj" />
+    <hidden path=".gitignore" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />
