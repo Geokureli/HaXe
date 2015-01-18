@@ -1,7 +1,9 @@
 package com.geokureli.astley.states;
 
+import com.geokureli.astley.art.Tilemap;
 import com.geokureli.astley.art.ui.DeathUI;
 import com.geokureli.astley.art.Rick;
+import com.geokureli.astley.art.ui.ScoreText;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.krakel.data.AssetPaths;
 import flixel.FlxG;
@@ -21,7 +23,7 @@ class RollinState extends BaseState {
 	
 	var _hero:Rick;
 	
-	//var _scoreTxt:ScoreText;
+	var _scoreTxt:ScoreText;
 	var _introUI:IntroUI;
 	var _deathUI:DeathUI;
 	//var _songReversed:KrkSound;
@@ -62,7 +64,16 @@ class RollinState extends BaseState {
 		add(_introUI = new IntroUI());
 		add(_hero);
 		add(_deathUI = new DeathUI()).visible = false;
-		//_deathUI.onTimeOut = showEndScreen;
+		_deathUI.onTimeOut = showEndScreen;
+	}
+	
+	override function addFG():Void {
+		super.addFG();
+		
+		add(_scoreTxt = new ScoreText(0, 32, true));
+		_scoreTxt.x = (FlxG.width - _scoreTxt.width) / 2;
+		_scoreTxt.scrollFactor.x = 0;
+		_scoreTxt.visible = false;
 	}
 	
 	override function onFadeInComplete():Void {
@@ -78,8 +89,8 @@ class RollinState extends BaseState {
 		if (_isEnd)
 			return;
 		
-		//var numScore:Number = Tilemap.getScore(_hero.x);
-		//score = numScore;
+		var numScore:Float = Tilemap.getScore(_hero.x);
+		_score = Std.int(numScore);
 		
 		//for (var i:int = Prize.GOALS.length - 1; i >= 0; i--)
 			//if(numScore >= Prize.GOALS[i])
@@ -107,10 +118,10 @@ class RollinState extends BaseState {
 			
 			if (_isGameOver && !_isResetting) {
 				
-				_deathUI.x = FlxG.camera.scroll.x;// + _hero.resetPos.x;
+				_deathUI.x = FlxG.camera.scroll.x + _hero.resetPos.x;
 				
-				if (_hero.isTouching(FlxObject.DOWN))
-					_hero.drag.x = 200;
+				//if (_hero.isTouching(FlxObject.DOWN))
+					//_hero.drag.x = 200;
 			}
 			
 			if (FartControl.down) {
@@ -144,7 +155,7 @@ class RollinState extends BaseState {
 		super.onStart();
 		
 		_song.play(true);
-		//_scoreTxt.visible = true;
+		_scoreTxt.visible = true;
 		_hero.start();
 		_running = true;
 	}
@@ -163,14 +174,14 @@ class RollinState extends BaseState {
 	function onPlayerDie():Void {
 		_running = false;
 		_isGameOver = true;
-		//_deathUI.visible = true;
+		_deathUI.visible = true;
 		_hero.canFart = false;
 		FartControl.enabled = false;
-		//_deathUI.startTransition(score, onEndScreenIn);
-		//_deathUI.x = FlxG.camera.scroll.x + _hero.resetPos.x;
-		//_scoreTxt.visible = false;
+		_deathUI.startTransition(_score, onEndScreenIn);
+		_deathUI.x = FlxG.camera.scroll.x + _hero.resetPos.x;
+		_scoreTxt.visible = false;
 		
-		//FlxG.play(SOUND_DIE);
+		AssetPaths.play("death");
 		
 		//_gameUI.visible = true;
 		_song.stop();
@@ -185,9 +196,9 @@ class RollinState extends BaseState {
 		
 		//Prize.unlockMedal(Prize.CONTINUE_MEDAL);
 		
-		//_deathUI.killTimer();
+		_deathUI.killTimer();
 		_isResetting = true;
-		//RAInput.enabled = false;
+		FartControl.enabled = false;
 		FlxG.camera.target = null;
 		// --- EXTEND CAM RANGE FOR TWEEN
 		FlxG.camera.bounds.x = -FlxG.camera.bounds.width;
@@ -263,7 +274,7 @@ class RollinState extends BaseState {
 	
 	function resetGame():Void {
 		
-		//_deathUI.visible = false;
+		_deathUI.visible = false;
 		_introUI.visible = true;
 		_hero.moves = false;
 		_hero.reset(0, 0);// --- POSITION SET INTERNALLY
@@ -272,15 +283,17 @@ class RollinState extends BaseState {
 	}
 	
 	function showEndScreen():Void {
-		//_deathUI.killTimer();
+		_deathUI.killTimer();
 	}
 	
 	function set__score(value:Int):Int {
 		
-		if (_score == value) return value;
+		if (_score == value)
+			return value;
 		
-		return _score = value;
-		//_scoreTxt.text = value.toString();
+		_score = value;
+		_scoreTxt.text = Std.string(value);
+		return _score;
 	}
 }
 

@@ -5,6 +5,7 @@ import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.Nest;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 
 /**
@@ -23,7 +24,7 @@ class DeathUI extends Nest {
 	var _letDown:FlxSprite;
 	var _hurtMe:FlxSprite;
 	var _retry:FlxSprite;
-	//var _timerTxt:ScoreText;
+	var _timerTxt:ScoreText;
 	//var _board:ScoreBoard;
 	
 	var _blinkTimer:FlxTimer;
@@ -42,7 +43,7 @@ class DeathUI extends Nest {
 		add(_letDown = new FlxSprite(-13, 0, AssetPaths.text("let_down")));
 		add(_hurtMe = new FlxSprite(-13, 0, AssetPaths.text("hurt_me")));
 		//add(_board = new ScoreBoard());
-		//add(_timerTxt = new ScoreText(48, 176, true));
+		add(_timerTxt = new ScoreText(48, 176, true));
 		add(_retry = new FlxSprite(15, 196, AssetPaths.text("press_any_key")));
 		
 		_countDownMusic = new FlxSound().loadEmbedded(AssetPaths.music("count_down"));
@@ -67,7 +68,7 @@ class DeathUI extends Nest {
 		_giveUp.y = -_giveUp.height;
 		_giveUp.visible = true;
 		//_board.y = -_board.height;
-		//_timerTxt.visible = false;
+		_timerTxt.visible = false;
 		_letDown.visible = false;
 		_hurtMe.visible = false;
 		_retry.visible = false;
@@ -114,7 +115,7 @@ class DeathUI extends Nest {
 			_letDown.y = _giveUp.y;
 			
 		} else if (count == 3) {
-			_blinkTimer.start(.1, 10 * 4, swapTextColor);
+			_blinkTimer.start(.1, swapTextColor, 10 * 4);
 			_letDown.visible = false;
 			_hurtMe.visible = true;
 			_hurtMe.y = _giveUp.y;
