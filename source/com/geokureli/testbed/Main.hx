@@ -1,11 +1,11 @@
 package com.geokureli.testbed;
 
-import com.geokureli.testbed.misc.TestText;
-import flash.display.Sprite;
+import com.geokureli.testbed.misc.Test9Slice;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.Shell;
 
-import com.geokureli.testbed.misc.TestEReg;
+//import com.geokureli.testbed.misc.TestEReg;
+//import com.geokureli.testbed.misc.TestText;
 //import com.geokureli.testbed.misc.TestLoopingTilemap;
 
 /**
@@ -19,7 +19,7 @@ class Main extends Shell {
 	override function setDefaults():Void {
 		super.setDefaults();
 		
-		_introState = TestText;
+		_introState = Test9Slice;
 		
 		AssetPaths.quickInit("assets/test");
 	}
