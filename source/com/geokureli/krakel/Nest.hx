@@ -1,6 +1,7 @@
 package com.geokureli.krakel;
 
 import com.geokureli.krakel.Group.TypedGroup;
+import com.geokureli.krakel.interfaces.IPoint;
 import flixel.FlxBasic;
 import flixel.group.FlxGroup;
 import flixel.FlxObject;
@@ -13,7 +14,7 @@ import flixel.util.FlxPoint;
 
 typedef Nest = TypedNest<FlxBasic>;
 
-class TypedNest<T:FlxBasic> extends TypedGroup<T> {
+class TypedNest<T:FlxBasic> extends TypedGroup<T> implements IPoint {
 	
 	public var x(default, set):Float;
 	public var y(default, set):Float;
@@ -49,8 +50,8 @@ class TypedNest<T:FlxBasic> extends TypedGroup<T> {
 				if (Std.is(child, FlxObject)) 
 					cast(child, FlxObject).x += value - x;
 					
-				else if (Std.is(child, TypedNest<Dynamic>))
-					cast(child, TypedNest<Dynamic>).x += value - x;
+				else if (Std.is(child, IPoint))
+					cast(child, IPoint).x += value - x;
 			}
 		}
 			
@@ -68,8 +69,8 @@ class TypedNest<T:FlxBasic> extends TypedGroup<T> {
 				if (Std.is(child, FlxObject)) 
 					cast(child, FlxObject).y += value - y;
 					
-				else if (Std.is(child, TypedNest<Dynamic>))
-					cast(child, TypedNest<Dynamic>).y += value - y;
+				else if (Std.is(child, IPoint))
+					cast(child, IPoint).y += value - y;
 			}
 		}
 			

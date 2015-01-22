@@ -125,8 +125,6 @@ class RollinState extends BaseState {
 			
 		} else {
 			
-			trace(_isResetting, _isGameOver, FartControl.enabled, FartControl.down);
-			
 			if (_isGameOver && !_isResetting) {
 				
 				_deathUI.x = FlxG.camera.scroll.x + _hero.resetPos.x;

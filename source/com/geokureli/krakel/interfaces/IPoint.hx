@@ -5,6 +5,6 @@ package com.geokureli.krakel.interfaces;
  */
 
 interface IPoint {
-	var x:Float;
-	var y:Float;
+	var x(default, dynamic):Float;
+	var y(default, dynamic):Float;
 }
