@@ -8,9 +8,29 @@ import flixel.system.FlxSound;
  */
 class Sound extends FlxSound
 {
+	static public var enabled:Bool = true;
+	
+	public var position(get, set):Float;
 	public var duration(get, never):Float;
+	public var length(get, never):Float;
 	
 	public function new() { super(); }
 	
+	public function startAt(position:Float):Void { startSound(position); }
+	
+	public function getPosition(seconds:Float):Float{
+		
+		return seconds / duration * length;
+	}
+	
 	public function get_duration():Float { return _sound.length / 1000.0; }
+	
+	public function get_position():Float { return time; }
+	
+	public function set_position(value:Float):Float { return time = value; }
+	
+	public function get_length():Float { return _sound.length; }
+	
+	//static public function get_enabled():Bool { return enabled; }
+	//static public function set_enabled(value:Bool):Bool { enabled = value; }
 }

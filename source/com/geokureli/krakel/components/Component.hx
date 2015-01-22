@@ -6,7 +6,6 @@ import com.geokureli.krakel.art.Sprite;
  * ...
  * @author George
  */
-typedef ComponentList = Array<Component>;
 class Component {
 	
 	/** If true, the targets original update process is skipped. */
@@ -14,11 +13,20 @@ class Component {
 	/** If true, the targets original draw process is skipped. */
 	public var overrideDraw:Bool;
 	
-	var target:Sprite;
+	var _target:IComponentHolder;
+	var _components(get, never):ComponentList;
 
-	public function new(target:Sprite) {
+	public function new(target:IComponentHolder) {
 		
-		this.target = target;
+		_target = target;
+		
+		setDefaults();
+	}
+	
+	function setDefaults() {
+		
+		overrideUpdate = false;
+		overrideDraw = false;
 	}
 	
 	/** Called by the target when the component is added to a Sprite. */
@@ -28,6 +36,8 @@ class Component {
 	public function preUpdate():Void { }
 	/** Called by the target after it's own update process. */
 	public function update():Void { }
+	/** Called by the target before it's own update process. */
+	public function postUpdate():Void { }
 	
 	/** Called by the target before it's own draw process. */
 	public function preDraw():Void { }
@@ -36,15 +46,6 @@ class Component {
 	
 	/** Called by the target when it is destroyed or when this component is removed */
 	public function destroy():Void { }
-}
-
-class ComponentListExtender {
 	
-	static public function add(list:ComponentList, component:Component) {
-		list.push(component);
-		component.init();
-		
-		//return list;
-	}
-	static public function test(list:ComponentList) { return list; }
+	function get__components():ComponentList { return _target.components; }
 }

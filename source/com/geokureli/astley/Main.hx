@@ -16,6 +16,8 @@ import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxRect;
+import motion.Actuate;
+import motion.easing.Linear;
 /**
  * ...
  * @author George
@@ -36,6 +38,7 @@ class Main extends Shell {
 		_introState = IntroState;
 		
 		AssetPaths.quickInit("assets/astley");
+		Actuate.defaultEase = Linear.easeNone;
 	}
 }
 
@@ -72,6 +75,8 @@ class IntroState extends State {
 		FlxG.camera.bounds = new FlxRect(0, 0, FlxG.width, FlxG.height);
 		
 		_musicName = AssetPaths.music("intro");
+		_fadeOutMusic = true;
+		_fadeOutTime = .5;
 	}
 	
 	function onIntroComplete(tween:FlxTween):Void {

@@ -1,12 +1,13 @@
 package com.geokureli.testbed;
 
-import com.geokureli.testbed.misc.Test9Slice;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.Shell;
 
 //import com.geokureli.testbed.misc.TestEReg;
 //import com.geokureli.testbed.misc.TestText;
 //import com.geokureli.testbed.misc.TestLoopingTilemap;
+//import com.geokureli.testbed.misc.Test9Slice;
+import com.geokureli.testbed.misc.TestCast;
 
 /**
  * ...
@@ -19,7 +20,7 @@ class Main extends Shell {
 	override function setDefaults():Void {
 		super.setDefaults();
 		
-		_introState = Test9Slice;
+		_introState = TestCast;
 		
 		AssetPaths.quickInit("assets/test");
 	}

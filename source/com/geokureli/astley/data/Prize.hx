@@ -41,13 +41,13 @@ class Prize {
 	static public inline var CREDIT_MEDAL:String = "That's me!";
 	static public inline var CONTINUE_MEDAL:String = "Never gonna give you up";
 	
-	static var POWERS:Float = Math.pow(Math.E, TIERS.length - 1);
+	static var POWERS:Float = Math.pow(2.71828, TIERS.length - 1);
 	static public var NUM_TIERS:Int = TIERS.length;
 	
-	static public function getPrize(score:int):String {
+	static public function getPrize(score:Int):String {
 		
 		var percent:Float = Tilemap.getCompletion(score);
-		if (int(percent * POWERS) == 0) return TIERS[0];
+		if (Std.int(percent * POWERS) == 0) return TIERS[0];
 		if (percent >= 1) return TIERS[TIERS.length - 1];
 		
 		return TIERS[Std.int(Math.log(Std.int(percent * POWERS)))];

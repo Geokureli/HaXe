@@ -1,5 +1,6 @@
 package com.geokureli.krakel;
 
+import com.geokureli.krakel.Group.TypedGroup;
 import flixel.FlxBasic;
 import flixel.group.FlxGroup;
 import flixel.FlxObject;
@@ -9,7 +10,11 @@ import flixel.util.FlxPoint;
  * ...
  * @author George
  */
-class Nest extends FlxGroup {
+
+typedef Nest = TypedNest<FlxBasic>;
+
+class TypedNest<T:FlxBasic> extends TypedGroup<T> {
+	
 	public var x(default, set):Float;
 	public var y(default, set):Float;
 	/** not used yet */
@@ -23,7 +28,7 @@ class Nest extends FlxGroup {
 		this.y = y;
 	}
 	
-	override public function add(object:FlxBasic):FlxBasic {
+	override public function add(object:T):T{
 		
 		if (Std.is(object, FlxObject)) {
 			
@@ -44,8 +49,8 @@ class Nest extends FlxGroup {
 				if (Std.is(child, FlxObject)) 
 					cast(child, FlxObject).x += value - x;
 					
-				else if (Std.is(child, Nest))
-					cast(child, Nest).x += value - x;
+				else if (Std.is(child, TypedNest<Dynamic>))
+					cast(child, TypedNest<Dynamic>).x += value - x;
 			}
 		}
 			
@@ -63,8 +68,8 @@ class Nest extends FlxGroup {
 				if (Std.is(child, FlxObject)) 
 					cast(child, FlxObject).y += value - y;
 					
-				else if (Std.is(child, Nest))
-					cast(child, Nest).y += value - y;
+				else if (Std.is(child, TypedNest<Dynamic>))
+					cast(child, TypedNest<Dynamic>).y += value - y;
 			}
 		}
 			

@@ -1,4 +1,5 @@
 package com.geokureli.krakel.data;
+import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.BuildInfo;
 import com.geokureli.krakel.data.DataHolder;
 import flixel.FlxG;
@@ -153,7 +154,7 @@ class AssetPaths {
 				bmData,
 				generateAngelCode(bmData, letters, text(name))
 			);
-			trace(pxFont);
+			
 			PxBitmapFont.store(name, pxFont);
 		}
 		return pxFont;
@@ -174,14 +175,14 @@ class AssetPaths {
 		var x:Int = 0;
 		var y:Int = 0;
 		var xmlData:Xml = Xml.createElement("font");
-		var pages:Xml = Xml.createElement("pages");
-		var page:Xml = Xml.createElement("page");
-		pages.addChild(page);
-		xmlData.addChild(pages);
-		page.set('id', '0');
-		page.set('file', pageName);
+		//var pages:Xml = Xml.createElement("pages");
+		//var page:Xml = Xml.createElement("page");
+		//pages.addChild(page);
+		//xmlData.addChild(pages);
+		//page.set('id', '0');
+		//page.set('file', pageName);
 		var chars:Xml = Xml.createElement("chars");
-		chars.set('count', Std.string(letters.length));
+		//chars.set('count', Std.string(letters.length));
 		xmlData.addChild(chars);
     
 		var char:Xml;
@@ -196,9 +197,9 @@ class AssetPaths {
 			char.set('xadvance', Std.string(width));
 			char.set('xoffset', "0");
 			char.set('yoffset', "0");
-			char.set('page', "0");
-			char.set('chnl', "0");
-			char.set('letter', letters.charAt(i));
+			//char.set('page', "0");
+			//char.set('chnl', "0");
+			//char.set('letter', letters.charAt(i));
 			chars.addChild(char);
 			
 			x += width;
@@ -208,7 +209,6 @@ class AssetPaths {
 			}
 		}
 		
-		trace(xmlData.toString());
 		var rootXML:Xml = Xml.createElement("font");
 		rootXML.addChild(xmlData);
 		return rootXML;
@@ -216,6 +216,11 @@ class AssetPaths {
 	
 	static public function play(name:String):FlxSound { return FlxG.sound.play(sound(name)); }
 	static public function playMusic(name:String):Void { FlxG.sound.playMusic(music(name)); }
+	
+	static public function getSound(name:String, looped:Bool = false):Sound {
+		
+		return cast(new Sound().loadEmbedded(sound(name), looped));
+	}
 	
 	static public function get_MUSIC_PATH():String { return instance.musicFolder; }
 	static public function get_SOUND_PATH():String { return instance.soundFolder; }

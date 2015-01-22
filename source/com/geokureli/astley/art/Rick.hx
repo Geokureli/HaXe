@@ -67,9 +67,14 @@ class Rick extends RickLite {
 			//_recorder.create(_recordSeed++);
 	}
 	
+	override public function preUpdate():Void {
+		super.preUpdate();
+		
+		_input.update();
+	}
+	
 	override public function update():Void {
 		super.update();
-		_input.update();
 		
 		if (!moves) return;
 		
@@ -86,6 +91,7 @@ class Rick extends RickLite {
 		
 		//if (_recorder != null)
 			//_recorder.recordFrame();
+			
 		// --- FARTING
 		if (canFart && _input.isButtonDown)
 			fart();
@@ -113,8 +119,7 @@ class Rick extends RickLite {
 	}
 	
 	override public function kill():Void {
-		//super.kill();
-		//velocity.x = 0;
+		
 		alive = false;
 		animation.play("dead");
 		//~endRecording();
@@ -140,6 +145,10 @@ class Rick extends RickLite {
 		velocity.x = 30;
 		AssetPaths.play("smb_pipe");
 		callback();
+	}
+	
+	override function set_moves(value:Bool):Bool {
+		return super.set_moves(value);
 	}
 	
 	//~public function endRecording(isDestroy:Bool = false):Void {

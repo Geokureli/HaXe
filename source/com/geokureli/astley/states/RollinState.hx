@@ -5,11 +5,18 @@ import com.geokureli.astley.art.ui.DeathUI;
 import com.geokureli.astley.art.Rick;
 import com.geokureli.astley.art.ui.ScoreText;
 import com.geokureli.astley.data.FartControl;
+import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.AssetPaths;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
+import flixel.system.FlxSound;
+import motion.Actuate;
+import motion.actuators.GenericActuator;
+import motion.easing.Sine;
+import motion.MotionPath;
+import flash.Lib;
 /**
  * ...
  * @author George
@@ -18,7 +25,7 @@ class RollinState extends BaseState {
 	
 	static public inline var  MIN_RESET_TIME:Float = 0.5;
 	static inline var  RESET_SCROLL_SPEED:Float = 360;
-	static inline var  RESET_ANTICIPATION:Float = 120;
+	static inline var  RESET_ANTICIPATION:Float = 80;
 	static inline var  RESET_SKIP_TIME:Float = 0.8;
 	
 	var _hero:Rick;
@@ -26,15 +33,14 @@ class RollinState extends BaseState {
 	var _scoreTxt:ScoreText;
 	var _introUI:IntroUI;
 	var _deathUI:DeathUI;
-	//var _songReversed:KrkSound;
-	//var _sndRecordScratch:KrkSound;
-	//var _resetPanTween:TweenMax;
+	var _songReversed:Sound;
 	
 	var _score(default, set):Int;
 	var _running:Bool;
 	var _isGameOver:Bool;
 	var _isResetting:Bool;
 	var _isEnd:Bool;
+	var _endTime:Float;
 	
 	override function setDefaults():Void {
 		super.setDefaults();
@@ -43,8 +49,7 @@ class RollinState extends BaseState {
 		
 		_fadeInTime = 0.25;
 		//FlxG.visualDebug = true;
-		//_songReversed = new KrkSound().embed(SONG_REVERSED);
-		//_sndRecordScratch = new KrkSound().embed(SOUND_SKIP_RESET);
+		_songReversed = AssetPaths.getSound("nggyu_reversed_1_5x");
 		
 		_isResetting = false;
 		_isGameOver = false;
@@ -83,8 +88,20 @@ class RollinState extends BaseState {
 		FartControl.enabled = true;
 	}
 	
+	override public function preUpdate():Void {
+		super.preUpdate();
+		
+		if (_running) {
+			
+			if (checkHit())
+				onPlayerDie();
+			
+		} else checkHit();
+	}
+	
 	override public function update():Void {
 		super.update();
+		
 		
 		if (_isEnd)
 			return;
@@ -98,12 +115,6 @@ class RollinState extends BaseState {
 		
 		if (_running) {
 			
-			if (checkHit())
-				_hero.kill();
-			
-			if(!_hero.alive)
-				onPlayerDie();
-			
 			if (_score >= _map.numPipes) {
 				
 				_isEnd = true;
@@ -114,14 +125,11 @@ class RollinState extends BaseState {
 			
 		} else {
 			
-			checkHit();
+			trace(_isResetting, _isGameOver, FartControl.enabled, FartControl.down);
 			
 			if (_isGameOver && !_isResetting) {
 				
 				_deathUI.x = FlxG.camera.scroll.x + _hero.resetPos.x;
-				
-				//if (_hero.isTouching(FlxObject.DOWN))
-					//_hero.drag.x = 200;
 			}
 			
 			if (FartControl.down) {
@@ -133,8 +141,8 @@ class RollinState extends BaseState {
 					onStart();
 			}
 			
-			//if (_hero.x > FlxG.camera.scroll.x && !_hero.onScreen(FlxG.camera))
-				//resetGame();
+			if (_hero.x > FlxG.camera.scroll.x && !_hero.isOnScreen(FlxG.camera))
+				resetGame();
 		}
 	}
 	
@@ -147,8 +155,7 @@ class RollinState extends BaseState {
 	
 	function checkHit():Bool {
 		
-		return FlxG.collide(_map, _ground)
-			|| FlxG.collide(_map, _hero);
+		return FlxG.collide(_map, _hero);
 	}
 	
 	override function onStart():Void {
@@ -172,6 +179,8 @@ class RollinState extends BaseState {
 	}
 	
 	function onPlayerDie():Void {
+		
+		_hero.kill();
 		_running = false;
 		_isGameOver = true;
 		_deathUI.visible = true;
@@ -198,69 +207,77 @@ class RollinState extends BaseState {
 		
 		_deathUI.killTimer();
 		_isResetting = true;
-		FartControl.enabled = false;
+		//FartControl.enabled = false;
 		FlxG.camera.target = null;
 		// --- EXTEND CAM RANGE FOR TWEEN
 		FlxG.camera.bounds.x = -FlxG.camera.bounds.width;
 		FlxG.camera.bounds.width *= 2;
 		
-		//var panAmount:int = RESET_ANTICIPATION;
-		//var duration:Float;
-		//if (score < 1) {
+		var panAmount:Float = RESET_ANTICIPATION;
+		var duration:Float;
+		if (_score < 1) {
 			//
-			//panAmount = _deathUI.x + _deathUI.width - FlxG.camera.scroll.x;
-			//TweenMax.to(
-				//_deathUI,
-				//panAmount * Math.PI / RESET_SCROLL_SPEED / 4,
-				//{
-					//x: '-' + panAmount,// --- RELATIVE
-					//ease:Sine.easeIn,
-					//onComplete:resetGame
-				//}
-			//);
-		//}
-		//
-		//var bezier:Array = [
-			//{ x:FlxG.camera.scroll.x + panAmount },
-			//{ x: -RESET_ANTICIPATION },
-			//{ x:0 }
-		//];
-		//
-		//if (FlxG.camera.scroll.x + FlxG.width == FlxG.camera.bounds.right)
-			//bezier.shift();
-		//
-		//duration = (panAmount * 4  + FlxG.camera.scroll.x) / RESET_SCROLL_SPEED;
-		//_resetPanTween = TweenMax.to (
-			//FlxG.camera.scroll,
-			//duration,
-			//{
-				//bezier:bezier,
-				//ease:Linear.easeNone,
-				//onComplete:onResetComplete
-			//}
-		//);
-		//
-		//_songReversed.position = _songReversed.getPosition(_songReversed.duration - duration);
-		//_songReversed.play();
+			panAmount = _deathUI.x + _deathUI.width - FlxG.camera.scroll.x;
+			
+			Actuate.tween(
+				_deathUI,
+				panAmount * Math.PI / RESET_SCROLL_SPEED, 
+				{ x: _deathUI.x - panAmount }
+			)	.ease(Sine.easeIn)
+				.onComplete(resetGame);
+		}
+		
+		duration = 0;
+		
+		if (FlxG.camera.scroll.x + FlxG.width + panAmount < FlxG.camera.bounds.right) {
+			
+			duration = panAmount * Math.PI / RESET_SCROLL_SPEED / 2;
+			
+			Actuate.tween(FlxG.camera.scroll, duration, { x:FlxG.camera.scroll.x + panAmount } )
+				.ease(Sine.easeOut)
+				.repeat(1)
+				.reflect();
+			
+			duration *= 2;
+		}
+		
+		var delay:Float = duration;
+		duration = FlxG.camera.scroll.x / RESET_SCROLL_SPEED;
+		Actuate.tween(FlxG.camera.scroll, duration, { x: 0 }, false)
+			.delay(delay);
+		
+		delay += duration;
+		duration = panAmount * Math.PI / RESET_SCROLL_SPEED / 2;
+		Actuate.tween(FlxG.camera.scroll, duration, { x: -RESET_ANTICIPATION }, false)
+			.ease(Sine.easeOut)
+			.delay(delay);
+		
+		delay += duration;
+		Actuate.tween(FlxG.camera.scroll, duration, { x:0 }, false)
+			.ease(Sine.easeIn)
+			.delay(delay)
+			.onComplete(onResetComplete);
+		
+		delay += duration;
+		_songReversed.startAt(_songReversed.getPosition(_songReversed.duration - delay));
+		
+		_endTime = Lib.getTimer() + delay * 1000;
 	}
 	
 	function skipResetTween():Void {
+		var timeLeft:Float = (_endTime - Lib.getTimer()) / 1000;
 		
-		//if (_resetPanTween.totalDuration - _resetPanTween.totalTime > RESET_SKIP_TIME * 2) {
-			//_resetPanTween.kill();
-			//_resetPanTween = null;
-			//_songReversed.stop();
-			//RAInput.enabled = false;
+		if (timeLeft > RESET_SKIP_TIME * 2) {
+			
+			Actuate.stop(FlxG.camera.scroll, null, false, false);
+			_songReversed.stop();
+			FartControl.enabled = false;
+			AssetPaths.play("record_scratch");
 			//_sndRecordScratch.play(true);
-			//
-			//TweenMax.to(FlxG.camera.scroll, RESET_SKIP_TIME,
-				//{
-					//x:0,
-					//ease:Linear.easeNone,
-					//onComplete:onResetComplete
-				//}
-			//);
-		//}
+			
+			Actuate.tween(FlxG.camera.scroll, RESET_SKIP_TIME, { x:0 } )
+				.onComplete(onResetComplete);
+		}
 	}
 	
 	function onResetComplete():Void {

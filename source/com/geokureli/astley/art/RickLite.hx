@@ -1,5 +1,6 @@
 package com.geokureli.astley.art;
 
+import com.geokureli.krakel.art.Sprite;
 import com.geokureli.krakel.data.AssetPaths;
 import flixel.FlxSprite;
 
@@ -7,7 +8,7 @@ import flixel.FlxSprite;
  * ...
  * @author George
  */
-class RickLite extends FlxSprite {
+class RickLite extends Sprite {
 	
 	static public inline var WIDTH:Int = 16;
 	

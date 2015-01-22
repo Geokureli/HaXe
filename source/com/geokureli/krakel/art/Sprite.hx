@@ -1,57 +1,79 @@
 package com.geokureli.krakel.art;
 
 import com.geokureli.krakel.components.Component;
+import com.geokureli.krakel.components.ComponentList;
+import com.geokureli.krakel.components.IComponentHolder;
+import flixel.FlxBasic;
+import flixel.FlxObject;
 import flixel.FlxSprite;
-
-using com.geokureli.krakel.components.Component.ComponentListExtender;
 
 /**
  * ...
  * @author George
  */
 
-class Sprite extends FlxSprite{
+class Sprite extends FlxSprite implements IComponentHolder {
 
 	public var components:ComponentList;
 	
 	public function new(x:Float=0, y:Float=0, ?simpleGraphic:Dynamic) {
-		super(x, Y, simpleGraphic);
+		super(x, y, simpleGraphic);
 		
 		setDefaults();
 	}
 	
 	function setDefaults():Void {
 		
-		components = [];
-		
+		components = new ComponentList();
 	}
 	
-	override public function update():Void 
-	{
-		for (component in components)
-			component.preUpdate();
+	public function preUpdate():Void {
 		
-		super.update();
+		#if !FLX_NO_DEBUG
+		FlxBasic._ACTIVECOUNT++;
+		#end
 		
-		for (component in components)
-			component.update();
+		last.x = x;
+		last.y = y;
+		
+		if (moves) updateMotion();
+		
+		wasTouching = touching;
+		touching = FlxObject.NONE;
+		
+		components.preUpdateAll();
+	}
+	
+	override public function update():Void {
+		
+		if (!components.overridesUpdate) {
+			
+			animation.update();
+		}
+		
+		components.updateAll();
+	}
+	
+	public function postUpdate():Void {
+		
+		components.postUpdateAll();
 	}
 	
 	override public function draw():Void {
 		
-		for (component in components)
-			component.preDraw();
+		components.preDrawAll();
 		
-		super.draw();
+		if (!components.overridesDraw)
+		{
+			super.draw();
+		}
 		
-		for (component in components)
-			component.draw();
+		components.drawAll();
 	}
 	
 	override public function destroy():Void {
 		super.destroy();
 		
-		while(components.length > 0)
-			components.shift().destroy();
+		components.destroy();
 	}
 }

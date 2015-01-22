@@ -39,6 +39,7 @@
 	<!--haxelib name="openfl-html5" if="html" /-->
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons"/>
+	<haxelib name="actuate"/>
 	
 	
 	<!--In case you want to use the addons package-->

@@ -1,7 +1,10 @@
 package com.geokureli.krakel;
 
 //import flash.Lib;
+import com.geokureli.krakel.interfaces.IUpdate;
+import flixel.FlxBasic;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
@@ -24,6 +27,7 @@ class State extends FlxState {
 	var _fadeInMusic:Bool;
 	var _fadeOutMusic:Bool;
 	
+	var _special:Array<IUpdate>;
 	var _defaultLayerType:Class<FlxGroup>;
 	var _bg:FlxGroup;
 	var _mg:FlxGroup;
@@ -56,6 +60,7 @@ class State extends FlxState {
 	function setDefaults():Void {
 		
 		_defaultLayerType = FlxGroup;
+		_special = [];
 		
 		_fadeInColor = _fadeOutColor = FlxColor.BLACK;
 		_fadeInTime = _fadeOutTime = 0;
@@ -66,6 +71,61 @@ class State extends FlxState {
 	function addBG():Void { add(_bg = Type.createInstance(_defaultLayerType, [])); }
 	function addMG():Void { add(_mg = Type.createInstance(_defaultLayerType, [])); }
 	function addFG():Void { add(_fg = Type.createInstance(_defaultLayerType, [])); }
+	
+	// =============================================================================
+	//{ region							OVERRIDES
+	// =============================================================================
+	
+	override public function add(object:FlxBasic):FlxBasic {
+		
+		if (Std.is(object, IUpdate)) {
+			
+			_special.push(cast(object));
+		}
+		
+		return super.add(object);
+	}
+	
+	override public function remove(object:FlxBasic, splice:Bool = false):FlxBasic {
+		
+		if (Std.is(object, IUpdate)) {
+			
+			_special.remove(cast(object));
+		}
+		
+		return super.remove(object, splice);
+	}
+	
+	function preUpdate():Void {
+		
+		for (item in _special) {
+			
+			item.preUpdate();
+		}
+	}
+	
+	override public function update():Void {
+		preUpdate();
+		
+		super.update();
+		
+		postUpdate();
+	}
+	
+	function postUpdate():Void {
+		
+		for (item in _special) {
+			
+			item.postUpdate();
+		}
+	}
+	
+	//} endregion						OVERRIDES
+	// =============================================================================
+	
+	// =============================================================================
+	//{ region						INTRO / OUTRO
+	// =============================================================================
 	
 	function startMusic():Void {
 		
@@ -89,15 +149,12 @@ class State extends FlxState {
 	
 	function switchState(state:FlxState):Void {
 		
+		_nextState = state;
 		if (_fadeOutTime > 0) {
 			
-			_nextState = state;
 			startFadeOut();
 			
-		} else {
-			
-			FlxG.switchState(state);
-		}
+		} else onFadeOutComplete();
 	}
 	
 	function startFadeOut():Void {
@@ -112,10 +169,14 @@ class State extends FlxState {
 	
 	function onFadeOutComplete():Void {
 		
+		_music.stop();
 		_music.destroy();
 		
 		FlxG.switchState(_nextState);
 	}
+	
+	//} endregion						INTRO / OUTRO
+	// =============================================================================
 	
 	//override public function destroy():Void { super.destroy(); }
 	

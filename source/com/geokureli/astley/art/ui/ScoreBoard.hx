@@ -1,11 +1,14 @@
 package com.geokureli.astley.art.ui;
 
 import com.geokureli.astley.data.Prize;
+import com.geokureli.krakel.components.art.NineSliceScaler;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.Nest;
 import com.geokureli.krakel.utils.BitmapUtils;
 import flixel.FlxSprite;
-import lime.math.Rectangle;
+import flash.geom.Rectangle;
+import motion.Actuate;
+import motion.easing.Linear;
 
 /**
  * ...
@@ -13,13 +16,6 @@ import lime.math.Rectangle;
  */
 
 class ScoreBoard extends Nest {
-	
-	[Embed(source = "../../../../res/astley/graphics/board.png")] static private const BOARD_TEMPLATE:Class;
-	[Embed(source = "../../../../res/astley/graphics/text/txt_score.png")] static private const TXT_SCORE:Class;
-	[Embed(source = "../../../../res/astley/graphics/text/txt_best.png")] static private const TXT_BEST:Class;
-	[Embed(source = "../../../../res/astley/graphics/text/txt_medal.png")] static private const TXT_MEDAL:Class;
-	[Embed(source = "../../../../res/astley/graphics/text/txt_new.png")] static private const TXT_NEW:Class;
-	
 	
 	public var width:Int;
 	public var height:Int;
@@ -36,46 +32,46 @@ class ScoreBoard extends Nest {
 		this.width = width;
 		this.height = height;
 		
-		_score = 0;
-		_best = BestSave.best;
+		//_score = 0;
+		//_best = BestSave.best;
 		
 		// --- CREATE BACK BOARD
 		var board:FlxSprite = new FlxSprite();
 		board.makeGraphic(width, height, 0, true);
 		
-		BitmapUtils.apply9GridTo(
-			new BOARD_TEMPLATE().bitmapData,
-			board.pixels,
-			new Rectangle(5, 7, 1, 1)
+		board.pixels = NineSliceScaler.createBitmap(
+			AssetPaths.bitmapData("board"),
+			new Rectangle(5, 7, 1, 1),
+			width, height
 		);
-		board.pixels = board.pixels;// <-- redraw
+		
 		add(board);
 		
 		// --- TEXT
-		add(new FlxSprite(24, 12, TXT_MEDAL));
-		add(new FlxSprite(90, 12, TXT_SCORE));
+		add(new FlxSprite(24, 12, AssetPaths.text("txt_medal")));
+		add(new FlxSprite(90, 12, AssetPaths.text("txt_score")));
 		add(_scoreTxt = new ScoreText(90, 20));
-		_scoreTxt.align = FlxBitmapFont.ALIGN_RIGHT;
-		add(_new = new FlxSprite(94-19, 48-1, TXT_NEW));
-		add(new FlxSprite(94, 48, TXT_BEST));
+		//_scoreTxt.alignment = FlxBitmapFont.ALIGN_RIGHT;
+		add(_new = new FlxSprite(94-19, 48-1, AssetPaths.text("txt_new")));
+		add(new FlxSprite(94, 48, AssetPaths.text("txt_best")));
 		add(_bestTxt = new ScoreText(90, 56));
-		_bestTxt.align = FlxBitmapFont.ALIGN_RIGHT;
-		_bestTxt.text = _best.toString();
+		//_bestTxt.alignment = FlxBitmapFont.ALIGN_RIGHT;
+		_bestTxt.text = Std.string(best);
 		
 		// --- MEDAL
 		add(_medal = new FlxSprite(24, 32));
-		_medal.loadGraphic(AssetPaths.image("medals"); , true, false, 24);
-		_medal.addAnimation(Prize.NONE, [0]);
-		_medal.addAnimation(Prize.BRONZE, [1]);
-		_medal.addAnimation(Prize.SILVER, [2]);
-		_medal.addAnimation(Prize.GOLD, [3]);
-		_medal.addAnimation(Prize.PLATINUM, [4]);
+		_medal.loadGraphic(AssetPaths.image("medals"), true, 24);
+		_medal.animation.add(Prize.NONE, [0]);
+		_medal.animation.add(Prize.BRONZE, [1]);
+		_medal.animation.add(Prize.SILVER, [2]);
+		_medal.animation.add(Prize.GOLD, [3]);
+		_medal.animation.add(Prize.PLATINUM, [4]);
 	}
 	
 	public function setMedal(prize:String):Void {
 		
 		_new.visible = false;
-		_medal.play(prize);
+		_medal.animation.play(prize);
 	}
 	
 	public function setData(score:Int, callback:Void->Void):Void {
@@ -83,7 +79,8 @@ class ScoreBoard extends Nest {
 		
 		_scoreSetCallback = callback;
 		
-		//TweenMax.to(this, duration, { score:score, ease:Linear.easeNone, onComplete:onRollupComplete } ); 
+		Actuate.tween(this, duration, { score:score } )
+			.onComplete(onRollupComplete);
 	}
 	
 	function onRollupComplete():Void {
@@ -102,21 +99,24 @@ class ScoreBoard extends Nest {
 	}
 	
 	public var score(default, set):Int;
-	public function set_score(value:Int):Void {
+	public function set_score(value:Int):Int {
 		score = value;
 		
-		_scoreTxt.text = value.toString();
+		_scoreTxt.text = Std.string(value);
 		if (value > best) {
 			
 			best = value;
 			_new.visible = true;
 		}
+		return value;
 	}
 	
 	public var best(default, set):Int;
 	public function set_best(value:Int):Int {
-		_best = value;
+		best = value;
 		
 		_bestTxt.text = Std.string(value);
+		
+		return value;
 	}
 }
