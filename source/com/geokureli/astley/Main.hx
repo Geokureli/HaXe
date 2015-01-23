@@ -34,6 +34,7 @@ class Main extends Shell {
 	override function setDefaults():Void {
 		super.setDefaults();
 		
+		_frameRate = 30;
 		_scale = 2;
 		_introState = IntroState;
 		
