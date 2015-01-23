@@ -3,6 +3,7 @@ package com.geokureli.krakel.art;
 import com.geokureli.krakel.components.Component;
 import com.geokureli.krakel.components.ComponentList;
 import com.geokureli.krakel.components.IComponentHolder;
+import com.geokureli.krakel.interfaces.IPoint;
 import flixel.FlxBasic;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -12,7 +13,7 @@ import flixel.FlxSprite;
  * @author George
  */
 
-class Sprite extends FlxSprite implements IComponentHolder {
+class Sprite extends FlxSprite implements IComponentHolder implements IPoint {
 
 	public var components:ComponentList;
 	
