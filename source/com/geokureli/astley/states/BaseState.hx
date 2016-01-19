@@ -2,7 +2,7 @@ package com.geokureli.astley.states;
 
 import com.geokureli.astley.art.Cloud;
 import com.geokureli.astley.art.Grass;
-import com.geokureli.astley.art.Rick;
+import com.geokureli.astley.art.hero.Rick;
 import com.geokureli.astley.art.Shrub;
 import com.geokureli.astley.art.Tilemap;
 import com.geokureli.astley.data.LevelData;

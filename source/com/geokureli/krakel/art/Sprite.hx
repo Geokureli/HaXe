@@ -21,12 +21,15 @@ class Sprite extends FlxSprite implements IComponentHolder implements IPoint {
 		super(x, y, simpleGraphic);
 		
 		setDefaults();
+		addAnimations();
 	}
 	
 	function setDefaults():Void {
 		
 		components = new ComponentList();
 	}
+	
+	function addAnimations() { }
 	
 	public function preUpdate():Void {
 		

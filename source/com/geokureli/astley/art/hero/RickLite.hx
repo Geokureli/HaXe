@@ -1,4 +1,4 @@
-package com.geokureli.astley.art;
+package com.geokureli.astley.art.hero;
 
 import com.geokureli.krakel.art.Sprite;
 import com.geokureli.krakel.data.AssetPaths;
@@ -12,8 +12,10 @@ class RickLite extends Sprite {
 	
 	static public inline var WIDTH:Int = 16;
 	
-	public function new(x:Float = 0, y:Float = 0) {
-		super(x, y);
+	public function new(x:Float = 0, y:Float = 0) { super(x, y); }
+	
+	override function addAnimations() {
+		super.addAnimations();
 		
 		loadGraphic(
 			AssetPaths.image("rick"),
@@ -31,7 +33,10 @@ class RickLite extends Sprite {
 		
 		animation.add("idle", [0]);
 		animation.add("farting", fartFrames, 15, false);
-		animation.add("dead", [frames-1]);
+		animation.add("dead", [frames - 1]);
+		
+		width = 12;
+		height = 20;
 	}
 	
 }

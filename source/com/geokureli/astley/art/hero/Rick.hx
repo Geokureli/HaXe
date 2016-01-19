@@ -1,11 +1,13 @@
-package com.geokureli.astley.art;
+package com.geokureli.astley.art.hero;
 
 import com.geokureli.astley.data.Beat;
 import com.geokureli.astley.data.FartControl;
+import com.geokureli.astley.data.Recordings;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.utils.Random;
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.system.replay.FlxReplay;
 import flixel.util.FlxPoint;
 
 /**
@@ -34,20 +36,18 @@ class Rick extends RickLite {
 	public var playSounds:Bool;
 	public var resetPos(default, null):FlxPoint;
 	
-	//protected var _recorder:FlxReplay;
-	
+	var _recorder:FlxReplay;
 	var _input:FartControl;
 	var _recordSeed:Int;
 	
-	public function new(x:Float = 0, y:Float = 0) {
-		super(x, y);
+	public function new(x:Float = 0, y:Float = 0) { super(x, y); }
+	
+	override function setDefaults():Void {
+		super.setDefaults();
 		
-		//_recorder = new FlxReplay();
+		_recorder = new FlxReplay();
 		resetPos = new FlxPoint(x, y);
 		_input = new FartControl();
-		
-		width = 12;
-		height = 20;
 		
 		offset.x = 2;
 		offset.y = 6;
@@ -63,8 +63,8 @@ class Rick extends RickLite {
 	public function start():Void {
 		moves = true;
 		fart();
-		//if (_recorder != null)
-			//_recorder.create(_recordSeed++);
+		if (_recorder != null)
+			_recorder.create(_recordSeed++);
 	}
 	
 	override public function preUpdate():Void {
@@ -89,8 +89,8 @@ class Rick extends RickLite {
 		
 		if (!alive) return;
 		
-		//if (_recorder != null)
-			//_recorder.recordFrame();
+		if (_recorder != null)
+			_recorder.recordFrame();
 			
 		// --- FARTING
 		if (canFart && _input.isButtonDown)
@@ -122,7 +122,7 @@ class Rick extends RickLite {
 		
 		alive = false;
 		animation.play("dead");
-		//~endRecording();
+		endRecording();
 	}
 	
 	public function playWinAnim(targetX:Float, targetY:Float, callback:Void->Void):Void {
@@ -133,7 +133,7 @@ class Rick extends RickLite {
 		velocity.y = 0;
 		canFart = false;
 		
-		//~endRecording(true);
+		endRecording(true);
 		
 		var speed:Int = 10;
 		var duration:Float = (y - targetY) / speed;
@@ -151,15 +151,15 @@ class Rick extends RickLite {
 		return super.set_moves(value);
 	}
 	
-	//~public function endRecording(isDestroy:Bool = false):Void {
-		//
-		//if (_recorder != null)
-			//Recordings.addRecording(_recorder);
-		//
-		//if (isDestroy) {
-			//
-			//_recorder.destroy();
-			//_recorder = null;
-		//}
-	//}
+	public function endRecording(isDestroy:Bool = false):Void {
+		
+		if (_recorder != null)
+			Recordings.addRecording(_recorder);
+		
+		if (isDestroy) {
+			
+			_recorder.destroy();
+			_recorder = null;
+		}
+	}
 }

@@ -1,4 +1,5 @@
 package com.geokureli.krakel.components;
+import com.geokureli.krakel.components.data.InputComponent;
 
 /**
  * ...
@@ -9,6 +10,10 @@ class ComponentList {
 	
 	public var overridesUpdate(get, null):Bool;
 	public var overridesDraw(get, null):Bool;
+	
+	// --- COMMON COMPONENTS
+	public var input(get, never):InputComponent;
+	//public function replay(get, never):ReplayComponent;
 	
 	var _list:Array<Component>;
 	var _numUpdateOverrides:Int = 0;
@@ -86,4 +91,6 @@ class ComponentList {
 	
 	public function get_overridesUpdate():Bool { return _numUpdateOverrides > 0; }
 	public function get_overridesDraw():Bool { return _numDrawOverrides > 0; }
+	public function get_input():InputComponent { return cast(_byKey["input"]); }
+	//public function get_input():ReplayComponent { return _byKey["replay"]; }
 }

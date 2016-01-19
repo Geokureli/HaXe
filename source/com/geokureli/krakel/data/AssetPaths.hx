@@ -222,6 +222,11 @@ class AssetPaths {
 		return cast(new Sound().loadEmbedded(sound(name), looped));
 	}
 	
+	static public function getMusic(name:String, looped:Bool = true):Sound {
+		
+		return cast(new Sound().loadEmbedded(music(name), looped));
+	}
+	
 	static public function get_MUSIC_PATH():String { return instance.musicFolder; }
 	static public function get_SOUND_PATH():String { return instance.soundFolder; }
 	static public function get_IMAGE_PATH():String { return instance.imageFolder; }

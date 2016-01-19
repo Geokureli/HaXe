@@ -10,6 +10,7 @@ class Random
 {
 
 	static public function between(low:Float, high:Float = 0, round:Float = 1):Float {
+		
 		if (low > high){
 			
 			return between(high, low, round);
@@ -20,6 +21,15 @@ class Random
 			return low + Std.int(Math.random() * (high - low) / round) * round;
 		}
 		return low + Math.random() * (high - low);
+	}
+	
+	static public function under(num:Float, round:Float = 1):Float {
+		
+		if (round > 0) {
+			
+			return Std.int(Math.random() * num / round) * round;
+		}
+		return Math.random() * num;
 	}
 	
 	static public function ibetween(low:Int, high:Int = 0):Int {

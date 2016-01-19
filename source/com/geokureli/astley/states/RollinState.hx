@@ -2,7 +2,7 @@ package com.geokureli.astley.states;
 
 import com.geokureli.astley.art.Tilemap;
 import com.geokureli.astley.art.ui.DeathUI;
-import com.geokureli.astley.art.Rick;
+import com.geokureli.astley.art.hero.Rick;
 import com.geokureli.astley.art.ui.ScoreText;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.krakel.audio.Sound;
@@ -48,6 +48,8 @@ class RollinState extends BaseState {
 		FartControl.enabled = false;
 		
 		_fadeInTime = 0.25;
+		_fadeOutTime = 2;
+		_fadeOutColor = 0xffff0000;
 		//FlxG.visualDebug = true;
 		_songReversed = AssetPaths.getSound("nggyu_reversed_1_5x");
 		
@@ -299,6 +301,8 @@ class RollinState extends BaseState {
 	
 	function showEndScreen():Void {
 		_deathUI.killTimer();
+		
+		switchState(new ReplayState());
 	}
 	
 	function set__score(value:Int):Int {

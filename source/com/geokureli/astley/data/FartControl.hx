@@ -1,14 +1,14 @@
 package com.geokureli.astley.data;
 
-import flixel.FlxG;
+import com.geokureli.krakel.components.Plugin;
 import flash.events.KeyboardEvent;
-import flixel.plugin.FlxPlugin;
+import flixel.FlxG;
 
 /**
  * ...
  * @author George
  */
-class FartControl extends FlxPlugin {
+class FartControl extends Plugin {
 	
 	static public var down(get, never):Bool;
 	static public var enabled:Bool = true;
@@ -21,45 +21,27 @@ class FartControl extends FlxPlugin {
 	var _antiPress:Bool;
 	
 	public var isButtonDown:Bool;
-	public var mouseJustPressed:Bool;
-	
 	
 	static public function create():Void {
 		
 		_instance = new FartControl();
 	}
 	
-	public function new () {
-		super();
+	public function new () { super(); }
+	
+	override function setDefaults():Void {
+		super.setDefaults();
 		
 		_keysDown = [];
 		isButtonDown = false;
 		_antiPress = true;
-		
-		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler);
-		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, keyHandler);
-		
-		FlxG.plugins.add(this);
-	}
-	
-	function keyHandler(e:KeyboardEvent):Void {
-		
-		if (e.type == KeyboardEvent.KEY_UP) {
-			
-			_keysDown.remove(e.keyCode);
-			
-		} else if (_keysDown.indexOf(e.keyCode) == -1) {
-			
-			_keysDown.push(e.keyCode);
-		}
 	}
 	
 	override public function update():Void {
 		
 		isButtonDown = false;
-		mouseJustPressed = FlxG.mouse.justPressed;
 		
-		if (_keysDown.length == 0 && !FlxG.mouse.pressed) {
+		if (!FlxG.keys.justPressed.ANY && !FlxG.mouse.pressed) {
 			
 			_antiPress = true;
 			

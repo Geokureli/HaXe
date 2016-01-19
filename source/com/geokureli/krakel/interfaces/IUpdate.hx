@@ -10,4 +10,5 @@ interface IUpdate {
 	function update():Void;
 	function postUpdate():Void;
 	
+	function destroy():Void;
 }

@@ -159,11 +159,5 @@ class DeathUI extends Nest {
 		
 		_gongSnd.play();
 		onTimeOut();
-		//FlxG.fade(0xffff0000, 2, onFadeOut, true);
-	}
-	
-	function onFadeOut():Void {
-		
-		//FlxG.switchState(new ReplayState());
 	}
 }

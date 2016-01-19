@@ -7,7 +7,8 @@ import com.geokureli.krakel.Shell;
 //import com.geokureli.testbed.misc.TestText;
 //import com.geokureli.testbed.misc.TestLoopingTilemap;
 //import com.geokureli.testbed.misc.Test9Slice;
-import com.geokureli.testbed.misc.TestCast;
+//import com.geokureli.testbed.misc.TestCast;
+import com.geokureli.testbed.misc.Weigh12Islanders;
 
 /**
  * ...
@@ -20,7 +21,7 @@ class Main extends Shell {
 	override function setDefaults():Void {
 		super.setDefaults();
 		
-		_introState = TestCast;
+		_introState = Weigh12Islanders;
 		
 		AssetPaths.quickInit("assets/test");
 	}

@@ -169,8 +169,11 @@ class State extends FlxState {
 	
 	function onFadeOutComplete():Void {
 		
-		_music.stop();
-		_music.destroy();
+		if (_music != null)
+		{
+			_music.stop();
+			_music.destroy();
+		}
 		
 		FlxG.switchState(_nextState);
 	}
@@ -178,7 +181,28 @@ class State extends FlxState {
 	//} endregion						INTRO / OUTRO
 	// =============================================================================
 	
-	//override public function destroy():Void { super.destroy(); }
+	override public function destroy():Void {
+		super.destroy();
+		
+		while (_special.length > 0)
+		{
+			_special.pop();
+		}
+		
+		_defaultLayerType = null;
+		_bg = null;
+		_mg = null;
+		_fg = null;
+		
+		_nextState = null;
+		
+		_musicName = null;
+		if (_music != null) {
+			
+			_music.destroy();
+		}
+		_music = null;
+	}
 	
 	//override public function update():Void { super.update(); }
 }
