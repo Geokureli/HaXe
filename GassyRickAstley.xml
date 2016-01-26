@@ -40,6 +40,7 @@
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons"/>
 	<haxelib name="actuate"/>
+	<haxelib name="polygonal-printf"/>
 	
 	
 	<!--In case you want to use the addons package-->
@@ -84,6 +85,8 @@
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 	
 	<!--------------------------------CUSTOM---------------------------------------->
+	
+	<!--haxeflag name="-D haxeJSON" /-->
 	
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 </project>
