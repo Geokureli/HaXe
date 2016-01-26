@@ -60,7 +60,11 @@ class AssetPaths {
 		imageFolder = "images";
 		textFolder = imageFolder + "/text";
 		
-		defaultSoundExt = ".mp3";
+	#if flash
+		defaultSoundExt = ".wav";
+	#else
+		defaultSoundExt = ".ogg";
+	#end
 		defaultImageExt = ".png";
 		defaultDataExt = ".json";
 		
@@ -78,22 +82,23 @@ class AssetPaths {
 		
 		musicFolder = basePath + musicFolder + '/';
 		soundFolder = basePath + soundFolder + '/';
-		dataFolder = basePath + dataFolder + '/';
+		dataFolder  = basePath + dataFolder  + '/';
 		imageFolder = basePath + imageFolder + '/';
-		textFolder = basePath + textFolder + '/';
+		textFolder  = basePath + textFolder  + '/';
 		
-		fileExt = new Map<String, String>();
-		fileExt["png"]  = imageFolder;
-		fileExt["jpg"]  = imageFolder;
-		fileExt["gif"]  = imageFolder;
-		fileExt["bmp"]  = imageFolder; 
-		fileExt["jpeg"] = imageFolder;
-		fileExt["xml"]  = dataFolder;
-		fileExt["json"] = dataFolder;
-		fileExt["csv"]  = dataFolder;
-		fileExt["wav"]  = soundFolder;
-		fileExt["mp3"]  = soundFolder;
-		fileExt["ogg"]  = soundFolder;
+		fileExt = [
+			"png"  => imageFolder,
+			"jpg"  => imageFolder,
+			"gif"  => imageFolder,
+			"bmp"  => imageFolder, 
+			"jpeg" => imageFolder,
+			"xml"  => dataFolder ,
+			"json" => dataFolder ,
+			"csv"  => dataFolder ,
+			"wav"  => soundFolder,
+			"mp3"  => soundFolder,
+			"ogg"  => soundFolder
+		];
 	}
 	
 	function addExtHandler(extension:String, path:String):Void {
@@ -140,8 +145,8 @@ class AssetPaths {
 	static public function music(name:String):String { return MUSIC_PATH + parse(name) + instance.defaultSoundExt; }
 	static public function sound(name:String):String { return SOUND_PATH + parse(name) + instance.defaultSoundExt; }
 	static public function image(name:String):String { return IMAGE_PATH + parse(name) + instance.defaultImageExt; }
-	static public function text(name:String):String  { return TEXT_PATH  + parse(name) + instance.defaultImageExt; }
-	static public function data(name:String):String  { return DATA_PATH  + parse(name) + instance.defaultDataExt;  }
+	static public function text (name:String):String { return TEXT_PATH  + parse(name) + instance.defaultImageExt; }
+	static public function data (name:String):String { return DATA_PATH  + parse(name) + instance.defaultDataExt ; }
 	
 	static public function bitmapData(name:String):BitmapData { return Assets.getBitmapData(image(name), false); }
 	static public function bitmapFont(name:String, ?letters:String, width:Int = 0, height:Int = 0):PxBitmapFont {
@@ -186,8 +191,8 @@ class AssetPaths {
 		xmlData.addChild(chars);
     
 		var char:Xml;
-		for (i in 0 ... letters.length)
-		{
+		for (i in 0 ... letters.length) {
+			
 			char = Xml.createElement("char");
 			char.set('id', Std.string(letters.charCodeAt(i)));
 			char.set('x', Std.string(x));
