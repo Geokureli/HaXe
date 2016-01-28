@@ -9,7 +9,13 @@ typedef ParserListItem = { regex:EReg, parser:StringParser };
 
 class TilemapData extends DataHolder{
 	
-	static var STRING_PARSERS:Array<ParserListItem>;
+	static var LEGEND_MAP_REGX(default, never):EReg = ~/^\s*\{\s*"map"\s*:\s*"((?:[^"](?:\r|\n)?)+)"\s*,\s*"legend"\s*:\s*"([^"]+)"\s*\}\s*$/;
+	
+	static var STRING_PARSERS:Array<ParserListItem> = [
+		// --- ORDER IS IMPORTANT!
+		{ regex:~/^(?:\d+ *(?:,|$) *(?:\r|\n)?)+/, parser:flxParser },
+		{ regex:LEGEND_MAP_REGX, parser:gridCharParser }
+	];
 	
 	public var columns(default, null):Int;
 	public var rows(default, null):Int;
@@ -17,48 +23,39 @@ class TilemapData extends DataHolder{
 	
 	public function new(data:Dynamic) { super(data); }
 	
-	override function setDefaults():Void {
-		super.setDefaults();
+	override public function parseData():Void {
+		//super.parseData();
 		
-		if (STRING_PARSERS == null) {
+		if (Reflect.hasField(_rawData, "map")) {
 			
-			initParsers();
-		}
-	}
-	
-	override public function parseData(data:Dynamic):Void {
-		super.parseData(data);
-		
-		if (Reflect.hasField(data, "map")) {
-			
-			if (Reflect.hasField(data, "legend")) {
+			if (Reflect.hasField(_rawData, "legend")) {
 				
-				data = '{"map":"' + data.map + '","legend":"' + data.legend + '"}';
+				_rawData = '{"map":"' + _rawData.map + '","legend":"' + _rawData.legend + '"}';
 			}
 			else {
 				
-				data = data.map;
+				_rawData = _rawData.map;
 			}
 		}
 		
-		if (Std.is(data, String)) {
+		if (Std.is(_rawData, String)) {
 			
 			for (item in STRING_PARSERS) {
 				
-				if (item.regex.match(data)) {
+				if (item.regex.match(_rawData)) {
 					
-					this.data = item.parser(cast data);
+					this.data = item.parser(cast _rawData);
 					break;
 				}
 			}
-		} else if (Std.is(data, Array)) {
+		} else if (Std.is(_rawData, Array)) {
 			
-			this.data = data;
+			this.data = _rawData;
 		}
 		
 		
 		columns = this.data[0].length;
-		rows = this.data.length;
+		rows    = this.data.length;
 	}
 	
 	public function append(rows:Array<Array<Int>>) {
@@ -98,17 +95,6 @@ class TilemapData extends DataHolder{
 		}
 		
 		return new TilemapData(data.copy());
-	}
-	
-	static var LEGEND_MAP_REGX(default, never):EReg = ~/^\s*\{\s*"map"\s*:\s*"((?:[^"](?:\r|\n)?)+)"\s*,\s*"legend"\s*:\s*"([^"]+)"\s*\}\s*$/;
-	
-	static function initParsers():Void {
-		
-		STRING_PARSERS = [
-			// --- ORDER IS IMPORTANT!
-			{ regex:~/^(?:\d+ *(?:,|$) *(?:\r|\n)?)+/, parser:flxParser },
-			{ regex:LEGEND_MAP_REGX, parser:gridCharParser }
-		];
 	}
 	
 	static function flxParser(strData:String):Array<Array<Int>> {

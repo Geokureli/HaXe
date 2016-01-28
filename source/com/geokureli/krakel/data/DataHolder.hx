@@ -4,7 +4,7 @@ package com.geokureli.krakel.data;
  * ...
  * @author George
  */
-class DataHolder implements IDataHolder{
+class DataHolder implements IDataHolder {
 	
 	var _rawData:Dynamic;
 	var _autoParse:Bool;
@@ -15,7 +15,7 @@ class DataHolder implements IDataHolder{
 		
 		setDefaults();
 		
-		if (_autoParse) parseData(data);
+		if (_autoParse) parseData();
 	}
 	
 	function setDefaults():Void {
@@ -23,5 +23,7 @@ class DataHolder implements IDataHolder{
 		_autoParse = true;
 	}
 	
-	public function parseData(data:Dynamic):Void { _rawData = data; }
+	function parseData():Void { mergeData(_rawData); }
+	
+	public function mergeData(data:Dynamic):Void { }
 }
