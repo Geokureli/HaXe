@@ -24,7 +24,7 @@ import motion.easing.Linear;
  */
 class Main extends Shell {
 	
-	//public static function main():Void
+	//static public function main():Void
 	//{
 		//Lib.current.addChild(new Main());
 	//}
@@ -38,7 +38,6 @@ class Main extends Shell {
 		_scale = 2;
 		_introState = IntroState;
 		
-		AssetPaths.quickInit("assets/astley");
 		Actuate.defaultEase = Linear.easeNone;
 	}
 }

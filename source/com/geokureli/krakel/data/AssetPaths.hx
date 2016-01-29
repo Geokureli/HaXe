@@ -14,40 +14,33 @@ class AssetPaths {
 	static public var MUSIC_PATH(get, never):String;
 	static public var SOUND_PATH(get, never):String;
 	static public var IMAGE_PATH(get, never):String;
-	static public var TEXT_PATH(get, never):String;
-	static public var DATA_PATH(get, never):String;
+	static public var TEXT_PATH (get, never):String;
+	static public var DATA_PATH (get, never):String;
 	
 	static var EXT_REGX(default, never):EReg = ~/(?<=\.)[^.]+$/;
-	static var instance(default, null):AssetPaths;
+	static var instance(default, null):AssetPaths = new AssetPaths();
 	
 	var basePath:String;
 	
 	var musicFolder:String;
 	var soundFolder:String;
-	var dataFolder:String;
 	var imageFolder:String;
-	var textFolder:String;
+	var dataFolder :String;
+	var textFolder :String;
 	
 	var defaultSoundExt:String;
 	var defaultImageExt:String;
-	var defaultDataExt:String;
+	var defaultDataExt :String;
 	
 	var varMap:Map <String, String>;
 	
 	var fileExt(default, null):Map<String, String>;
 	
-	public function new(?basePath:String):Void {
+	function new():Void {
 		
 		setDefaults();
 		
-		if (basePath != null) {
-			
-			this.basePath = basePath;
-		}
-		
 		init();
-		
-		instance = this;
 	}
 	
 	function setDefaults():Void {
@@ -56,12 +49,12 @@ class AssetPaths {
 		
 		musicFolder = "music";
 		soundFolder = "sounds";
-		dataFolder = "data";
 		imageFolder = "images";
-		textFolder = imageFolder + "/text";
+		dataFolder  = "data";
+		textFolder  = imageFolder + "/text";
 		
 	#if flash
-		defaultSoundExt = ".wav";
+		defaultSoundExt = ".mp3";
 	#else
 		defaultSoundExt = ".ogg";
 	#end
@@ -74,11 +67,6 @@ class AssetPaths {
 	}
 	
 	function init():Void {
-		
-		if (basePath.charAt(basePath.length - 1) != '/') {
-			
-			basePath += '/';
-		}
 		
 		musicFolder = basePath + musicFolder + '/';
 		soundFolder = basePath + soundFolder + '/';
@@ -105,8 +93,6 @@ class AssetPaths {
 		
 		fileExt[extension] = path;
 	}
-	
-	static public function quickInit(assetsPath:String):Void { new AssetPaths(assetsPath); }
 	
 	static public function auto(fileName:String):String {
 		
@@ -238,15 +224,3 @@ class AssetPaths {
 	static public function get_TEXT_PATH():String  { return instance.textFolder; }
 	static public function get_DATA_PATH():String  { return instance.dataFolder; }
 }
-
-//@:build(flixel.system.FlxAssets.buildFileReferences("assets/astley/music", true))
-//class MusicPaths {  }
-
-//@:build(flixel.system.FlxAssets.buildFileReferences("assets/astley/sounds", true))
-//class SoundPaths {  }
-
-//@:build(flixel.system.FlxAssets.buildFileReferences("assets/astley/data", true))
-//class DataPaths {  }
-
-//@:build(flixel.system.FlxAssets.buildFileReferences("assets/astley/images", true))
-//class ImagePaths {  }
