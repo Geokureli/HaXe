@@ -19,11 +19,18 @@ class TestAny extends State {
 		
 		//var map = [ for (key in [1,2,3,4,5,6,7]) key => "default" ];
 		
+		trace(new Thing().foobar());
+		
 		var thing:Thing = Deserializer.instance.create(
 			{
 				"class":"com.geokureli.testbed.misc.Thing", 
-				foo: { "class":"flash.geom.Point", x:5 },
-				bar: 10
+				foo: [
+					{ "class":"flash.geom.Point", x:5 },
+					{ "class":"flash.geom.Point", x:5 },
+					{ "class":"flash.geom.Point", x:5 },
+					{ "class":"flash.geom.Point", x:5 }
+				]//,
+				//bar: 10// Throws error, unreflective
 			}
 		);
 		
@@ -33,12 +40,13 @@ class TestAny extends State {
 
 class Thing {
 	
-	var foo:Point;
+	var foo:Array<Point>;
+	@:unreflective 
 	var bar:Int;
 	
-	public function new() { }
+	public function new() { foo = []; }
 	
-	public function foobar():Float { return foo.x * bar; }
+	public function foobar():Float { return foo.length; }
 }
 
 class Derived extends Thing {

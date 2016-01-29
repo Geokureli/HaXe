@@ -147,9 +147,9 @@ class Deserializer {
 			
 			// --- CREATE INSTANCE FROM CLASSNAME
 			var type:Class<Dynamic> = Type.resolveClass(typeName);
-			if (type == null) return null;
+			if (type == null) return data;
 			
-			obj = Type.createEmptyInstance(type);
+			obj = Type.createInstance(type, []);
 			
 			//Todo: Enums
 		}
@@ -170,15 +170,55 @@ class Deserializer {
 	public function setFields(target:Dynamic, source:Dynamic, fields:Array<String>):Void {
 		
 		var value:Dynamic;
+		var newValue:Dynamic;
+		var childTarget:Dynamic;
 		for (field in fields) {
 			
 			value = Reflect.field(source, field);
 			if (Reflect.isObject(value)) {
 				
-				value = create(value);
+				newValue = create(value);
+				
+				// --- YOU HAVE NO CLASS
+				if (newValue == value) {
+					
+					childTarget = Reflect.field(target, field);
+					
+					if (isIterable(childTarget)) {
+						
+						// --- ADD TO EXISTING ARRAY
+						addToIterable(childTarget, newValue);
+						
+						continue;
+						
+					} else if (Reflect.isObject(childTarget)) {
+						
+						// --- DESERIALIZE EXISTING OBJECT
+						setAllFields(childTarget, newValue); 
+						
+						continue;
+					}
+				}
+				
+				value = newValue;
 			}
 			
 			Reflect.setField(target, field, value);
+		}
+	}
+	
+	function isIterable(obj:Dynamic):Bool
+	{
+		return Std.is(obj, Array);
+		//TODO: List/Vector/GenericStack?
+	}
+	
+	function addToIterable(target:Dynamic, source:Dynamic):Void {
+		
+		// --- ASSUMES ARRAY
+		while (source.length > 0) {
+			
+			target.push(Reflect.isObject(source[0]) ? create(source.shift()) : source.shift());
 		}
 	}
 	
@@ -189,11 +229,14 @@ class Deserializer {
 	 * @param	source  The source of the data, whose field names match the destination.
 	 * @param	exclude The name(s) of any field to omit.
 	 */
-	public function setAllFields(target:Dynamic, source:Dynamic, exclude:Array<String>):Void {
+	public function setAllFields(target:Dynamic, source:Dynamic, ?exclude:Array<String>):Void {
 		
 		var fields = Reflect.fields(source);
 		
-		while (exclude.length > 0) fields.remove(exclude.shift());
+		if (exclude != null) {
+			
+			while (exclude.length > 0) fields.remove(exclude.shift());
+		}
 		
 		setFields(target, source, fields);
 	}
