@@ -10,6 +10,7 @@ import com.geokureli.krakel.Game;
 import com.geokureli.krakel.Shell;
 import com.geokureli.krakel.State;
 import com.geokureli.astley.data.FartControl;
+import com.geokureli.testbed.misc.TestAny;
 import flash.Lib;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -37,6 +38,7 @@ class Main extends Shell {
 		_frameRate = 30;
 		_scale = 2;
 		_introState = IntroState;
+		//_introState = TestAny;
 		
 		Actuate.defaultEase = Linear.easeNone;
 	}
