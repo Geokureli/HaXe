@@ -1,10 +1,12 @@
 package com.geokureli.krakel.data.serial;
 
+import com.geokureli.krakel.data.serial.Deserializer.IteratorMap;
 import com.geokureli.krakel.data.serial.Deserializer.TypeHandler;
 import com.geokureli.krakel.data.serial.Deserializer.TypeMap;
 
 typedef TypeHandler = { constructor:Dynamic->Dynamic, populateFields:Bool };
 typedef TypeMap = Map<String, TypeHandler>;
+typedef IteratorMap = Map<String, Dynamic->Array<Dynamic>->Void>;
 
 /**
  * Used to take anonymous, untyped structures and either: 
@@ -67,11 +69,15 @@ class Deserializer {
 	
 	var _preParsers:Array<Dynamic->Dynamic>;
 	var _handlers:TypeMap;
+	var _iteratorAdders:IteratorMap;
 	
 	public function new() {
 		
-		_preParsers = new Array<Dynamic->Dynamic>();
-		_handlers  = new TypeMap();
+		_preParsers = [];
+		_handlers = new TypeMap();
+		_iteratorAdders = new IteratorMap();
+		
+		addDefaultIteratorHandlers();
 	}
 	
 	/**
@@ -82,9 +88,9 @@ class Deserializer {
 	 * @param	constructor     The function that creates an object given the data in recieves.
 	 * @param	populateFields  If true, the Deserializer will call setAllFields on the created object.
 	 */
-	public function addHandler(classType:String, constructor:Dynamic->Dynamic, populateFields:Bool = true):Void {
+	public function addHandler(classKey:String, constructor:Dynamic->Dynamic, populateFields:Bool = true):Void {
 		
-		_handlers[classType] = { constructor:constructor, populateFields:populateFields };
+		_handlers[classKey] = { constructor:constructor, populateFields:populateFields };
 	}
 	
 	/**
@@ -101,7 +107,6 @@ class Deserializer {
 		if (parser == null || _preParsers.indexOf(parser) != -1) return false;
 		
 		_preParsers.push(parser);
-		
 		return true;
 	}
 	
@@ -115,6 +120,46 @@ class Deserializer {
 		
 		return _preParsers.remove(parser);
 	}
+	
+	// =============================================================================
+	//{ region						ITERATOR HANDLERS
+	// =============================================================================
+	
+	inline function addDefaultIteratorHandlers() {
+		
+		addIteratorHandler(List,  addToList);
+	}
+	
+	function addToList(target:List<Dynamic>, source:Array<Dynamic>):Void {
+		
+		while (source.length > 0) {
+			
+			target.push(Reflect.isObject(source[0]) ? create(source.shift()) : source.shift());
+		}
+	}
+	
+	public function addIteratorHandler(type:Class<Dynamic>, handler:Dynamic->Dynamic->Void):Bool
+	{
+		var className = Type.getClassName(type);
+		if (className == null) return false;
+		
+		_iteratorAdders[className] = handler;
+		return true;
+	}
+	
+	/**
+	 * Removes the target handler, if it exists.
+	 * 
+	 * @param	className  A function.
+	 * @return  True, if the className existed in the handlers keys.
+	 */
+	public function removeIteratorHandler(className:String):Bool {
+		
+		return _iteratorAdders.remove(className);
+	}
+	
+	//} endregion					ITERATOR HANDLERS	
+	// =============================================================================
 	
 	/**
 	 * Creates an instance based on the 'class' property of the data, and uses the remaining 
@@ -172,6 +217,7 @@ class Deserializer {
 		var value:Dynamic;
 		var newValue:Dynamic;
 		var childTarget:Dynamic;
+		var childClassName:String;
 		for (field in fields) {
 			
 			value = Reflect.field(source, field);
@@ -183,11 +229,12 @@ class Deserializer {
 				if (newValue == value) {
 					
 					childTarget = Reflect.field(target, field);
+					childClassName = Type.getClassName(Type.getClass(childTarget));
 					
-					if (isIterable(childTarget)) {
+					if (_iteratorAdders.exists(childClassName)) {
 						
-						// --- ADD TO EXISTING ARRAY
-						addToIterable(childTarget, newValue);
+						// --- ADD TO EXISTING ITERATABLE ITEM
+						_iteratorAdders[childClassName](childTarget, newValue);
 						
 						continue;
 						
@@ -204,21 +251,6 @@ class Deserializer {
 			}
 			
 			Reflect.setField(target, field, value);
-		}
-	}
-	
-	function isIterable(obj:Dynamic):Bool
-	{
-		return Std.is(obj, Array);
-		//TODO: List/Vector/GenericStack?
-	}
-	
-	function addToIterable(target:Dynamic, source:Dynamic):Void {
-		
-		// --- ASSUMES ARRAY
-		while (source.length > 0) {
-			
-			target.push(Reflect.isObject(source[0]) ? create(source.shift()) : source.shift());
 		}
 	}
 	
