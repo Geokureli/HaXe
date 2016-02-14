@@ -26,11 +26,11 @@ class TestAny extends State {
 				"class":"com.geokureli.testbed.misc.Thing", 
 				foo: [
 					{ "class":"flash.geom.Point", x:5 },
-					{ "class":"flash.geom.Point", x:5 },
-					{ "class":"flash.geom.Point", x:5 },
-					{ "class":"flash.geom.Point", x:5 }
-				]//,
-				//bar: 10// Throws error, unreflective
+					{ "class":"flash.geom.Point", x:4 },
+					{ "class":"flash.geom.Point", x:3 },
+					{ "class":"flash.geom.Point", x:2 }
+				],
+				bar: "10"// Throws error on C++, unreflective
 			}
 		);
 		
@@ -40,13 +40,13 @@ class TestAny extends State {
 
 class Thing {
 	
-	var foo:Array<Point>;
-	@:unreflective 
+	var foo:List<Point>;
+	//@:unreflective
 	var bar:Int;
 	
-	public function new() { foo = []; }
+	public function new() { foo = new List<Point>(); }
 	
-	public function foobar():Float { return foo.length; }
+	public function foobar():Float { return foo.length + bar; }
 }
 
 class Derived extends Thing {
