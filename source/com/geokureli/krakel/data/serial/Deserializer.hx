@@ -228,7 +228,7 @@ class Deserializer {
 				// --- YOU HAVE NO CLASS
 				if (newValue == value) {
 					
-					childTarget = Reflect.field(target, field);
+					childTarget = Reflect.getProperty(target, field);
 					childClassName = Type.getClassName(Type.getClass(childTarget));
 					
 					if (_iteratorAdders.exists(childClassName)) {
@@ -250,7 +250,7 @@ class Deserializer {
 				value = newValue;
 			}
 			
-			Reflect.setField(target, field, value);
+			Reflect.setProperty(target, field, value);
 		}
 	}
 	
