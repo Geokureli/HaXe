@@ -1,12 +1,9 @@
 package com.geokureli.krakel.data.serial;
 
-import com.geokureli.krakel.data.serial.Deserializer.IteratorMap;
+import com.geokureli.krakel.data.serial.Deserializer.IterableAdderMap;
 import com.geokureli.krakel.data.serial.Deserializer.TypeHandler;
 import com.geokureli.krakel.data.serial.Deserializer.TypeMap;
-
-typedef TypeHandler = { constructor:Dynamic->Dynamic, populateFields:Bool };
-typedef TypeMap = Map<String, TypeHandler>;
-typedef IteratorMap = Map<String, Dynamic->Array<Dynamic>->Void>;
+import haxe.ds.Either;
 
 /**
  * Used to take anonymous, untyped structures and either: 
@@ -59,6 +56,11 @@ typedef IteratorMap = Map<String, Dynamic->Array<Dynamic>->Void>;
  * 
  * Note: I will likely change the param 'class' to something like 'className' or something.
  */
+
+typedef TypeHandler = { constructor:Dynamic->Dynamic, populateFields:Bool };
+typedef TypeMap = Map<String, TypeHandler>;
+typedef IterableAdderMap = ClassMap<Class<Dynamic>, Dynamic->Dynamic->Void>;
+
 class Deserializer {
 	
 	/** 
@@ -69,15 +71,15 @@ class Deserializer {
 	
 	var _preParsers:Array<Dynamic->Dynamic>;
 	var _handlers:TypeMap;
-	var _iteratorAdders:IteratorMap;
+	var _iterableAdders:IterableAdderMap;
 	
 	public function new() {
 		
 		_preParsers = [];
 		_handlers = new TypeMap();
-		_iteratorAdders = new IteratorMap();
+		_iterableAdders = new IterableAdderMap();
 		
-		addDefaultIteratorHandlers();
+		addDefaultIterablaHandlers();
 	}
 	
 	/**
@@ -125,26 +127,24 @@ class Deserializer {
 	//{ region						ITERATOR HANDLERS
 	// =============================================================================
 	
-	inline function addDefaultIteratorHandlers() {
+	inline function addDefaultIterablaHandlers() {
 		
-		addIteratorHandler(List,  addToList);
+		addIterableHandler(Array, addToArray);
+		addIterableHandler(List,  addToList);
 	}
 	
-	function addToList(target:List<Dynamic>, source:Array<Dynamic>):Void {
-		
-		while (source.length > 0) {
-			
-			target.push(Reflect.isObject(source[0]) ? create(source.shift()) : source.shift());
-		}
-	}
+	function addToArray(target:Array<Dynamic>, item:Dynamic):Void { target.push(item); }
+	function addToList (target:List<Dynamic> , item:Dynamic):Void { target.add (item); }
 	
-	public function addIteratorHandler(type:Class<Dynamic>, handler:Dynamic->Dynamic->Void):Bool
+	/**
+	 * Adds a handler for the given class (including derived classes) when elements need to be 
+	 * added to that type of iterable instance.
+	 * @param	type		The class or superclass Type
+	 * @param	handler		The function that adds the target item to the desired iterable.
+	 */
+	public function addIterableHandler(type:Class<Dynamic>, handler:Dynamic->Dynamic->Void):Void
 	{
-		var className = Type.getClassName(type);
-		if (className == null) return false;
-		
-		_iteratorAdders[className] = handler;
-		return true;
+		_iterableAdders.set(type, handler);
 	}
 	
 	/**
@@ -153,9 +153,9 @@ class Deserializer {
 	 * @param	className  A function.
 	 * @return  True, if the className existed in the handlers keys.
 	 */
-	public function removeIteratorHandler(className:String):Bool {
+	public function removeIterableHandler(type:Class<Dynamic>):Bool {
 		
-		return _iteratorAdders.remove(className);
+		return _iterableAdders.remove(type);
 	}
 	
 	//} endregion					ITERATOR HANDLERS	
@@ -168,7 +168,9 @@ class Deserializer {
 	 * @param	data  Anonymous data type, usually from JSON
 	 * @return  A newly created instance of the specified class with the specified properties
 	 */
-	public function create<T>(data:Dynamic):T {
+	public function create<T>(data:Dynamic):Null<T> {
+		
+		if (!Reflect.isObject(data)) return data;
 		
 		// --- PRE_PARSE
 		for (parser in _preParsers) data = parser(data);
@@ -180,8 +182,8 @@ class Deserializer {
 		var obj:Dynamic = null;
 		
 		var handler:TypeHandler = _handlers[typeName];
-		if (handler != null)
-		{
+		if (handler != null) {
+			
 			// --- CREATE INSTANCE FROM HANDLER
 			obj = handler.constructor(data);
 			
@@ -217,7 +219,6 @@ class Deserializer {
 		var value:Dynamic;
 		var newValue:Dynamic;
 		var childTarget:Dynamic;
-		var childClassName:String;
 		for (field in fields) {
 			
 			value = Reflect.field(source, field);
@@ -229,12 +230,12 @@ class Deserializer {
 				if (newValue == value) {
 					
 					childTarget = Reflect.getProperty(target, field);
-					childClassName = Type.getClassName(Type.getClass(childTarget));
 					
-					if (_iteratorAdders.exists(childClassName)) {
+					if (Std.is(newValue, Array) && _iterableAdders.existsFor(childTarget)) {
 						
-						// --- ADD TO EXISTING ITERATABLE ITEM
-						_iteratorAdders[childClassName](childTarget, newValue);
+						while (newValue.length > 0)
+							// --- ADD TO EXISTING ITERABLE ITEM
+							_iterableAdders.get(childTarget)(childTarget, create(newValue.shift()));
 						
 						continue;
 						
@@ -272,4 +273,81 @@ class Deserializer {
 		
 		setFields(target, source, fields);
 	}
+}
+
+/**
+ * This class fucking blows, and it's need is probably a bad sign
+ * 
+ * Maps classes to a certain value, checks superclasses as well.
+ */
+private class ClassMap<K:Class<Dynamic>, V> {
+	
+    var _keys  :Array<K>; // class
+    var _values:Array<V>; // value
+	
+    public inline function new():Void {
+		
+		_keys   = [];
+		_values = [];
+	}
+	
+    public inline function get(obj:Dynamic):Null<V> {
+		
+		var value:Dynamic = null;
+        for (i in 0 ... _keys.length) {
+			
+			if (Std.is(obj, _keys[i])) {
+				
+				value = _values[i];
+				break;
+			}
+		}
+		
+		return value;
+    }
+	
+    public inline function set(key:K, value:V):Void {
+		
+		if (existsFor(Type.createEmptyInstance(key))) {
+			
+			_keys.unshift(key);
+			_values.unshift(value);
+			
+		} else {
+			
+			_keys.push(key);
+			_values.push(value);
+		}
+    }
+	
+    public inline function exists(key:K):Bool {
+		
+        return _keys.indexOf(key) != -1;
+    }
+	
+    public inline function existsFor(obj:Dynamic):Bool {
+		
+		var found = false;
+        for (i in 0 ... _keys.length) {
+			
+			if (Std.is(obj, _keys[i])){ 
+				
+				found = true;
+				break;
+			}
+		}
+		
+		return found;
+    }
+	
+    public inline function remove(key:K):Bool {
+		
+    	var index = _keys.indexOf(key);
+		if (index == -1) {
+			
+			_keys.splice(index, 1);
+			_values.splice(index, 1);
+		}
+        return index != -1;
+    }
 }
