@@ -1,51 +1,53 @@
 {
-	"maps":{
-		"graphic":{
-			
-			"thanks"          : "images/text/txt_thanks.png"          ,
-			"links"           : "images/text/txt_links.png"           ,
-			"basedOn"         : "images/text/txt_based_on.png"        ,
-			"flappy"          : "images/text/txt_flappy.png"          ,
-			"bird"            : "images/text/txt_bird.png"            ,
-			"dan"             : "images/text/txt_dan.png"             ,
-			"nguyen"          : "images/text/txt_nguyen.png"          ,
-			"matthew"         : "images/text/txt_matthew.png"         ,
-			"harris"          : "images/text/txt_harris.png"          ,
-			"originalConcept" : "images/text/txt_original_concept.png",
-			"music"           : "images/text/txt_music.png"           ,
-			"rick"            : "images/text/txt_rick.png"            ,
-			"astley"          : "images/text/txt_astley.png"          ,
-			"bgTileArt"       : "images/text/txt_bg_tile_art.png"     ,
-			"nintendo"        : "images/text/txt_nintendo.png"        ,
-			"loadingScreen"   : "images/text/txt_loading_screen.png"  ,
-			"flixel"          : "images/text/txt_flixel.png"          ,
-			"characterArt"    : "images/text/txt_character_art.png"   ,
-			"theAlex"         : "images/text/txt_the_alex.png"        ,
-			"kurelic"         : "images/text/txt_kurelic.png"         ,
-			"george"          : "images/text/txt_george.png"          ,
-			"programming"     : "images/text/txt_programming.png"     ,
-			"fartSounds"      : "images/text/txt_fart_sounds.png"     ,
-			"joe"             : "images/text/txt_joe.png"             ,
-			"alleruzzo"       : "images/text/txt_alleruzzo.png"       ,
-			"togetherForever" : "images/text/txt_together_forever.png",
-			"nggyu"           : "images/text/txt_nggyu.png"           ,
-			"slippingAway"    : "images/text/txt_slipping_away.png"   ,
-			"dontSayGoodbye"  : "images/text/txt_dont_say_goodbye.png",
-			"writtenProduced" : "images/text/txt_written_produced.png",
-			"mike"            : "images/text/txt_mike.png"            ,
-			"stock"           : "images/text/txt_stock.png"           ,
-			"matt"            : "images/text/txt_matt.png"            ,
-			"aiken"           : "images/text/txt_aiken.png"           ,
-			"pete"            : "images/text/txt_pete.png"            ,
-			"waterman"        : "images/text/txt_waterman.png"        ,
-			"press"           : "images/text/press_any_key.png"       
+	"data":{
+		"lookups":{
+			"graphic":{
+				
+				"thanks"          : "images/text/txt_thanks.png"          ,
+				"links"           : "images/text/txt_links.png"           ,
+				"basedOn"         : "images/text/txt_based_on.png"        ,
+				"flappy"          : "images/text/txt_flappy.png"          ,
+				"bird"            : "images/text/txt_bird.png"            ,
+				"dan"             : "images/text/txt_dan.png"             ,
+				"nguyen"          : "images/text/txt_nguyen.png"          ,
+				"matthew"         : "images/text/txt_matthew.png"         ,
+				"harris"          : "images/text/txt_harris.png"          ,
+				"originalConcept" : "images/text/txt_original_concept.png",
+				"music"           : "images/text/txt_music.png"           ,
+				"rick"            : "images/text/txt_rick.png"            ,
+				"astley"          : "images/text/txt_astley.png"          ,
+				"bgTileArt"       : "images/text/txt_bg_tile_art.png"     ,
+				"nintendo"        : "images/text/txt_nintendo.png"        ,
+				"loadingScreen"   : "images/text/txt_loading_screen.png"  ,
+				"flixel"          : "images/text/txt_flixel.png"          ,
+				"characterArt"    : "images/text/txt_character_art.png"   ,
+				"theAlex"         : "images/text/txt_the_alex.png"        ,
+				"kurelic"         : "images/text/txt_kurelic.png"         ,
+				"george"          : "images/text/txt_george.png"          ,
+				"programming"     : "images/text/txt_programming.png"     ,
+				"fartSounds"      : "images/text/txt_fart_sounds.png"     ,
+				"joe"             : "images/text/txt_joe.png"             ,
+				"alleruzzo"       : "images/text/txt_alleruzzo.png"       ,
+				"togetherForever" : "images/text/txt_together_forever.png",
+				"nggyu"           : "images/text/txt_nggyu.png"           ,
+				"slippingAway"    : "images/text/txt_slipping_away.png"   ,
+				"dontSayGoodbye"  : "images/text/txt_dont_say_goodbye.png",
+				"writtenProduced" : "images/text/txt_written_produced.png",
+				"mike"            : "images/text/txt_mike.png"            ,
+				"stock"           : "images/text/txt_stock.png"           ,
+				"matt"            : "images/text/txt_matt.png"            ,
+				"aiken"           : "images/text/txt_aiken.png"           ,
+				"pete"            : "images/text/txt_pete.png"            ,
+				"waterman"        : "images/text/txt_waterman.png"        ,
+				"press"           : "images/text/press_any_key.png"       
+			}
 		}
 	},
 	"level": {
 		"class":"Credits",
 		"children" : [ 
 			{
-				"class":"CreditsLayer",
+				"class":"Group",
 				"name":"static",
 				"children": [
 					{ "class":"Sprite", "graphic":"SongButton", "x":54 , "y":232 },
@@ -98,7 +100,7 @@
 				]
 			},
 			{
-				"class":"layer",
+				"class":"CreditsLayer",
 				"name":"credits4",
 				"children": [
 					{ "class":"sprite", "graphicKey":"togetherForever", "x":17, "y":48  },
@@ -115,7 +117,7 @@
 				]
 			},
 			{
-				"class":"layer",
+				"class":"Layer",
 				"name":"end",
 				"children": [
 					{ "class":"sprite", "graphicKey":"press", "x":42, "y":45 }
