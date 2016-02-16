@@ -1,5 +1,6 @@
 package com.geokureli.testbed.misc;
 
+import com.geokureli.krakel.data.serial.DameReader;
 import com.geokureli.krakel.data.serial.Deserializer;
 import com.geokureli.krakel.State;
 import flash.geom.Point;
@@ -21,7 +22,7 @@ class TestAny extends State {
 		
 		trace(new Thing().foobar());
 		
-		var thing:Thing = Deserializer.instance.create(
+		var thing:Thing = new DameReader().create(
 			{
 				"class":"com.geokureli.testbed.misc.Thing", 
 				foo: [
@@ -40,16 +41,16 @@ class TestAny extends State {
 
 class Thing {
 	
-	var foo:List<Point>;
+	var foo:Derived;
 	//@:unreflective
 	var bar:Int;
 	
-	public function new() { foo = new List<Point>(); }
+	public function new() { foo = new Derived(); }
 	
 	public function foobar():Float { return foo.length + bar; }
 }
 
-class Derived extends Thing {
+class Derived extends List<Point> {
 	
 	public function new () { super(); }
 }
