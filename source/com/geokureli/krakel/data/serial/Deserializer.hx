@@ -1,6 +1,6 @@
 package com.geokureli.krakel.data.serial;
 
-import com.geokureli.krakel.data.serial.Deserializer.IterableAdderMap;
+import com.geokureli.krakel.data.serial.Deserializer.AdderMap;
 import com.geokureli.krakel.data.serial.Deserializer.TypeHandler;
 import com.geokureli.krakel.data.serial.Deserializer.TypeMap;
 import haxe.ds.Either;
@@ -59,7 +59,7 @@ import haxe.ds.Either;
 
 typedef TypeHandler = { constructor:Dynamic->Dynamic, populateFields:Bool };
 typedef TypeMap = Map<String, TypeHandler>;
-typedef IterableAdderMap = ClassMap<Class<Dynamic>, Dynamic->Dynamic->Void>;
+typedef AdderMap = SuperClassMap<Class<Dynamic>, Dynamic->Dynamic->Void>;
 
 class Deserializer {
 	
@@ -71,15 +71,15 @@ class Deserializer {
 	
 	var _preParsers:Array<Dynamic->Dynamic>;
 	var _handlers:TypeMap;
-	var _iterableAdders:IterableAdderMap;
+	var _adders:AdderMap;
 	
 	public function new() {
 		
 		_preParsers = [];
 		_handlers = new TypeMap();
-		_iterableAdders = new IterableAdderMap();
+		_adders = new AdderMap();
 		
-		addDefaultIterablaHandlers();
+		addDefaultAdders();
 	}
 	
 	/**
@@ -127,14 +127,20 @@ class Deserializer {
 	//{ region						ITERATOR HANDLERS
 	// =============================================================================
 	
-	inline function addDefaultIterablaHandlers() {
+	inline function addDefaultAdders() {
 		
-		addIterableHandler(Array, addToArray);
-		addIterableHandler(List,  addToList);
+		createAdder(Array, addToArray);
+		createAdder(List,  addToList);
 	}
 	
-	function addToArray(target:Array<Dynamic>, item:Dynamic):Void { target.push(item); }
-	function addToList (target:List<Dynamic> , item:Dynamic):Void { target.add (item); }
+	function addToArray(target:Array<Dynamic>, data:Array<Dynamic>):Void {
+		
+		while(data.length > 0) target.push(create(data.pop()));
+	}
+	function addToList (target:List <Dynamic>, data:Array<Dynamic>):Void {
+		
+		while(data.length > 0) target.add(create(data.pop()));
+	}
 	
 	/**
 	 * Adds a handler for the given class (including derived classes) when elements need to be 
@@ -142,9 +148,9 @@ class Deserializer {
 	 * @param	type		The class or superclass Type
 	 * @param	handler		The function that adds the target item to the desired iterable.
 	 */
-	public function addIterableHandler(type:Class<Dynamic>, handler:Dynamic->Dynamic->Void):Void
+	public function createAdder(type:Class<Dynamic>, handler:Dynamic->Dynamic->Void):Void
 	{
-		_iterableAdders.set(type, handler);
+		_adders.set(type, handler);
 	}
 	
 	/**
@@ -155,7 +161,7 @@ class Deserializer {
 	 */
 	public function removeIterableHandler(type:Class<Dynamic>):Bool {
 		
-		return _iterableAdders.remove(type);
+		return _adders.remove(type);
 	}
 	
 	//} endregion					ITERATOR HANDLERS	
@@ -231,16 +237,13 @@ class Deserializer {
 					
 					childTarget = Reflect.getProperty(target, field);
 					
-					if (Std.is(newValue, Array) && _iterableAdders.existsFor(childTarget)) {
-						
-						while (newValue.length > 0)
-							// --- ADD TO EXISTING ITERABLE ITEM
-							_iterableAdders.get(childTarget)(childTarget, create(newValue.shift()));
+					if (_adders.existsFor(childTarget)) {
+						// --- ADD TO EXISTING ITEM
+						_adders.get(childTarget)(childTarget, newValue);
 						
 						continue;
 						
 					} else if (Reflect.isObject(childTarget)) {
-						
 						// --- DESERIALIZE EXISTING OBJECT
 						setAllFields(childTarget, newValue); 
 						
@@ -280,7 +283,7 @@ class Deserializer {
  * 
  * Maps classes to a certain value, checks superclasses as well.
  */
-private class ClassMap<K:Class<Dynamic>, V> {
+private class SuperClassMap<K:Class<Dynamic>, V> {
 	
     var _keys  :Array<K>; // class
     var _values:Array<V>; // value

@@ -147,18 +147,18 @@ class DameReader extends Deserializer {
 	
 	inline function addIterableAdders() {
 		
-		addIterableHandler(FlxTypedGroup, addToFlxGroup);
-		addIterableHandler(ComponentList, addToComponentList);
+		createAdder(FlxTypedGroup, addToFlxGroup);
+		createAdder(ComponentList, addToComponentList);
 	}
 	
-	function addToFlxGroup(group:FlxTypedGroup<Dynamic>, item:FlxBasic):Void {
+	function addToFlxGroup(group:FlxTypedGroup<Dynamic>, children:Array<Dynamic>):Void {
 		
-		group.add(item);
+		while (children.length > 0) group.add(create(children.pop()));
 	}
 	
-	function addToComponentList(list:ComponentList, component:Component):Void {
+	function addToComponentList(list:ComponentList, components:Array<Dynamic>):Void {
 		
-		list.add(component);
+		while (components.length > 0) list.add(create(components.pop()));
 	}
 	
 	//} endregion						INIT LIST
