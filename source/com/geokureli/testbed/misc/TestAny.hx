@@ -1,5 +1,7 @@
 package com.geokureli.testbed.misc;
 
+import com.geokureli.krakel.components.ComponentList;
+import com.geokureli.krakel.components.Component;
 import com.geokureli.krakel.data.serial.DameReader;
 import com.geokureli.krakel.data.serial.Deserializer;
 import com.geokureli.krakel.State;
@@ -26,16 +28,14 @@ class TestAny extends State {
 			{
 				"class":"com.geokureli.testbed.misc.Thing", 
 				foo: [
-					{ "class":"flash.geom.Point", x:5 },
-					{ "class":"flash.geom.Point", x:4 },
-					{ "class":"flash.geom.Point", x:3 },
-					{ "class":"flash.geom.Point", x:2 }
+					{ "class":"com.geokureli.testbed.misc.MyComponent" },
+					{ "class":"com.geokureli.testbed.misc.YourComponent" },
 				],
 				bar: "10"// Throws error on C++, unreflective
 			}
 		);
 		
-		trace(thing.foobar());
+		trace(thing.foobar().get(MyComponent));
 	}
 }
 
@@ -47,10 +47,18 @@ class Thing {
 	
 	public function new() { foo = new Derived(); }
 	
-	public function foobar():Float { return foo.length + bar; }
+	public function foobar():Derived { return foo; }
 }
 
-class Derived extends List<Point> {
+class Derived extends ComponentList {
+	
+	public function new () { super(); }
+}
+class MyComponent extends Component {
+	
+	public function new () { super(); }
+}
+class YourComponent extends Component {
 	
 	public function new () { super(); }
 }
