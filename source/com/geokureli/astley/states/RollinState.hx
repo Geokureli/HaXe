@@ -17,6 +17,7 @@ import motion.actuators.GenericActuator;
 import motion.easing.Sine;
 import motion.MotionPath;
 import flash.Lib;
+
 /**
  * ...
  * @author George
@@ -138,7 +139,7 @@ class RollinState extends BaseState {
 				else if (_isGameOver && _deathUI.canRestart)
 					startResetPan();
 				else if (!_isGameOver)
-					onStart();
+					start();
 			}
 			
 			if (_hero.x > FlxG.camera.scroll.x && !_hero.isOnScreen(FlxG.camera))
@@ -158,8 +159,8 @@ class RollinState extends BaseState {
 		return FlxG.collide(_map, _hero);
 	}
 	
-	override function onStart():Void {
-		super.onStart();
+	override function start():Void {
+		super.start();
 		
 		_song.play(true);
 		_scoreTxt.visible = true;

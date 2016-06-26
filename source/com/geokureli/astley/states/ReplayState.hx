@@ -50,7 +50,7 @@ class ReplayState extends BaseState {
 		FartControl.enabled = false;
 		FartControl.replayMode = true;
 		
-		onStart();
+		start();
 	}
 	
 	override function setDefaults():Void {
@@ -114,8 +114,8 @@ class ReplayState extends BaseState {
 		//FlxG.worldBounds.width = leadGhost.x + leadGhost.width;
 	}
 	
-	override function onStart():Void {
-		super.onStart();
+	override function start():Void {
+		super.start();
 		
 		_songIntro.play();
 		_timerMusic.start(_songIntro.duration - BUFFER_TIME, playLoop);

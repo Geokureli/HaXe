@@ -86,7 +86,7 @@ class BaseState extends State {
 		);
 	}
 	
-	function onStart():Void { }
+	function start():Void { }
 	
 	override public function update():Void {
 		super.update();
