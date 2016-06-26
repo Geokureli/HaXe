@@ -1,4 +1,5 @@
 package com.geokureli.krakel.components;
+import ash.ClassMap;
 import com.geokureli.krakel.components.data.InputComponent;
 
 /**
@@ -11,35 +12,39 @@ class ComponentList {
 	public var overridesUpdate(get, null):Bool;
 	public var overridesDraw(get, null):Bool;
 	
-	// --- COMMON COMPONENTS
-	public var input(get, never):InputComponent;
-	//public function replay(get, never):ReplayComponent;
-	
-	var _list:Array<Component>;
-	var _numUpdateOverrides:Int = 0;
-	var _numDrawOverrides:Int = 0;
-	var _byKey:Map<String, Component>;
+	var _list              :Array<Component>;//TODO:use List
+	var _updateList        :Array<Component>;//TODO:use List
+	var _drawList          :Array<Component>;//TODO:use List
+	var _updateOverrideList:Array<Component>;//TODO:use List
+	var _drawOverrideList  :Array<Component>;//TODO:use List
+	var _byType:ClassMap<Class<Component>, Component>;
 	
 	public function new() { setDefaults(); }
 	
 	function setDefaults() {
 		
-		_list = [];
-		_byKey = new Map<String, Component>();
+		_list               = [];
+		_updateList         = [];
+		_drawList           = [];
+		_updateOverrideList = [];
+		_drawOverrideList   = [];
+		_byType = new ClassMap<Class<Component>, Component>();
 	}
 	
-	public function add(component:Component, ?key:String):Component {
+	public function add(component:Component):Component {
 		
 		_list.push(component);
 		component.init();
-		
-		if (component.overrideDraw) _numDrawOverrides++;
-		if (component.overrideUpdate) _numUpdateOverrides++;
-		
-		if (key != null) {
 			
-			_byKey[key] = component;
-		}
+		if (component._onParamsChange != null)
+			component._onParamsChange.add(updateLists);
+		
+		if (component.overrideDraw  ) _drawOverrideList  .push(component);
+		if (component.overrideUpdate) _updateOverrideList.push(component);
+		if (component.updates       ) _updateList        .push(component);
+		if (component.draws         ) _drawList          .push(component);
+		
+		_byType.set(Type.getClass(component), component);
 		
 		return component;
 	}
@@ -48,39 +53,68 @@ class ComponentList {
 		
 		if (_list.remove(component)) {
 			
-			if (component.overrideDraw) _numDrawOverrides--;
-			if (component.overrideUpdate) _numUpdateOverrides--;
+			if (component._onParamsChange != null)
+				component._onParamsChange.remove(updateLists);
+			
+			_drawOverrideList  .remove(component);
+			_updateOverrideList.remove(component);
+			_updateList        .remove(component);
+			_drawList          .remove(component);
 			
 			return component;
 		}
 		return null;
 	}
 	
-	//@:arrayAccess public inline function get(key:String):Component { return _byKey.get(key); }
+	function updateLists(component:Component):Void {
+		var contained:Bool;
+		
+		// --- overrideUpdate
+		contained = _updateOverrideList.indexOf(component) != -1;
+		if      (contained && !component.overrideUpdate) _updateOverrideList.remove(component);
+		else if (!contained && component.overrideUpdate) _updateOverrideList.push  (component);
+		
+		// --- overrideDraw
+		contained = _drawOverrideList.indexOf(component) != -1;
+		if      (contained && !component.overrideDraw) _drawOverrideList.remove(component);
+		else if (!contained && component.overrideDraw) _drawOverrideList.push  (component);
+		
+		// --- updates
+		contained = _updateList.indexOf(component) != -1;
+		if      (contained && !component.updates) _updateList.remove(component);
+		else if (!contained && component.updates) _updateList.push  (component);
+		
+		// --- draws
+		contained = _drawList.indexOf(component) != -1;
+		if      (contained && !component.draws) _drawList.remove(component);
+		else if (!contained && component.draws) _drawList.push  (component);
+	}
+	
+	public function get(T:Class<Component>):Component { return _byType.get(T); }
 
 	public function preUpdateAll():Void {
 		
-		for (component in _list) component.preUpdate();
+		for (component in _updateList) component.preUpdate();
 	}
 	
 	public function updateAll():Void {
 		
-		for (component in _list) component.update();
+		for (component in _updateList) component.update();
 	}
 	
 	public function postUpdateAll():Void {
 		
-		for (component in _list) component.postUpdate();
+		for (component in _updateList) component.postUpdate();
 	}
 	
 	public function preDrawAll():Void {
 		
-		for (component in _list) component.preDraw();
+		for (component in _drawList) component.preDraw();
 	}
 	
 	public function drawAll():Void {
 		
-		for (component in _list) component.draw();
+		for (component in _drawList) component.draw();
 	}
 	
 	public function destroy() {
@@ -89,8 +123,6 @@ class ComponentList {
 			_list.shift().destroy();
 	}
 	
-	public function get_overridesUpdate():Bool { return _numUpdateOverrides > 0; }
-	public function get_overridesDraw():Bool { return _numDrawOverrides > 0; }
-	public function get_input():InputComponent { return cast(_byKey["input"]); }
-	//public function get_input():ReplayComponent { return _byKey["replay"]; }
+	public function get_overridesUpdate():Bool { return _updateOverrideList.length > 0; }
+	public function get_overridesDraw  ():Bool { return _drawOverrideList  .length > 0; }
 }

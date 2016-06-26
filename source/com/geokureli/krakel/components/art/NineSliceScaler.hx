@@ -12,7 +12,7 @@ import flash.display.BitmapData;
  */
 class NineSliceScaler extends Component {
 
-	public function new(target:Sprite) { super(target); }
+	public function new() { super(); }
 	
 	override function setDefaults() {
 		super.setDefaults();

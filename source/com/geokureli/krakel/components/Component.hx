@@ -2,6 +2,7 @@ package com.geokureli.krakel.components ;
 
 import com.geokureli.krakel.art.Sprite;
 import flixel.plugin.FlxPlugin;
+import flixel.util.FlxSignal.FlxTypedSignal;
 
 /**
  * ...
@@ -10,29 +11,38 @@ import flixel.plugin.FlxPlugin;
 class Component extends FlxPlugin {
 	
 	/** If true, the targets original update process is skipped. */
-	public var overrideUpdate:Bool;
+	@:isVar public var overrideUpdate(get, set):Bool;
 	/** If true, the targets original draw process is skipped. */
-	public var overrideDraw:Bool;
+	@:isVar public var overrideDraw(get, set):Bool;
+	/** If true, preUpdate, update and postUpdate are called */
+	@:isVar public var updates(get, set):Bool;
+	/** If true, preDraw, and draw */
+	@:isVar public var draws(get, set):Bool;
 	
-	var _target:IComponentHolder;
+	@:allow(com.geokureli.krakel.components.ComponentList)
+	private var _onParamsChange:FlxTypedSignal<Component->Void>;
+	
+	public var target(default, set):IComponentHolder;
 	var _components(get, never):ComponentList;
-
-	public function new(target:IComponentHolder) {
+	
+	public function new() {
 		super();
-		
-		_target = target;
 		
 		setDefaults();
 	}
 	
 	function setDefaults() {
 		
+		_onParamsChange = new FlxTypedSignal<Component->Void>();
+		
 		overrideUpdate = false;
 		overrideDraw = false;
+		draws = false;
+		updates = false;
 	}
 	
-	/** Called by the target when the component is added to a Sprite. */
-	public function init():Void { }
+	/** Called by the target when the component is added to a Parent. */
+	public function init():Void {  }
 	
 	/** Called by the target before it's own update process. */
 	public function preUpdate():Void { }
@@ -47,10 +57,55 @@ class Component extends FlxPlugin {
 	override public function draw():Void { }
 	
 	/** Called by the target when it is destroyed or when this component is removed */
-	override public function destroy():Void {
+	override public function destroy():Void { }
+	
+	function get__components():ComponentList { return target.components; }
+	
+	function set_target(value:IComponentHolder):IComponentHolder {
 		
-		_target = null;
+		if (value != null) {
+			
+			target = value;
+			init();// --- POST CALL
+			
+		} else {
+			
+			destroy();// --- PRE CALL
+			target = null;
+		}
+		
+		return value;
 	}
 	
-	function get__components():ComponentList { return _target.components; }
+	function get_overrideUpdate():Bool { return overrideUpdate; }
+	function set_overrideUpdate(value:Bool):Bool {
+		
+		return overrideUpdate = value;
+		//_onParamsChange.dispatch(this);
+		//return value;
+	}
+	
+	function get_overrideDraw():Bool { return overrideDraw; }
+	function set_overrideDraw(value:Bool):Bool {
+		
+		overrideDraw = value;
+		_onParamsChange.dispatch(this);
+		return value;
+	}
+	
+	function get_updates():Bool { return updates; }
+	function set_updates(value:Bool):Bool {
+		
+		updates = value;
+		_onParamsChange.dispatch(this);
+		return value;
+	}
+	
+	function get_draws():Bool { return draws; }
+	function set_draws(value:Bool):Bool {
+		
+		draws = value;
+		_onParamsChange.dispatch(this);
+		return value;
+	}
 }

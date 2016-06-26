@@ -17,7 +17,7 @@ class InputComponent extends Component {
 	var keyboard:FlxKeyboard;
 	var mouse:FlxMouse;
 	
-	public function new(target:IComponentHolder) { super(target); }
+	public function new() { super(); }
 	
 	override function setDefaults() {
 		super.setDefaults();
