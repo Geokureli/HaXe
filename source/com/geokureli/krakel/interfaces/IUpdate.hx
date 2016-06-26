@@ -8,7 +8,6 @@ interface IUpdate {
 	
 	function preUpdate():Void;
 	function update():Void;
-	function postUpdate():Void;
 	
 	function destroy():Void;
 }

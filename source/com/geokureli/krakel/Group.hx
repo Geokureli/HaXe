@@ -53,12 +53,4 @@ class TypedGroup<T:FlxBasic> extends FlxTypedGroup<T> implements IUpdate {
 			item.preUpdate();
 		}
 	}
-	
-	public function postUpdate():Void {
-		
-		for (item in _special) {
-			
-			item.postUpdate();
-		}
-	}
 }

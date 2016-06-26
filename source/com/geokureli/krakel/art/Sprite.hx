@@ -50,28 +50,14 @@ class Sprite extends FlxSprite implements IComponentHolder implements IPoint {
 	
 	override public function update():Void {
 		
-		if (!components.overridesUpdate) {
-			
-			animation.update();
-		}
-		
+		animation.update();
 		components.updateAll();
-	}
-	
-	public function postUpdate():Void {
-		
-		components.postUpdateAll();
 	}
 	
 	override public function draw():Void {
 		
 		components.preDrawAll();
-		
-		if (!components.overridesDraw)
-		{
-			super.draw();
-		}
-		
+		super.draw();
 		components.drawAll();
 	}
 	

@@ -10,18 +10,6 @@ import flixel.util.FlxSignal.FlxTypedSignal;
  */
 class Component extends FlxPlugin {
 	
-	/** If true, the targets original update process is skipped. */
-	@:isVar public var overrideUpdate(get, set):Bool;
-	/** If true, the targets original draw process is skipped. */
-	@:isVar public var overrideDraw(get, set):Bool;
-	/** If true, preUpdate, update and postUpdate are called */
-	@:isVar public var updates(get, set):Bool;
-	/** If true, preDraw, and draw */
-	@:isVar public var draws(get, set):Bool;
-	
-	@:allow(com.geokureli.krakel.components.ComponentList)
-	private var _onParamsChange:FlxTypedSignal<Component->Void>;
-	
 	public var target(default, set):IComponentHolder;
 	var _components(get, never):ComponentList;
 	
@@ -31,33 +19,17 @@ class Component extends FlxPlugin {
 		setDefaults();
 	}
 	
-	function setDefaults() {
-		
-		_onParamsChange = new FlxTypedSignal<Component->Void>();
-		
-		overrideUpdate = false;
-		overrideDraw = false;
-		draws = false;
-		updates = false;
-	}
-	
-	/** Called by the target when the component is added to a Parent. */
-	public function init():Void {  }
+	function setDefaults() { }
 	
 	/** Called by the target before it's own update process. */
 	public function preUpdate():Void { }
 	/** Called by the target after it's own update process. */
-	override public function update():Void { }
-	/** Called by the target before it's own update process. */
-	public function postUpdate():Void { }
+	override public function update():Void { super.update(); }
 	
 	/** Called by the target before it's own draw process. */
 	public function preDraw():Void { }
 	/** Called by the target after it's own draw process. */
 	override public function draw():Void { }
-	
-	/** Called by the target when it is destroyed or when this component is removed */
-	override public function destroy():Void { }
 	
 	function get__components():ComponentList { return target.components; }
 	
@@ -66,46 +38,14 @@ class Component extends FlxPlugin {
 		if (value != null) {
 			
 			target = value;
-			init();// --- POST CALL
+			revive();// --- POST CALL
 			
 		} else {
 			
-			destroy();// --- PRE CALL
+			kill();// --- PRE CALL
 			target = null;
 		}
 		
-		return value;
-	}
-	
-	function get_overrideUpdate():Bool { return overrideUpdate; }
-	function set_overrideUpdate(value:Bool):Bool {
-		
-		return overrideUpdate = value;
-		//_onParamsChange.dispatch(this);
-		//return value;
-	}
-	
-	function get_overrideDraw():Bool { return overrideDraw; }
-	function set_overrideDraw(value:Bool):Bool {
-		
-		overrideDraw = value;
-		_onParamsChange.dispatch(this);
-		return value;
-	}
-	
-	function get_updates():Bool { return updates; }
-	function set_updates(value:Bool):Bool {
-		
-		updates = value;
-		_onParamsChange.dispatch(this);
-		return value;
-	}
-	
-	function get_draws():Bool { return draws; }
-	function set_draws(value:Bool):Bool {
-		
-		draws = value;
-		_onParamsChange.dispatch(this);
 		return value;
 	}
 }

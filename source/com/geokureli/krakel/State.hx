@@ -108,16 +108,6 @@ class State extends FlxState {
 		preUpdate();
 		
 		super.update();
-		
-		postUpdate();
-	}
-	
-	function postUpdate():Void {
-		
-		for (item in _special) {
-			
-			item.postUpdate();
-		}
 	}
 	
 	//} endregion						OVERRIDES

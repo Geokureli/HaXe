@@ -16,13 +16,10 @@ class NineSliceScaler extends Component {
 	
 	override function setDefaults() {
 		super.setDefaults();
-		
-		overrideDraw = true;
 	}
 	
 	override public function draw():Void {
 		super.draw();
-		
 		
 	}
 	
