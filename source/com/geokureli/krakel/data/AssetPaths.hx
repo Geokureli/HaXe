@@ -6,6 +6,7 @@ import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.text.pxText.PxBitmapFont;
 import haxe.ds.StringMap;
+import haxe.Json;
 import openfl.display.BitmapData;
 import openfl.Assets;
 
@@ -217,6 +218,9 @@ class AssetPaths {
 		
 		return cast(new Sound().loadEmbedded(music(name), looped));
 	}
+	
+	static public function getData(file:String):String { return Assets.getText(data(file)); }
+	static public function getParsedData(file:String):Dynamic { return Json.parse(getData(file)); }
 	
 	static public function get_MUSIC_PATH():String { return instance.musicFolder; }
 	static public function get_SOUND_PATH():String { return instance.soundFolder; }
