@@ -60,6 +60,14 @@ class Assert {
 		return _isTrue(value == null, msg, pos);
 	}
 	
+	function _has(value:Dynamic, property:String, ?msg:String, ?pos:PosInfos):Bool {
+		
+		if (msg == null)
+			msg = "Could not find property " + property;
+		
+		return _isTrue(Reflect.hasField(value, property), msg, pos);
+	}
+	
 	function _is(value:Dynamic, type:Dynamic, msg:String, pos:PosInfos):Bool {
 		
 		if (msg == null)
@@ -74,6 +82,14 @@ class Assert {
 			msg = "Unexpected type " + typeToString(type);
 		
 		return _isTrue(!Std.is(value, type), msg, pos);
+	}
+	
+	function _isObject(value:Dynamic, msg:String, pos:PosInfos):Bool {
+		
+		if (msg == null)
+			msg = "Expected Object type";
+		
+		return _isTrue(Reflect.isObject(value), msg, pos);
 	}
 	
 	function _equals(value:Dynamic, expected:Dynamic, msg:String, pos:PosInfos):Bool {
@@ -260,6 +276,16 @@ class Assert {
 	
 	/**
 	 * Asserts successfully when the 'value' parameter is of the of the passed type 'type'.
+	 * @param value     The parent value to test
+	 * @param property  The property to assert
+	 */
+	static public function has(value:Dynamic, property:String, ?msg:String, ?pos:PosInfos):Bool {
+		
+		return _instance._has(value, property, msg, pos);
+	}
+	
+	/**
+	 * Asserts successfully when the 'value' parameter is of the of the passed type 'type'.
 	 * @param value  The value to test
 	 * @param type   The type to test against
 	 */
@@ -277,7 +303,13 @@ class Assert {
 		
 		return _instance._isNot(value, type, msg, pos);
 	}
-
+	
+	/** Asserts successfully when Reflect.isObject(value) is true. */
+	static public function isObject(value:Dynamic, ?msg:String, ?pos:PosInfos):Bool {
+		
+		return _instance._isObject(value, msg, pos);
+	}
+	
 	/**
 	 * Asserts successfully when the value parameter is equal to the expected one.
 	 * 
