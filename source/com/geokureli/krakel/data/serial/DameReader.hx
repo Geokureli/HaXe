@@ -1,5 +1,6 @@
 package com.geokureli.krakel.data.serial;
 
+import com.geokureli.krakel.art.Layer;
 import com.geokureli.krakel.art.Sprite;
 import com.geokureli.krakel.components.Component;
 import com.geokureli.krakel.components.ComponentList;
@@ -44,8 +45,6 @@ class DameReader extends Deserializer {
 		
 		var replacedFields = searchLookups(_tempLookups, data);
 		searchLookups(_lookups, data, replacedFields);
-		
-		//Todo: children[]
 		
 		return data;
 	}
@@ -141,6 +140,7 @@ class DameReader extends Deserializer {
 		addAutoClassLookup(Point);
 		addAutoClassLookup(Rectangle);
 		addAutoClassLookup(Sprite);
+		addAutoClassLookup(Layer);
 		
 		addClassLookup("Text", FlxText);
 	}
@@ -153,12 +153,12 @@ class DameReader extends Deserializer {
 	
 	function addToFlxGroup(group:FlxTypedGroup<Dynamic>, children:Array<Dynamic>):Void {
 		
-		while (children.length > 0) group.add(create(children.pop()));
+		while (children.length > 0) group.add(create(children.shift()));
 	}
 	
 	function addToComponentList(list:ComponentList, components:Array<Dynamic>):Void {
 		
-		while (components.length > 0) list.add(create(components.pop()));
+		while (components.length > 0) list.add(create(components.shift()));
 	}
 	
 	//} endregion						INIT LIST

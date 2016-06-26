@@ -3,7 +3,9 @@ package com.geokureli.krakel.data.serial;
 import com.geokureli.krakel.data.serial.Deserializer.AdderMap;
 import com.geokureli.krakel.data.serial.Deserializer.TypeHandler;
 import com.geokureli.krakel.data.serial.Deserializer.TypeMap;
+import com.geokureli.krakel.data.serial.IDeserializable.FieldParser;
 import haxe.ds.Either;
+import haxe.ds.StringMap;
 
 /**
  * Used to take anonymous, untyped structures and either: 
@@ -129,15 +131,16 @@ class Deserializer {
 	
 	inline function addDefaultAdders() {
 		
-		createAdder(Array, addToArray);
-		createAdder(List,  addToList);
+		createAdder(Array,     addToArray);
+		createAdder(List,      addToList);
+		//TODO:Maps?
 	}
 	
 	function addToArray(target:Array<Dynamic>, data:Array<Dynamic>):Void {
 		
 		while(data.length > 0) target.push(create(data.pop()));
 	}
-	function addToList (target:List <Dynamic>, data:Array<Dynamic>):Void {
+	function addToList(target:List <Dynamic>, data:Array<Dynamic>):Void {
 		
 		while(data.length > 0) target.add(create(data.pop()));
 	}
@@ -167,6 +170,13 @@ class Deserializer {
 	//} endregion					ITERATOR HANDLERS	
 	// =============================================================================
 	
+	inline public function preParse(data:Dynamic):Dynamic
+	{
+		for (parser in _preParsers) data = parser(data);
+		
+		return data;
+	}
+	
 	/**
 	 * Creates an instance based on the 'class' property of the data, and uses the remaining 
 	 * fields to set the instance's fields. This works with recursive data.
@@ -176,10 +186,9 @@ class Deserializer {
 	 */
 	public function create<T>(data:Dynamic):Null<T> {
 		
-		if (!Reflect.isObject(data)) return data;
+		data = preParse(data);
 		
-		// --- PRE_PARSE
-		for (parser in _preParsers) data = parser(data);
+		if (!Reflect.isObject(data)) return data;
 		
 		// --- GET CLASS
 		var typeName:String = Reflect.field(data, 'class');
@@ -225,9 +234,16 @@ class Deserializer {
 		var value:Dynamic;
 		var newValue:Dynamic;
 		var childTarget:Dynamic;
+		var parsers:Map<String, FieldParser>;
 		for (field in fields) {
 			
 			value = Reflect.field(source, field);
+			if (Std.is(target, IDeserializable)) {
+				parsers = cast(target, IDeserializable).specialParsers;
+				if (parsers.exists(field) && parsers[field](this, value))
+					continue;
+			}
+			
 			if (Reflect.isObject(value)) {
 				
 				newValue = create(value);

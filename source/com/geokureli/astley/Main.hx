@@ -2,6 +2,7 @@ package com.geokureli.astley;
 
 import com.geokureli.astley.art.Grass;
 import com.geokureli.astley.states.BaseState;
+import com.geokureli.astley.states.ReplayState;
 import com.geokureli.astley.states.RollinState;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.astley.data.LevelData;
@@ -38,6 +39,7 @@ class Main extends Shell {
 		_frameRate = 30;
 		_scale = 2;
 		_introState = IntroState;
+		//_introState = ReplayState;
 		//_introState = TestAny;
 		
 		Actuate.defaultEase = Linear.easeNone;

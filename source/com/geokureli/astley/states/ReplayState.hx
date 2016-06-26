@@ -3,10 +3,12 @@ import com.geokureli.astley.art.hero.ReplayRick;
 import com.geokureli.astley.art.hero.Rick;
 import com.geokureli.astley.art.hero.RickLite;
 import com.geokureli.astley.art.Tilemap;
+import com.geokureli.astley.art.ui.Credits;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.data.Recordings;
 import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.AssetPaths;
+import com.geokureli.krakel.data.serial.DameReader;
 import com.geokureli.krakel.Group.TypedGroup;
 import com.geokureli.krakel.utils.Random;
 import flixel.FlxG;
@@ -16,6 +18,7 @@ import flixel.group.FlxGroup;
 import flixel.group.FlxTypedGroup;
 import flixel.system.FlxSound;
 import flixel.util.FlxTimer;
+import haxe.Json;
 
 /**
  * ...
@@ -30,7 +33,7 @@ class ReplayState extends BaseState {
 	
 	var _finishedGhosts:TypedGroup<ReplayRick>;
 	var _ghosts:TypedGroup<ReplayRick>;
-	//var _credits:Credits;
+	var _credits:Credits;
 	
 	var _songIntro:Sound;
 	var _songLoop:Sound;
@@ -45,7 +48,10 @@ class ReplayState extends BaseState {
 		_songLoop = AssetPaths.getMusic("credit_loop");
 		_timerMusic = new FlxTimer();
 		
-		//add(_credits = new Credits());
+		var dameReader:DameReader = new DameReader();
+		dameReader.addAutoClassLookup(Credits);
+		dameReader.addAutoClassLookup(CreditsLayer);
+		add(_credits = dameReader.createLevel(AssetPaths.getParsedData("Credits")));
 		
 		FartControl.enabled = false;
 		FartControl.replayMode = true;
@@ -107,16 +113,19 @@ class ReplayState extends BaseState {
 			
 		} while (replay != null);
 		
-		//leadGhost.playSounds = true;
-		
-		leadGhost.startTime = 0;
-		setCameraFollow(leadGhost);
-		//FlxG.worldBounds.width = leadGhost.x + leadGhost.width;
+		if (leadGhost != null) {
+			
+			leadGhost.playSounds = true;
+			leadGhost.startTime = 0;
+			setCameraFollow(leadGhost);
+			FlxG.worldBounds.width = leadGhost.x + leadGhost.width;
+		}
 	}
 	
 	override function start():Void {
 		super.start();
 		
+		_credits.start();
 		_songIntro.play();
 		_timerMusic.start(_songIntro.duration - BUFFER_TIME, playLoop);
 		
