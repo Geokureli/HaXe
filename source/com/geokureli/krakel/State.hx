@@ -8,12 +8,11 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
-import flixel.group.FlxTypedGroup;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-import flixel.util.FlxMath;
+import flixel.math.FlxMath;
 
 /**
  * A FlxState which can be used for the game's menu.
@@ -96,18 +95,18 @@ class State extends FlxState {
 		return super.remove(object, splice);
 	}
 	
-	function preUpdate():Void {
+	function preUpdate(elapsed:Float):Void {
 		
 		for (item in _special) {
 			
-			item.preUpdate();
+			item.preUpdate(elapsed);
 		}
 	}
 	
-	override public function update():Void {
-		preUpdate();
+	override public function update(elapsed:Float):Void {
+		preUpdate(elapsed);
 		
-		super.update();
+		super.update(elapsed);
 	}
 	
 	//} endregion						OVERRIDES

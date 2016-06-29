@@ -3,8 +3,9 @@ package com.geokureli.krakel.art;
 import com.geokureli.krakel.data.TilemapData;
 import flixel.FlxCamera;
 import flixel.FlxG;
+import flixel.tile.FlxBaseTilemap.FlxTilemapAutoTiling;
 import flixel.tile.FlxTilemap;
-import flixel.util.FlxPoint;
+import flixel.math.FlxPoint;
 
 /**
  * ...
@@ -19,16 +20,16 @@ class LoopingTilemap extends FlxTilemap {
 	var _rawMap:TilemapData;
 	
 	public function new (
-		mapData:Dynamic,
-		tileGraphic:Dynamic,
-		tileWidth:Int = 0,
-		tileHeight:Int = 0,
-		wrapX:Bool = true,
-		wrapY:Bool = false,
-		autoTile:Int = 0,
-		startingIndex:Int = 0,
-		drawIndex:Int = 1,
-		collideIndex:Int = 1
+		mapData      :Dynamic,
+		tileGraphic  :Dynamic,
+		tileWidth    :Int                  = 0,
+		tileHeight   :Int                  = 0,
+		wrapX        :Bool                 = true,
+		wrapY        :Bool                 = false,
+		?autoTile    :FlxTilemapAutoTiling,
+		startingIndex:Int                  = 0,
+		drawIndex    :Int                  = 1,
+		collideIndex :Int                  = 1
 	) {
 		super();
 		
@@ -83,9 +84,9 @@ class LoopingTilemap extends FlxTilemap {
 		}
 		
 		setDefaults();
-		updateAutoTile = updateAutoTile && autoTile != FlxTilemap.OFF;
+		updateAutoTile = updateAutoTile && autoTile != FlxTilemapAutoTiling.OFF;
 		
-		loadMap(mapData, tileGraphic, tileWidth, tileHeight, autoTile, startingIndex, drawIndex, collideIndex);
+		loadMapFromCSV(mapData, tileGraphic, tileWidth, tileHeight, autoTile, startingIndex, drawIndex, collideIndex);
 	}
 	
 	function setDefaults():Void {

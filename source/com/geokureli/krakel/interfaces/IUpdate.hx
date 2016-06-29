@@ -6,8 +6,8 @@ package com.geokureli.krakel.interfaces;
  */
 interface IUpdate {
 	
-	function preUpdate():Void;
-	function update():Void;
+	function preUpdate(elapsed:Float):Void;
+	function update(elapsed:Float):Void;
 	
 	function destroy():Void;
 }

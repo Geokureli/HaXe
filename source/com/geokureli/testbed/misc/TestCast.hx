@@ -5,7 +5,7 @@ import com.geokureli.krakel.State;
 import flash.display.Sprite;
 import flash.display.MovieClip;
 import flash.display.DisplayObject;
-import flixel.util.FlxPoint;
+import flixel.math.FlxPoint;
 
 /**
  * ...

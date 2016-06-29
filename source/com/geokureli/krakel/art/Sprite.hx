@@ -91,27 +91,27 @@ class Sprite extends FlxSprite
 	
 	function addAnimations() { }
 	
-	public function preUpdate():Void {
+	public function preUpdate(elapsed:Float):Void {
 		
 		#if !FLX_NO_DEBUG
-		FlxBasic._ACTIVECOUNT++;
+		FlxBasic.activeCount++;
 		#end
 		
 		last.x = x;
 		last.y = y;
 		
-		if (moves) updateMotion();
+		if (moves) updateMotion(elapsed);
 		
 		wasTouching = touching;
 		touching = FlxObject.NONE;
 		
-		components.preUpdateAll();
+		components.preUpdateAll(elapsed);
 	}
 	
-	override public function update():Void {
+	override public function update(elapsed:Float):Void {
 		
-		animation.update();
-		components.updateAll();
+		animation.update(elapsed);
+		components.updateAll(elapsed);
 	}
 	
 	override public function draw():Void {

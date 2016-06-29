@@ -25,7 +25,7 @@ class RickLite extends Sprite {
 		);
 		
 		var fartFrames:Array<Int> = [];
-		for (i in 1 ... frames - 1) {
+		for (i in 1 ... frames.numFrames- 1) {
 			
 			fartFrames.push(i);
 		}
@@ -33,7 +33,7 @@ class RickLite extends Sprite {
 		
 		animation.add("idle", [0]);
 		animation.add("farting", fartFrames, 15, false);
-		animation.add("dead", [frames - 1]);
+		animation.add("dead", [frames.numFrames - 1]);
 		
 		width = 12;
 		height = 20;

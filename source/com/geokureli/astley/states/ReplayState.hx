@@ -15,7 +15,6 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.group.FlxTypedGroup;
 import flixel.system.FlxSound;
 import flixel.util.FlxTimer;
 import haxe.Json;
@@ -146,8 +145,8 @@ class ReplayState extends BaseState {
 		_songLoop.play();
 	}
 	
-	override public function preUpdate():Void {
-		super.preUpdate();
+	override public function preUpdate(elapsed:Float):Void {
+		super.preUpdate(elapsed);
 		
 		for (ghost in _ghosts.members) {
 			

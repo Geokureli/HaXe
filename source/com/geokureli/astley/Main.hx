@@ -17,7 +17,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxRect;
+import flixel.math.FlxRect;
 import motion.Actuate;
 import motion.easing.Linear;
 /**
@@ -57,6 +57,7 @@ class IntroState extends State {
 		LevelData.init();
 		FartControl.create();
 		FartControl.enabled = false;
+		AssetPaths.initBitmapFontMonospace("numbers_10", "0123456789");
 		
 		add(_title = new FlxSprite(0, 0, AssetPaths.text("gassy_rick_astley")));
 		centerX(_title).y = -_title.height;
@@ -69,14 +70,15 @@ class IntroState extends State {
 		
 		add(new Grass());
 		
-		FlxTween.tween(_title, { y:52 }, 1, { type:FlxTween.ONESHOT, ease:FlxEase.sineOut, complete:onIntroComplete } );
+		FlxTween.tween(_title, { y:52 }, 1, { type:FlxTween.ONESHOT, ease:FlxEase.sineOut, onComplete:onIntroComplete } );
 	}
 	
 	override function setDefaults():Void {
 		super.setDefaults();
 		
 		FlxG.camera.bgColor = 0xFF5c94fc;
-		FlxG.camera.bounds = new FlxRect(0, 0, FlxG.width, FlxG.height);
+		FlxG.camera.width  = FlxG.width;
+		FlxG.camera.height = FlxG.height;
 		
 		_musicName = AssetPaths.music("intro");
 		_fadeOutMusic = true;
@@ -91,8 +93,8 @@ class IntroState extends State {
 		FartControl.enabled = true;
 	}
 	
-	override public function update():Void {
-		super.update();
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
 		
 		if (FartControl.down) {
 			

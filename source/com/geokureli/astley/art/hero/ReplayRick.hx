@@ -28,7 +28,7 @@ class ReplayRick extends Rick {
 		_replay = new FlxReplay();
 	}
 	
-	override public function preUpdate():Void {
+	override public function preUpdate(elapsed:Float):Void {
 		
 		if (!isOnScreen())
 			exists = visible = false;
@@ -39,11 +39,11 @@ class ReplayRick extends Rick {
 		do {
 			_replay.playNextFrame();
 			
-			super.preUpdate();
+			super.preUpdate(elapsed);
 			
 			// --- STOP WHEN UP TO SPEED
 			if(_replay.frame < startTime)
-				updateMotion();
+				updateMotion(elapsed);
 			
 		} while (_replay.frame < startTime);
 		

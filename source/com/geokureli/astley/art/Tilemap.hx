@@ -4,6 +4,7 @@ import com.geokureli.astley.data.LevelData;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.utils.Random;
 import flixel.FlxG;
+import flixel.tile.FlxBaseTilemap.FlxTilemapAutoTiling;
 import flixel.tile.FlxTilemap;
 
 /**
@@ -11,7 +12,8 @@ import flixel.tile.FlxTilemap;
  * @author George
  */
 
- typedef MapTiles = Array<Array<Int>>;
+typedef MapTiles = Array<Array<Int>>;
+
 class Tilemap extends FlxTilemap
 {
 
@@ -60,13 +62,13 @@ class Tilemap extends FlxTilemap
 		_isReplay = isReplay;
 		numPipes = 0;
 		
-		loadMap(
+		loadMapFromCSV(
 			
 			generateTileData(),
 			AssetPaths.image("tiles_0"),
 			Std.int(LevelData.TILE_SIZE),
 			Std.int(LevelData.TILE_SIZE),
-			FlxTilemap.OFF,
+			FlxTilemapAutoTiling.OFF,
 			0,
 			1,
 			GROUND_FRAME
@@ -75,7 +77,7 @@ class Tilemap extends FlxTilemap
 	
 	function generateTileData():String {
 		
-		var columns:Int = Std.int(FlxG.camera.bounds.width / LevelData.TILE_SIZE);
+		var columns:Int = Std.int(FlxG.camera.width / LevelData.TILE_SIZE);
 		var rows:Int = Std.int(LevelData.ROWS);
 		
 		var data:MapTiles = [];
@@ -105,7 +107,7 @@ class Tilemap extends FlxTilemap
 		var map:String = "";
 		while (data.length > 0) {
 			
-			map += data.shift().join(',') + '\n';
+			map += data.shift().join('\t') + '\n';
 		}
 		
 		return map.substr(0, map.length - 1);
@@ -183,6 +185,6 @@ class Tilemap extends FlxTilemap
 	static public function getCompletion(score:Float):Float {
 		
 		//trace(score, getScore(FlxG.camera.bounds.width), score / getScore(FlxG.camera.bounds.width));
-		return score / getScore(FlxG.camera.bounds.width);
+		return score / getScore(FlxG.camera.width);
 	}
 }

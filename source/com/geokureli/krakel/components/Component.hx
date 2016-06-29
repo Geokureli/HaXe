@@ -1,14 +1,14 @@
 package com.geokureli.krakel.components ;
 
 import com.geokureli.krakel.art.Sprite;
-import flixel.plugin.FlxPlugin;
+import flixel.FlxBasic;
 import flixel.util.FlxSignal.FlxTypedSignal;
 
 /**
  * ...
  * @author George
  */
-class Component extends FlxPlugin {
+class Component extends FlxBasic{
 	
 	public var target(default, set):IComponentHolder;
 	var _components(get, never):ComponentList;
@@ -22,9 +22,9 @@ class Component extends FlxPlugin {
 	function setDefaults() { }
 	
 	/** Called by the target before it's own update process. */
-	public function preUpdate():Void { }
+	public function preUpdate(elapsed:Float):Void { }
 	/** Called by the target after it's own update process. */
-	override public function update():Void { super.update(); }
+	//override public function update(elapsed:Float):Void { super.update(elapsed); }
 	
 	/** Called by the target before it's own draw process. */
 	public function preDraw():Void { }
