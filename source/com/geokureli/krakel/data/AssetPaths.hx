@@ -145,7 +145,7 @@ class AssetPaths {
 	
 	static public function initBitmapFont(name:String, font:FlxBitmapFont):FlxBitmapFont {
 		
-		if (Expect.isNull(font, name + " was already initialised")) 
+		if (Expect.isNull(instance.bitmapFonts[name], name + " was already initialised")) 
 			
 			instance.bitmapFonts[name] = font;
 		
@@ -156,12 +156,14 @@ class AssetPaths {
 		
 		if (instance.bitmapFonts[name] == null) {
 			
+			var bmData:BitmapData = Assets.getBitmapData(text(name), false);
+			
 			if (charSize == null)
-				charSize = new FlxPoint();
+				charSize = new FlxPoint(bmData.width / letters.length, bmData.height);
 			
 			initBitmapFont(
 				name,
-				FlxBitmapFont.fromMonospace(Assets.getBitmapData(text(name), false), letters, charSize)
+				FlxBitmapFont.fromMonospace(bmData, letters, charSize)
 			);
 		}
 		
