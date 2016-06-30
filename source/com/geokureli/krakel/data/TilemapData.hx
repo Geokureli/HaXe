@@ -67,7 +67,7 @@ class TilemapData extends DataHolder{
 		var output:String = "";
 		for (row in data) {
 			
-			output += row.join('\t') + '\n';
+			output += row.join(',') + '\n';
 		}
 		
 		// --- CUT OFF LAST \n

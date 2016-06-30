@@ -107,7 +107,7 @@ class Tilemap extends FlxTilemap
 		var map:String = "";
 		while (data.length > 0) {
 			
-			map += data.shift().join('\t') + '\n';
+			map += data.shift().join(',') + '\n';
 		}
 		
 		return map.substr(0, map.length - 1);
