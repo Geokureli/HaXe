@@ -77,7 +77,7 @@ class Tilemap extends FlxTilemap
 	
 	function generateTileData():String {
 		
-		var columns:Int = Std.int(FlxG.camera.width / LevelData.TILE_SIZE);
+		var columns:Int = Std.int(LevelData.width / LevelData.TILE_SIZE);
 		var rows:Int = Std.int(LevelData.ROWS);
 		
 		var data:MapTiles = [];
@@ -185,6 +185,6 @@ class Tilemap extends FlxTilemap
 	static public function getCompletion(score:Float):Float {
 		
 		//trace(score, getScore(FlxG.camera.bounds.width), score / getScore(FlxG.camera.bounds.width));
-		return score / getScore(FlxG.camera.width);
+		return score / getScore(LevelData.width);
 	}
 }

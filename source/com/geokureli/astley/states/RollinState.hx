@@ -209,9 +209,6 @@ class RollinState extends BaseState {
 		_isResetting = true;
 		//FartControl.enabled = false;
 		FlxG.camera.target = null;
-		// --- EXTEND CAM RANGE FOR TWEEN
-		FlxG.camera.x = -FlxG.camera.width;
-		FlxG.camera.width *= 2;
 		
 		var panAmount:Float = RESET_ANTICIPATION;
 		var duration:Float;
@@ -229,7 +226,7 @@ class RollinState extends BaseState {
 		
 		duration = 0;
 		
-		if (FlxG.camera.scroll.x + FlxG.width + panAmount < FlxG.camera.x + FlxG.camera.width) {
+		if (FlxG.width + panAmount < FlxG.camera.width) {
 			
 			duration = panAmount * Math.PI / RESET_SCROLL_SPEED / 2;
 			
@@ -285,8 +282,6 @@ class RollinState extends BaseState {
 		FartControl.enabled = true;
 		FlxG.camera.target = _hero;
 		_isResetting = false;
-		FlxG.camera.x = 0;
-		FlxG.camera.width = Std.int(FlxG.camera.width * .5);
 	}
 	
 	function resetGame():Void {

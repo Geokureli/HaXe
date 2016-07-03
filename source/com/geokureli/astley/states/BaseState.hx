@@ -40,15 +40,15 @@ class BaseState extends State {
 		
 		_song = new Sound();
 		_song.loadEmbedded(AssetPaths.music("nggyu"));
-		var levelSize:Float = _song.duration * Rick.SPEED;
+		LevelData.width = _song.duration * Rick.SPEED;
 		
 		if (EASY_WIN_MODE) {
 			
-			var buffer:Int = Std.int(((Math.ceil(levelSize / LevelData.TILE_SIZE) - Tilemap.PIPE_START ) % Tilemap.PIPE_INTERVAL) * LevelData.TILE_SIZE);
-			levelSize = LevelData.TILE_SIZE * (Tilemap.PIPE_START + Tilemap.PIPE_INTERVAL * 1 + 2) + buffer;
+			var buffer:Int = Std.int(((Math.ceil(LevelData.width / LevelData.TILE_SIZE) - Tilemap.PIPE_START ) % Tilemap.PIPE_INTERVAL) * LevelData.TILE_SIZE);
+			LevelData.width = LevelData.TILE_SIZE * (Tilemap.PIPE_START + Tilemap.PIPE_INTERVAL * 1 + 2) + buffer;
 		}
 		
-		FlxG.camera.width  = Std.int(levelSize);
+		FlxG.camera.width  = FlxG.width;
 		FlxG.camera.height = FlxG.height;
 	}
 	
