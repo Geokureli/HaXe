@@ -1,0 +1,56 @@
+{
+	"baseFormnat": { "comment":"This is the format that all other data must be converted to.",
+		
+		
+		"class":"com.geokureli.krakel.art.Layer",
+		"children" : [ 
+			{ "class":"com.geokureli.krakel.art.Sprite", "name":"thing1", "animation":{ "graphic":"ImageSubfolderName/imageName1", "width":18, "height":17 }, "x":54 , "y":232, "scrollFactor":{ "x":0 } },
+			{ "class":"com.geokureli.krakel.art.Sprite", "name":"thing2", "animation":{ "graphic":"ImageSubfolderName/imageName2", "width":18, "height":19 }, "x":21 , "y":230, "scrollFactor":{ "x":0 } },
+			{
+				"class":"com.geokureli.krakel.art.Layer",
+				"name":"subLayer",
+				"children": [
+					{ "class":"com.geokureli.krakel.art.Sprite", "graphic":"image3", "x":8 , "y":144 },
+					{ "class":"com.geokureli.krakel.art.Sprite", "graphic":"image4", "x":23, "y":161 },
+				]
+			}
+		]
+	},
+	
+	
+	
+	"lookupFormat": { "comment":"This is the format where meta data is readyState and used to .",
+		
+		"meta":{
+			"lookups":{
+				"graphic":{
+					
+					"imageName1": "ImageSubfolderName/imageName1",
+					"imageName2": "ImageSubfolderName/imageName2",
+					"imageName3": "imageName3",
+					"imageName4": "imageName4",
+				},
+				"class":{
+					
+					"Sprite": "com.geokureli.krakel.art.Sprite",
+					"Layer" : "com.geokureli.krakel.art.Layer",
+				}
+			}
+		},
+		"data": {
+			"class":"Layer",
+			"children" : [ 
+				{ "class":"Sprite", "name":"thing1", "animation":{ "graphic":"imageName1", "width":18, "height":17 }, "x":54 , "y":232, "scrollFactor":{ "x":0 } },
+				{ "class":"Sprite", "name":"thing2", "animation":{ "graphic":"imageName2", "width":18, "height":19 }, "x":21 , "y":230, "scrollFactor":{ "x":0 } },
+				{
+					"class":"Layer",
+					"name":"subLayer",
+					"children": [
+						{ "class":"Sprite", "graphic":"imageName3", "x":8 , "y":144 },
+						{ "class":"Sprite", "graphic":"imageName4", "x":23, "y":161 },
+					]
+				}
+			]
+		}
+	}
+}
