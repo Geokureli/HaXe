@@ -10,39 +10,30 @@
 				"thanks"          : "text/txt_thanks"          ,
 				"links"           : "text/txt_links"           ,
 				"basedOn"         : "text/txt_based_on"        ,
-				"flappy"          : "text/txt_flappy"          ,
-				"bird"            : "text/txt_bird"            ,
+				"flappyBird"      : "text/txt_flappy_bird"     ,
 				"dan"             : "text/txt_dan"             ,
-				"nguyen"          : "text/txt_nguyen"          ,
 				"matthew"         : "text/txt_matthew"         ,
-				"harris"          : "text/txt_harris"          ,
 				"originalConcept" : "text/txt_original_concept",
 				"music"           : "text/txt_music"           ,
 				"rick"            : "text/txt_rick"            ,
-				"astley"          : "text/txt_astley"          ,
 				"bgTileArt"       : "text/txt_bg_tile_art"     ,
 				"nintendo"        : "text/txt_nintendo"        ,
 				"loadingScreen"   : "text/txt_loading_screen"  ,
 				"flixel"          : "text/txt_flixel"          ,
 				"characterArt"    : "text/txt_character_art"   ,
 				"theAlex"         : "text/txt_the_alex"        ,
-				"kurelic"         : "text/txt_kurelic"         ,
 				"george"          : "text/txt_george"          ,
 				"programming"     : "text/txt_programming"     ,
 				"fartSounds"      : "text/txt_fart_sounds"     ,
 				"joe"             : "text/txt_joe"             ,
-				"alleruzzo"       : "text/txt_alleruzzo"       ,
 				"togetherForever" : "text/txt_together_forever",
 				"nggyu"           : "text/txt_nggyu"           ,
 				"slippingAway"    : "text/txt_slipping_away"   ,
 				"dontSayGoodbye"  : "text/txt_dont_say_goodbye",
 				"writtenProduced" : "text/txt_written_produced",
 				"mike"            : "text/txt_mike"            ,
-				"stock"           : "text/txt_stock"           ,
 				"matt"            : "text/txt_matt"            ,
-				"aiken"           : "text/txt_aiken"           ,
 				"pete"            : "text/txt_pete"            ,
-				"waterman"        : "text/txt_waterman"        ,
 				"press"           : "text/press_any_key"       
 			}
 		}
@@ -62,16 +53,12 @@
 				"name":"credits1",
 				"children": [
 					{ "class":"Sprite", "graphic":"basedOn"        , "x":8 , "y":144 },
-					{ "class":"Sprite", "graphic":"flappy"         , "x":23, "y":161 },
-					{ "class":"Sprite", "graphic":"bird"           , "x":71, "y":161 },
+					{ "class":"Sprite", "graphic":"flappyBird"     , "x":23, "y":161 },
 					{ "class":"Sprite", "graphic":"dan"            , "x":23, "y":178 },
-					{ "class":"Sprite", "graphic":"nguyen"         , "x":51, "y":178 },
 					{ "class":"Sprite", "graphic":"matthew"        , "x":23, "y":70  },
-					{ "class":"Sprite", "graphic":"harris"         , "x":94, "y":70  },
 					{ "class":"Sprite", "graphic":"originalConcept", "x":8 , "y":52  },
 					{ "class":"Sprite", "graphic":"music"          , "x":8 , "y":97  },
-					{ "class":"Sprite", "graphic":"rick"           , "x":23, "y":114 },
-					{ "class":"Sprite", "graphic":"astley"         , "x":59, "y":114 }
+					{ "class":"Sprite", "graphic":"rick"           , "x":23, "y":114 }
 				]
 			},
 			{
@@ -90,12 +77,10 @@
 				"class":"CreditsLayer",
 				"name":"credits3",
 				"children": [
-					{ "class":"Sprite", "graphic":"kurelic"    , "x":90, "y":83  },
 					{ "class":"Sprite", "graphic":"george"     , "x":37, "y":84  },
 					{ "class":"Sprite", "graphic":"programming", "x":22, "y":66  },
 					{ "class":"Sprite", "graphic":"fartSounds" , "x":22, "y":131 },
-					{ "class":"Sprite", "graphic":"joe"        , "x":34, "y":154 },
-					{ "class":"Sprite", "graphic":"alleruzzo"  , "x":64, "y":154 }
+					{ "class":"Sprite", "graphic":"joe"        , "x":34, "y":154 }
 				]
 			},
 			{
@@ -108,11 +93,8 @@
 					{ "class":"Sprite", "graphic":"dontSayGoodbye" , "x":17, "y":101 },
 					{ "class":"Sprite", "graphic":"writtenProduced", "x":0 , "y":127 },
 					{ "class":"Sprite", "graphic":"mike"           , "x":17, "y":145 },
-					{ "class":"Sprite", "graphic":"stock"          , "x":60, "y":145 },
 					{ "class":"Sprite", "graphic":"matt"           , "x":17, "y":163 },
-					{ "class":"Sprite", "graphic":"pete"           , "x":17, "y":181 },
-					{ "class":"Sprite", "graphic":"aiken"          , "x":60, "y":163 },
-					{ "class":"Sprite", "graphic":"waterman"       , "x":60, "y":181 }
+					{ "class":"Sprite", "graphic":"pete"           , "x":17, "y":181 }
 				]
 			}
 		]
