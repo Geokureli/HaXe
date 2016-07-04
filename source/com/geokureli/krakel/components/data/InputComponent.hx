@@ -3,6 +3,7 @@ import com.geokureli.krakel.components.Component;
 import com.geokureli.krakel.components.data.InputComponent.KeyLink;
 import com.geokureli.krakel.components.IComponentHolder;
 import flixel.FlxG;
+import flixel.input.FlxInput.FlxInputState;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.keyboard.FlxKeyboard;
 import flixel.input.mouse.FlxMouse;
@@ -44,8 +45,8 @@ class InputComponent extends Component {
 		}
 	}
 	
-	override public function preUpdate():Void {
-		super.preUpdate();
+	override public function preUpdate(elapsed:Float):Void {
+		super.preUpdate(elapsed);
 		
 		for (target in _links) {
 			
@@ -76,10 +77,9 @@ class KeyLink {
 		pressed = false;
 		for (key in keys) {
 			
-			if (key == ANY) {
+			if (key == ANY)
 				pressed = keyboard.pressed.ANY;
-			}
-			else pressed = keyboard.pressed.check(key);
+			else pressed = keyboard.checkStatus(key, FlxInputState.PRESSED);
 		}
 	}
 }

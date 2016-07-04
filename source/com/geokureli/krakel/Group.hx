@@ -3,7 +3,6 @@ import com.geokureli.krakel.art.Sprite;
 import com.geokureli.krakel.interfaces.IUpdate;
 import flixel.FlxBasic;
 import flixel.group.FlxGroup;
-import flixel.group.FlxTypedGroup;
 
 /**
  * ...
@@ -46,11 +45,11 @@ class TypedGroup<T:FlxBasic> extends FlxTypedGroup<T> implements IUpdate {
 		return super.remove(object, splice);
 	}
 	
-	public function preUpdate():Void {
+	public function preUpdate(elapsed:Float):Void {
 		
 		for (item in _special) {
 			
-			item.preUpdate();
+			item.preUpdate(elapsed);
 		}
 	}
 }

@@ -5,7 +5,7 @@ import com.geokureli.krakel.interfaces.IPoint;
 import flixel.FlxBasic;
 import flixel.group.FlxGroup;
 import flixel.FlxObject;
-import flixel.util.FlxPoint;
+import flixel.math.FlxPoint;
 	
 /**
  * ...

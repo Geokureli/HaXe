@@ -9,7 +9,6 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flixel.FlxBasic;
 import flixel.group.FlxGroup;
-import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
 
 typedef LookupMap = Map<String, Map<String, String>>;

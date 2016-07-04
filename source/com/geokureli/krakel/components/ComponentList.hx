@@ -57,14 +57,14 @@ class ComponentList {
 		return _byType.get(T);
 	}
 
-	public function preUpdateAll():Void {
+	public function preUpdateAll(elapsed:Float):Void {
 		
-		for (component in _list) if(component.active) component.preUpdate();
+		for (component in _list) if(component.active) component.preUpdate(elapsed);
 	}
 	
-	public function updateAll():Void {
+	public function updateAll(elapsed:Float):Void {
 		
-		for (component in _list) if(component.active) component.update();
+		for (component in _list) if(component.active) component.update(elapsed);
 	}
 	
 	public function preDrawAll():Void {

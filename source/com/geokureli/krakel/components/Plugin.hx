@@ -1,13 +1,13 @@
 package com.geokureli.krakel.components;
 
+import flixel.FlxBasic;
 import flixel.FlxG;
-import flixel.plugin.FlxPlugin;
 
 /**
  * ...
  * @author George
  */
-class Plugin extends FlxPlugin {
+class Plugin extends FlxBasic {
 
 	public function new() {
 		super();

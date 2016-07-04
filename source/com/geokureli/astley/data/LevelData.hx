@@ -21,6 +21,8 @@ class LevelData {
 	static public var SKY_HEIGHT(default, null):Float;
 	static public var PIPES(default, null):Array<Int>;
 	
+	static public var width:Float;
+	
 	static public function init():Void {
 		
 		ROWS = FlxG.height / TILE_SIZE;

@@ -8,7 +8,7 @@ import com.geokureli.krakel.utils.Random;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.system.replay.FlxReplay;
-import flixel.util.FlxPoint;
+import flixel.math.FlxPoint;
 
 /**
  * ...
@@ -67,14 +67,14 @@ class Rick extends RickLite {
 			_recorder.create(_recordSeed++);
 	}
 	
-	override public function preUpdate():Void {
-		super.preUpdate();
+	override public function preUpdate(elapsed:Float):Void {
+		super.preUpdate(elapsed);
 		
-		_input.update();
+		_input.update(elapsed);
 	}
 	
-	override public function update():Void {
-		super.update();
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
 		
 		if (!moves) return;
 		

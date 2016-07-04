@@ -2,9 +2,11 @@ package com.geokureli.krakel.data;
 import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.BuildInfo;
 import com.geokureli.krakel.data.DataHolder;
+import com.geokureli.krakel.debug.Expect;
 import flixel.FlxG;
+import flixel.graphics.frames.FlxBitmapFont;
+import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
-import flixel.text.pxText.PxBitmapFont;
 import haxe.ds.StringMap;
 import haxe.Json;
 import openfl.display.BitmapData;
@@ -32,6 +34,7 @@ class AssetPaths {
 	var defaultSoundExt:String;
 	var defaultImageExt:String;
 	var defaultDataExt :String;
+	var bitmapFonts:Map <String, FlxBitmapFont>;
 	
 	var varMap:Map <String, String>;
 	
@@ -65,6 +68,8 @@ class AssetPaths {
 		varMap = new Map <String, String> ();
 		varMap["build"] = BuildInfo.BUILD_TARGET;
 		varMap["inputType"] = BuildInfo.INPUT_TYPE;
+		
+		bitmapFonts = new Map<String, FlxBitmapFont>();
 	}
 	
 	function init():Void {
@@ -135,21 +140,34 @@ class AssetPaths {
 	static public function text (name:String):String { return TEXT_PATH  + parse(name) + instance.defaultImageExt; }
 	static public function data (name:String):String { return DATA_PATH  + parse(name) + instance.defaultDataExt ; }
 	
-	static public function bitmapData(name:String):BitmapData { return Assets.getBitmapData(image(name), false); }
-	static public function bitmapFont(name:String, ?letters:String, width:Int = 0, height:Int = 0):PxBitmapFont {
-		var pxFont:PxBitmapFont = PxBitmapFont.fetch(name);
-		if (pxFont == null) {
-			// --- CREATE BITMAP DATA
-			var bmData:BitmapData = Assets.getBitmapData(text(name), false);
-			//pxFont = new PxBitmapFont().loadPixelizer(Assets.getBitmapData(text(name), false), letters);
-			pxFont = new PxBitmapFont().loadAngelCode(
-				bmData,
-				generateAngelCode(bmData, letters, text(name))
-			);
+	static public function bitmapData(name:String):BitmapData    { return Assets.getBitmapData(image(name), false); }
+	static public function bitmapFont(name:String):FlxBitmapFont { return instance.bitmapFonts[name]; }
+	
+	static public function initBitmapFont(name:String, font:FlxBitmapFont):FlxBitmapFont {
+		
+		if (Expect.isNull(instance.bitmapFonts[name], name + " was already initialised")) 
 			
-			PxBitmapFont.store(name, pxFont);
+			instance.bitmapFonts[name] = font;
+		
+		return instance.bitmapFonts[name];
+	}
+	
+	static public function initBitmapFontMonospace(name:String, letters:String, ?charSize:FlxPoint):FlxBitmapFont {
+		
+		if (instance.bitmapFonts[name] == null) {
+			
+			var bmData:BitmapData = Assets.getBitmapData(text(name), false);
+			
+			if (charSize == null)
+				charSize = new FlxPoint(bmData.width / letters.length, bmData.height);
+			
+			initBitmapFont(
+				name,
+				FlxBitmapFont.fromMonospace(bmData, letters, charSize)
+			);
 		}
-		return pxFont;
+		
+		return instance.bitmapFonts[name];
 	}
 	
 	static public function generateAngelCode(bmData:BitmapData, letters:String, pageName:String, width:Int = 0, height:Int = 0):Xml {

@@ -13,7 +13,7 @@ import com.geokureli.krakel.utils.Random;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.util.FlxRect;
+import flixel.math.FlxRect;
 
 /**
  * ...
@@ -40,15 +40,16 @@ class BaseState extends State {
 		
 		_song = new Sound();
 		_song.loadEmbedded(AssetPaths.music("nggyu"));
-		var levelSize:Float = _song.duration * Rick.SPEED;
+		LevelData.width = _song.duration * Rick.SPEED;
 		
 		if (EASY_WIN_MODE) {
 			
-			var buffer:Int = Std.int(((Math.ceil(levelSize / LevelData.TILE_SIZE) - Tilemap.PIPE_START ) % Tilemap.PIPE_INTERVAL) * LevelData.TILE_SIZE);
-			levelSize = LevelData.TILE_SIZE * (Tilemap.PIPE_START + Tilemap.PIPE_INTERVAL * 1 + 2) + buffer;
+			var buffer:Int = Std.int(((Math.ceil(LevelData.width / LevelData.TILE_SIZE) - Tilemap.PIPE_START ) % Tilemap.PIPE_INTERVAL) * LevelData.TILE_SIZE);
+			LevelData.width = LevelData.TILE_SIZE * (Tilemap.PIPE_START + Tilemap.PIPE_INTERVAL * 1 + 2) + buffer;
 		}
 		
-		FlxG.camera.bounds = new FlxRect(0, 0, levelSize, FlxG.height);
+		FlxG.camera.width  = FlxG.width;
+		FlxG.camera.height = FlxG.height;
 	}
 	
 	override function addBG():Void {
@@ -59,13 +60,13 @@ class BaseState extends State {
 		
 		// --- CLOUDS
 		var x:Float = 0;
-		while (x < FlxG.camera.bounds.width) {
+		while (x < FlxG.camera.x + FlxG.camera.width) {
 			
 			_bg.add(new Cloud(x += Random.between(Cloud.MIN_SPREAD, Cloud.MAX_SPREAD, LevelData.TILE_SIZE)));
 		}
 		// --- SHRUBS
 		x = 0;
-		while (x < FlxG.camera.bounds.width) {
+		while (x < FlxG.camera.x + FlxG.camera.width) {
 			
 			_bg.add(new Shrub(x += Random.between(Shrub.MIN_SPREAD, Shrub.MAX_SPREAD, LevelData.TILE_SIZE)));
 		}
@@ -88,8 +89,8 @@ class BaseState extends State {
 	
 	function start():Void { }
 	
-	override public function update():Void {
-		super.update();
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
 		
 		updateWorldBounds();
 	}

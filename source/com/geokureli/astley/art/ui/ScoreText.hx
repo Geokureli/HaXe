@@ -3,16 +3,15 @@ package com.geokureli.astley.art.ui;
 import com.geokureli.krakel.data.AssetPaths;
 import flixel.FlxCamera;
 import flixel.FlxG;
-import flixel.text.FlxBitmapTextField;
-import flixel.text.pxText.PxBitmapFont;
-import flixel.util.FlxPoint;
+import flixel.text.FlxBitmapText;
+import flixel.math.FlxPoint;
 import openfl.Assets;
 
 /**
  * ...
  * @author George
  */
-class ScoreText extends FlxBitmapTextField {
+class ScoreText extends FlxBitmapText {
 	
 	static var SHADOW_POINT:FlxPoint = new FlxPoint(1, 1);
 	
@@ -20,7 +19,7 @@ class ScoreText extends FlxBitmapTextField {
 	var _showShadow:Bool;
 	
 	public function new(x:Int = 0, y:Int = 0, shadow:Bool = false) {
-		super(AssetPaths.bitmapFont("numbers_10", "0123456789"));
+		super(AssetPaths.bitmapFont("numbers_10"));
 		
 		this.x = x;
 		this.y = y;
@@ -34,6 +33,7 @@ class ScoreText extends FlxBitmapTextField {
 	}
 	
 	override public function draw():Void {
+		
 		if (_showShadow) {
 			
 			// --- DRAW DROP SHADOW

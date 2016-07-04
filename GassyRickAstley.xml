@@ -29,6 +29,7 @@
 	
 	<set name="BUILD_DIR" value="../export" />
 	<classpath name="source" />
+	<classpath name="lib" />
 	<assets path="assets/astley" rename="assets" exclude="*.wav|*.ogg|*.xml|NG/|source|*.db" if    ="flash" />
 	<assets path="assets/astley" rename="assets" exclude="*.wav|*.mp3|*.xml|NG/|source|*.db" unless="flash" />
 	

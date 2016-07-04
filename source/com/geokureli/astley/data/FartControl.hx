@@ -37,7 +37,7 @@ class FartControl extends Plugin {
 		_antiPress = true;
 	}
 	
-	override public function update():Void {
+	override public function update(elapsed:Float):Void {
 		
 		isButtonDown = false;
 		
