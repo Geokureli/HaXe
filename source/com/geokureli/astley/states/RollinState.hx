@@ -256,7 +256,6 @@ class RollinState extends BaseState {
 		delay += duration;
 		
 		_songReversed.startAt(_songReversed.getPosition(_songReversed.duration - delay));
-		
 		_endTime = Lib.getTimer() + delay * 1000;
 	}
 	
