@@ -211,53 +211,51 @@ class RollinState extends BaseState {
 		FlxG.camera.target = null;
 		
 		var panAmount:Float = RESET_ANTICIPATION;
-		var duration:Float;
+		var duration:Float = 0;
+		var delay:Float = 0;
 		if (_score < 1) {
 			//
 			panAmount = _deathUI.x + _deathUI.width - FlxG.camera.scroll.x;
 			
-			Actuate.tween(
-				_deathUI,
-				panAmount * Math.PI / RESET_SCROLL_SPEED, 
-				{ x: _deathUI.x - panAmount }
-			)	.ease(Sine.easeIn)
-				.onComplete(resetGame);
+			Actuate.tween
+				( _deathUI
+				, panAmount * Math.PI / RESET_SCROLL_SPEED / 4 
+				, { x: _deathUI.x - panAmount }
+				)	.ease(Sine.easeIn)
+					.onComplete(resetGame);
+			
+			panAmount *= 0.5;
 		}
 		
-		duration = 0;
+		// --- ANTICIPATION RIGHT
+		duration = panAmount * Math.PI / RESET_SCROLL_SPEED / 2;
+		Actuate.tween(FlxG.camera.scroll, duration, { x:FlxG.camera.scroll.x + panAmount } )
+			.ease(Sine.easeOut)
+			.repeat(1)
+			.reflect();
+		delay += duration * 2;
 		
-		if (FlxG.width + panAmount < FlxG.camera.width) {
-			
-			duration = panAmount * Math.PI / RESET_SCROLL_SPEED / 2;
-			
-			Actuate.tween(FlxG.camera.scroll, duration, { x:FlxG.camera.scroll.x + panAmount } )
-				.ease(Sine.easeOut)
-				.repeat(1)
-				.reflect();
-			
-			duration *= 2;
-		}
-		
-		var delay:Float = duration;
+		// --- ALL THE WAY LEFT
 		duration = FlxG.camera.scroll.x / RESET_SCROLL_SPEED;
 		Actuate.tween(FlxG.camera.scroll, duration, { x: 0 }, false)
 			.delay(delay);
-		
 		delay += duration;
+		
+		// --- OVERCOMPENATE LEFT
 		duration = panAmount * Math.PI / RESET_SCROLL_SPEED / 2;
 		Actuate.tween(FlxG.camera.scroll, duration, { x: -RESET_ANTICIPATION }, false)
 			.ease(Sine.easeOut)
 			.delay(delay);
-		
 		delay += duration;
+		
+		// --- TO ZERO
 		Actuate.tween(FlxG.camera.scroll, duration, { x:0 }, false)
 			.ease(Sine.easeIn)
 			.delay(delay)
 			.onComplete(onResetComplete);
-		
 		delay += duration;
-		_songReversed.startAt(_songReversed.getPosition(_songReversed.duration - delay));
 		
+		_songReversed.startAt(_songReversed.getPosition(_songReversed.duration - delay));
 		_endTime = Lib.getTimer() + delay * 1000;
 	}
 	

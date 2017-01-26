@@ -12,7 +12,6 @@ class Sound extends FlxSound
 	
 	public var position(get, set):Float;
 	public var duration(get, never):Float;
-	public var length(get, never):Float;
 	
 	public function new() { super(); }
 	
@@ -28,8 +27,6 @@ class Sound extends FlxSound
 	public function get_position():Float { return time; }
 	
 	public function set_position(value:Float):Float { return time = value; }
-	
-	public function get_length():Float { return _sound.length; }
 	
 	//static public function get_enabled():Bool { return enabled; }
 	//static public function set_enabled(value:Bool):Bool { enabled = value; }
