@@ -11,8 +11,13 @@ class ComponentList {
 	
 	var _list:Array<Component>;//TODO:use List
 	var _byType:ClassMap<Class<Component>, Array<Component>>;
+	var _target:IComponentHolder;
 	
-	public function new() { setDefaults(); }
+	public function new(target:IComponentHolder) {
+		
+		_target = target;
+		setDefaults();
+	}
 	
 	function setDefaults() {
 		
@@ -28,6 +33,7 @@ class ComponentList {
 		if (!_byType.exists(type)) _byType.set(type, []);
 		
 		_byType.get(type).push(component);
+		component.target = _target;
 		
 		return component;
 	}
@@ -35,6 +41,8 @@ class ComponentList {
 	public function remove(component:Component):Component {
 		
 		if (_list.remove(component)) {
+			
+			component.target = null;
 			
 			var type:Class<Component> = Type.getClass(component);
 			var typeList:Array<Component> = _byType.get(type);

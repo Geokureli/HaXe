@@ -1,28 +1,25 @@
 package com.geokureli.testbed;
 
-import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.Shell;
-
-//import com.geokureli.testbed.misc.TestEReg;
-//import com.geokureli.testbed.misc.TestText;
-//import com.geokureli.testbed.misc.TestLoopingTilemap;
-//import com.geokureli.testbed.misc.Test9Slice;
-//import com.geokureli.testbed.misc.TestCast;
-import com.geokureli.testbed.misc.Weigh12Islanders;
-
+import com.geokureli.testbed.misc.EmbedSwfTest;
+import flash.display.Sprite;
+import flash.events.Event;
 /**
  * ...
  * @author George
  */
-class Main extends Shell {
+class Main extends Sprite {
 	
-	private function new() { super(); }
+	private function new() {
+		super();
+		
+		if (stage != null)
+			init();
+		else 
+			addEventListener(Event.ADDED_TO_STAGE, init);
+	}
 	
-	override function setDefaults():Void {
-		super.setDefaults();
+	function init(?e:Event):Void {
 		
-		_introState = Weigh12Islanders;
-		
-		AssetPaths.quickInit("assets/test");
+		addChild(new EmbedSwfTest());
 	}
 }

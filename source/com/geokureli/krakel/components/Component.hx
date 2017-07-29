@@ -13,13 +13,18 @@ class Component extends FlxBasic{
 	public var target(default, set):IComponentHolder;
 	var _components(get, never):ComponentList;
 	
+	public var enabled(default, set):Bool;
+	
 	public function new() {
 		super();
 		
 		setDefaults();
 	}
 	
-	function setDefaults() { }
+	function setDefaults() {
+		
+		enabled = true;
+	}
 	
 	/** Called by the target before it's own update process. */
 	public function preUpdate(elapsed:Float):Void { }
@@ -48,4 +53,6 @@ class Component extends FlxBasic{
 		
 		return value;
 	}
+	
+	function set_enabled(value:Bool):Bool { return enabled = value; }
 }

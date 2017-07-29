@@ -1,5 +1,6 @@
 package com.geokureli.krakel.data.serial;
 
+import com.geokureli.krakel.art.Button;
 import com.geokureli.krakel.art.Layer;
 import com.geokureli.krakel.art.Sprite;
 import com.geokureli.krakel.components.Component;
@@ -140,6 +141,7 @@ class DameReader extends Deserializer {
 		addAutoClassLookup(Rectangle);
 		addAutoClassLookup(Sprite);
 		addAutoClassLookup(Layer);
+		addAutoClassLookup(Button);
 		
 		addClassLookup("Text", FlxText);
 	}

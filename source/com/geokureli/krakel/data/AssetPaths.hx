@@ -3,6 +3,7 @@ import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.BuildInfo;
 import com.geokureli.krakel.data.DataHolder;
 import com.geokureli.krakel.debug.Expect;
+import flash.display.MovieClip;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxBitmapFont;
 import flixel.math.FlxPoint;
@@ -17,6 +18,7 @@ class AssetPaths {
 	static public var MUSIC_PATH(get, never):String;
 	static public var SOUND_PATH(get, never):String;
 	static public var IMAGE_PATH(get, never):String;
+	static public var ANIM_PATH (get, never):String;
 	static public var TEXT_PATH (get, never):String;
 	static public var DATA_PATH (get, never):String;
 	
@@ -28,11 +30,13 @@ class AssetPaths {
 	var musicFolder:String;
 	var soundFolder:String;
 	var imageFolder:String;
+	var animFolder :String;
 	var dataFolder :String;
 	var textFolder :String;
 	
 	var defaultSoundExt:String;
 	var defaultImageExt:String;
+	var defaultAnimExt :String;
 	var defaultDataExt :String;
 	var bitmapFonts:Map <String, FlxBitmapFont>;
 	
@@ -54,6 +58,7 @@ class AssetPaths {
 		musicFolder = "music";
 		soundFolder = "sounds";
 		imageFolder = "images";
+		animFolder  = "animations";
 		dataFolder  = "data";
 		textFolder  = imageFolder + "/text";
 		
@@ -62,6 +67,7 @@ class AssetPaths {
 	#else
 		defaultSoundExt = ".ogg";
 	#end
+		defaultAnimExt  = ".swf";
 		defaultImageExt = ".png";
 		defaultDataExt = ".json";
 		
@@ -78,6 +84,7 @@ class AssetPaths {
 		soundFolder = basePath + soundFolder + '/';
 		dataFolder  = basePath + dataFolder  + '/';
 		imageFolder = basePath + imageFolder + '/';
+		animFolder  = basePath + animFolder  + '/';
 		textFolder  = basePath + textFolder  + '/';
 		
 		fileExt = [
@@ -86,6 +93,7 @@ class AssetPaths {
 			"gif"  => imageFolder,
 			"bmp"  => imageFolder, 
 			"jpeg" => imageFolder,
+			"swf"  => animFolder ,
 			"xml"  => dataFolder ,
 			"json" => dataFolder ,
 			"csv"  => dataFolder ,
@@ -134,11 +142,17 @@ class AssetPaths {
 		instance.addExtHandler(extension, path);
 	}
 	
-	static public function music(name:String):String { return MUSIC_PATH + parse(name) + instance.defaultSoundExt; }
-	static public function sound(name:String):String { return SOUND_PATH + parse(name) + instance.defaultSoundExt; }
-	static public function image(name:String):String { return IMAGE_PATH + parse(name) + instance.defaultImageExt; }
-	static public function text (name:String):String { return TEXT_PATH  + parse(name) + instance.defaultImageExt; }
-	static public function data (name:String):String { return DATA_PATH  + parse(name) + instance.defaultDataExt ; }
+	static public function music(name:String):String { return path(MUSIC_PATH, name, instance.defaultSoundExt); }
+	static public function sound(name:String):String { return path(SOUND_PATH, name, instance.defaultSoundExt); }
+	static public function image(name:String):String { return path(IMAGE_PATH, name, instance.defaultImageExt); }
+	static public function anim (name:String):String { return path(ANIM_PATH , name, instance.defaultAnimExt ); }
+	static public function text (name:String):String { return path(TEXT_PATH , name, instance.defaultImageExt); }
+	static public function data (name:String):String { return path(DATA_PATH , name, instance.defaultDataExt ); }
+	
+	static function path(path:String, name:String, defaultExt:String):String
+	{
+		return path + parse(name) + defaultExt;
+	}
 	
 	static public function bitmapData(name:String):BitmapData    { return Assets.getBitmapData(image(name), false); }
 	static public function bitmapFont(name:String):FlxBitmapFont { return instance.bitmapFonts[name]; }
@@ -240,9 +254,12 @@ class AssetPaths {
 	static public function getData(file:String):String { return Assets.getText(data(file)); }
 	static public function getParsedData(file:String):Dynamic { return Json.parse(getData(file)); }
 	
+	static public function getAnim(file:String):MovieClip { return Assets.getMovieClip(anim(file) + ":"); }
+	
 	static public function get_MUSIC_PATH():String { return instance.musicFolder; }
 	static public function get_SOUND_PATH():String { return instance.soundFolder; }
 	static public function get_IMAGE_PATH():String { return instance.imageFolder; }
-	static public function get_TEXT_PATH():String  { return instance.textFolder; }
-	static public function get_DATA_PATH():String  { return instance.dataFolder; }
+	static public function get_ANIM_PATH ():String { return instance.animFolder; }
+	static public function get_TEXT_PATH ():String { return instance.textFolder; }
+	static public function get_DATA_PATH ():String { return instance.dataFolder; }
 }

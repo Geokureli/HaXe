@@ -41,10 +41,10 @@
 	"level": {
 		"class":"Credits",
 		"children" : [ 
-			{ "class":"Sprite", "name":"btnSong", "animation":{ "graphic":"SongButton", "width":18, "height":17 }, "x":54 , "y":232, "scrollFactor":{ "x":0 } },
-			{ "class":"Sprite", "name":"btnRick", "animation":{ "graphic":"RickButton", "width":18, "height":19 }, "x":21 , "y":230, "scrollFactor":{ "x":0 } },
-			{ "class":"Sprite", "name":"btnGK"  , "animation":{ "graphic":"GKButton"  , "width":16, "height":13 }, "x":89 , "y":235, "scrollFactor":{ "x":0 } },
-			{ "class":"Sprite", "name":"btnMEH" , "animation":{ "graphic":"MEHButton" , "width":25, "height":13 }, "x":120, "y":235, "scrollFactor":{ "x":0 } },
+			{ "class":"Button", "name":"btnSong", "animation":{ "graphic":"SongButton", "width":19, "height":17 }, "x":54 , "y":232, "scrollFactor":{ "x":0 }, "onClick":"link:http://www.rickastley.co.uk/" },
+			{ "class":"Button", "name":"btnRick", "animation":{ "graphic":"RickButton", "width":18, "height":19 }, "x":21 , "y":230, "scrollFactor":{ "x":0 }, "onClick":"link:http://piq.codeus.net/gallery/?user=11742" },
+			{ "class":"Button", "name":"btnGK"  , "animation":{ "graphic":"GKButton"  , "width":16, "height":13 }, "x":89 , "y":235, "scrollFactor":{ "x":0 }, "onClick":"link:http://geokureli.newgrounds.com/" },
+			{ "class":"Button", "name":"btnMEH" , "animation":{ "graphic":"MEHButton" , "width":25, "height":13 }, "x":120, "y":235, "scrollFactor":{ "x":0 }, "onClick":"link:https://itunes.apple.com/us/artist/mehware/id296615880" },
 			{ "class":"Sprite", "name":"links"  , "graphic":"links" , "x":63 , "y":203, "scrollFactor":{ "x":0 } },
 			{ "class":"Sprite", "name":"press"  , "graphic":"press" , "x":42 , "y":45 , "scrollFactor":{ "x":0 } },
 			{ "class":"Sprite",                   "graphic":"thanks", "x":41 , "y":8  , "scrollFactor":{ "x":0 } },

@@ -43,14 +43,15 @@ class Sprite extends FlxSprite
 		addAnimations();
 	}
 	
+	@:noCompletion
 	function setDefaults():Void {
 		
-		components = new ComponentList();
+		components = new ComponentList(this);
 		tags = new Array<String>();
-		specialParsers = [
-			'graphic'   => deserializeGraphic,
-			'animation' => deserializeAnimation
-		];
+		
+		specialParsers = new Map<String, FieldParser>();
+		specialParsers['graphic'  ] = deserializeGraphic;
+		specialParsers['animation'] = deserializeAnimation;
 	}
 	
 	function deserializeGraphic(deserializer:Deserializer, value:Dynamic):Bool {
@@ -89,6 +90,7 @@ class Sprite extends FlxSprite
 		return false;
 	}
 	
+	@:noCompletion
 	function addAnimations() { }
 	
 	public function preUpdate(elapsed:Float):Void {
