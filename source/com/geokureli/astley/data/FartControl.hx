@@ -1,5 +1,7 @@
 package com.geokureli.astley.data;
 
+import flixel.input.mouse.FlxMouse;
+import flixel.input.keyboard.FlxKeyboard;
 import com.geokureli.krakel.components.Plugin;
 import flash.events.KeyboardEvent;
 import flixel.FlxG;
@@ -20,6 +22,8 @@ class FartControl extends Plugin {
 	var lastCount:Int;
 	var _antiPress:Bool;
 	
+	public var keys:FlxKeyboard;
+	public var mouse:FlxMouse;
 	public var isButtonDown:Bool;
 	
 	static public function create():Void {
@@ -41,7 +45,8 @@ class FartControl extends Plugin {
 		
 		isButtonDown = false;
 		
-		if (!FlxG.keys.justPressed.ANY && !FlxG.mouse.pressed) {
+		if (!(keys  != null ? keys.justPressed.ANY : FlxG.keys.justPressed.ANY)
+		&&  !(mouse != null ? mouse.pressed : FlxG.mouse.pressed)) {
 			
 			_antiPress = true;
 			
