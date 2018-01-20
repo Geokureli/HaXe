@@ -84,27 +84,26 @@ class ReplayRick extends Rick {
 	}
 }
 
-
 class Replay extends FlxReplay {
-
+	
 	public var keys (default, null):FlxKeyboard;
 	public var mouse(default, null):FlxMouse;
-
+	
 	public function new (keys:FlxKeyboard, mouse:FlxMouse) {
 		super();
-
+		
 		if (keys == null)
 			keys = FlxG.keys;
-
+		
 		if (mouse == null)
 			mouse = FlxG.mouse;
-
+		
 		this.keys = keys;
 		this.mouse = mouse;
 	}
-
+	
 	override public function playNextFrame():Void {
-
+		
 		if (_marker >= frameCount)
 		{
 			finished = true;
@@ -112,16 +111,15 @@ class Replay extends FlxReplay {
 		}
 		if (_frames[_marker].frame != frame++)
 			return;
-
+		
 		var fr:FrameRecord = _frames[_marker++];
-
+		
 		#if FLX_KEYBOARD if (fr.keys  != null) keys .playback(fr.keys ); #end
 		#if FLX_MOUSE    if (fr.mouse != null) mouse.playback(fr.mouse); #end
 	}
-
 }
 
 class ReplayMouse extends FlxMouse {
-
+	
 	public function new() { super(new Sprite()); }
 }
