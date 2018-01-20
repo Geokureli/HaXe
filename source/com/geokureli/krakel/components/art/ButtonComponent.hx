@@ -117,8 +117,7 @@ class ButtonComponent extends Component
 	 * Basic button update logic - searches for overlaps with touches and
 	 * the mouse cursor and calls updateStatus()
 	 */
-	function updateButton():Void
-	{
+	function updateButton():Void {
 		// We're looking for any touch / mouse overlaps with this button
 		var overlapFound = checkMouseOverlap();
 		if (!overlapFound)
@@ -136,9 +135,11 @@ class ButtonComponent extends Component
 		}
 	}
 	
-	function updateStatusAnimation():Void
-	{
-		if(graphic != null)
+	function updateStatusAnimation():Void {
+		
+		if (graphic != null
+		&&  graphic.animation != null
+		&&  graphic.animation.getByName(_statusAnimations[state]) != null)
 			graphic.animation.play(_statusAnimations[state]);
 	}
 	
@@ -184,8 +185,8 @@ class ButtonComponent extends Component
 	}
 	
 	/** Updates the button status by calling the respective event handler function. */
-	function updateStatus(input:IFlxInput):Void
-	{
+	function updateStatus(input:IFlxInput):Void {
+		
 		if (input.justPressed) {
 			
 			_currentInput = input;
@@ -207,16 +208,16 @@ class ButtonComponent extends Component
 	 * certain things like opening a new window are only allowed when they are user-initiated.
 	 */
 #if FLX_MOUSE
-	private function onUpEventListener(_):Void
-	{
+	private function onUpEventListener(_):Void {
+		
 		if (enabled && state == FlxButton.PRESSED)
 			onUpHandler();
 	}
 #end
 	
 	/** Internal function that handles the onUp event. */
-	function onUpHandler():Void
-	{
+	function onUpHandler():Void {
+		
 		state = FlxButton.NORMAL;
 		_input.release();
 		_currentInput = null;
