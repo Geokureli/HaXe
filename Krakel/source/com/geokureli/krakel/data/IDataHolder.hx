@@ -5,7 +5,6 @@ package com.geokureli.krakel.data;
  */
 
 interface IDataHolder {
-	
-	function mergeData(data:Dynamic):Void;
-	
+    
+    function mergeData(data:Dynamic):Void;
 }

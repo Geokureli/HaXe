@@ -5,7 +5,7 @@ package com.geokureli.krakel.interfaces;
  */
 
 interface INamed {
-  
-	var name:String;
-	var tags:Array<String>;
+    
+    var name:String;
+    var tags:Array<String>;
 }
