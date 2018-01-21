@@ -1,7 +1,8 @@
 package com.geokureli.krakel.art;
 
+import hx.debug.Assert;
+
 import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.debug.Assert;
 import com.geokureli.krakel.data.serial.Deserializer;
 import com.geokureli.krakel.components.ComponentList;
 import com.geokureli.krakel.interfaces.IUpdate;

@@ -1,9 +1,9 @@
 package com.geokureli.krakel.data;
 
-import com.geokureli.krakel.audio.Sound;
-import com.geokureli.krakel.debug.Expect;
+import hx.debug.Expect;
 
-import flash.display.MovieClip;
+import com.geokureli.krakel.audio.Sound;
+
 
 import flixel.FlxG;
 import flixel.graphics.frames.FlxBitmapFont;
@@ -12,6 +12,7 @@ import flixel.system.FlxSound;
 
 import haxe.Json;
 
+import openfl.display.MovieClip;
 import openfl.display.BitmapData;
 import openfl.Assets;
 

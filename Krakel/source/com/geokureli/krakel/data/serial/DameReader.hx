@@ -1,6 +1,6 @@
 package com.geokureli.krakel.data.serial;
 
-import com.geokureli.krakel.debug.Assert;
+import hx.debug.Assert;
 import com.geokureli.krakel.components.ComponentList;
 import com.geokureli.krakel.art.Button;
 import com.geokureli.krakel.art.Layer;
