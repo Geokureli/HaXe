@@ -116,7 +116,7 @@ class ReplayState extends BaseState {
             leadGhost.playSounds = true;
             leadGhost.startTime = 0;
             setCameraFollow(leadGhost);
-            FlxG.worldBounds.width = leadGhost.x + leadGhost.width;
+            //FlxG.worldBounds.width = leadGhost.x + leadGhost.width;
         }
     }
     
