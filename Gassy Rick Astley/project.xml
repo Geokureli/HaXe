@@ -2,7 +2,14 @@
 <project>
     <!------------------------------APPLICATION SETTINGS---------------------------->
     
-    <app title="Gassy Rick Astley" file="GassyRickAstley" main="com.geokureli.astley.Main" package="com.geokureli.astley" version="0.0.1" company="GeoKureli" />
+    <app
+        title  ="Gassy Rick Astley"
+        file   ="GassyRickAstley"
+        main   ="com.geokureli.astley.Main"
+        package="com.geokureli.astley"
+        version="0.0.1"
+        company="GeoKureli"
+    />
     
     <!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
     <!--or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"!-->
@@ -29,7 +36,6 @@
     
     <set name="BUILD_DIR" value="../export" />
     <classpath name="source" />
-    <classpath name="lib" />
     <assets path="assets" rename="assets" exclude="*.wav|*.ogg|*.xml|NG/|source|*.db" if    ="flash" />
     <assets path="assets" rename="assets" exclude="*.wav|*.mp3|*.xml|NG/|source|*.db" unless="flash" />
     
@@ -40,17 +46,20 @@
         <music path="music"  exclude="*.wav|*.mp3" unless="flash" />
     </assets-->
     
-    <app path="export/release" />
-    <app path="export" if="debug" />
+    <app path="bin/release" />
+    <app path="bin" if="debug" />
     
     <!--------------------------------LIBRARIES------------------------------------->
 
     <!--haxelib name="openfl-html5" if="html" /-->
     <haxelib name="flixel"/>
     <haxelib name="actuate"/>
-    <haxelib name="ash"/>
+    <!-- <haxelib name="ash"/> -->
+    <haxelib name="openfl" version="3.6.1" />
+    <classpath name="../lib" />
     <classpath path="../Krakel/source" />
     <classpath path="../../lib/HxAssert/src" />
+    <!-- <classpath path="../../lib/NG.io/lib/src" /> -->
     
     
     <!--In case you want to use the addons package-->
