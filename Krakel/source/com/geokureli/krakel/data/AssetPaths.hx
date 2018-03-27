@@ -145,16 +145,16 @@ class AssetPaths {
         instance.addExtHandler(extension, path);
     }
     
-    static public function music(name:String):String { return path(MUSIC_PATH, name, instance.defaultSoundExt); }
-    static public function sound(name:String):String { return path(SOUND_PATH, name, instance.defaultSoundExt); }
-    static public function image(name:String):String { return path(IMAGE_PATH, name, instance.defaultImageExt); }
-    static public function anim (name:String):String { return path(ANIM_PATH , name, instance.defaultAnimExt ); }
-    static public function text (name:String):String { return path(TEXT_PATH , name, instance.defaultImageExt); }
-    static public function data (name:String):String { return path(DATA_PATH , name, instance.defaultDataExt ); }
+    static public function music(name:String, autoExt:Bool = true):String { return path(MUSIC_PATH, name, instance.defaultSoundExt, autoExt); }
+    static public function sound(name:String, autoExt:Bool = true):String { return path(SOUND_PATH, name, instance.defaultSoundExt, autoExt); }
+    static public function image(name:String, autoExt:Bool = true):String { return path(IMAGE_PATH, name, instance.defaultImageExt, autoExt); }
+    static public function anim (name:String, autoExt:Bool = true):String { return path(ANIM_PATH , name, instance.defaultAnimExt , autoExt); }
+    static public function text (name:String, autoExt:Bool = true):String { return path(TEXT_PATH , name, instance.defaultImageExt, autoExt); }
+    static public function data (name:String, autoExt:Bool = true):String { return path(DATA_PATH , name, instance.defaultDataExt , autoExt); }
     
-    static function path(path:String, name:String, defaultExt:String):String
+    static function path(path:String, name:String, defaultExt:String, autoExt:Bool):String
     {
-        return path + parse(name) + defaultExt;
+        return path + parse(name) + (autoExt ? defaultExt : "");
     }
     
     static public function bitmapData(name:String):BitmapData    { return Assets.getBitmapData(image(name), false); }

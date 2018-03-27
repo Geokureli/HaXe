@@ -4,7 +4,12 @@ package com.geokureli.astley.data;
  * ...
  * @author George
  */
+
+import io.newgrounds.NG;
+
 import com.geokureli.astley.art.Tilemap;
+import com.geokureli.krakel.data.AssetPaths;
+
 class Prize {
     
     static public inline var NONE:String = "none";
@@ -18,24 +23,47 @@ class Prize {
         NONE, BRONZE, SILVER, GOLD, PLATINUM
     ];
     
-    static public var GOALS:Array<Float> = [
-        1.5, 8, 20, 51, 131
-        //1, 2, 3, 4, 5
-    ];
+    static var GOALS = 
+        [ NGData.PROGRESS_4 => 131.0
+        , NGData.PROGRESS_3 =>  51.0
+        , NGData.PROGRESS_2 =>  20.0
+        , NGData.PROGRESS_1 =>   8.0
+        , NGData.PROGRESS_0 =>   1.5
+        ];
     
-    static public var ACHIEVEMENTS:Array<String>  = [
-        "You move me",
-        "Never gonna let you down",
-        "Poop sensation",
-        "Does this game even end?",
-        "Topping the charts"
-    ];
+    static var ICONS = 
+        [ NGData.CREDITS_ME => "me"
+        , NGData.PLAY_AGAIN => "rick"
+        , NGData.PROGRESS_0 => "pipe"
+        , NGData.PROGRESS_1 => "bronze"
+        , NGData.PROGRESS_2 => "silver"
+        , NGData.PROGRESS_3 => "gold"
+        , NGData.PROGRESS_4 => "platinum"
+        ];
     
-    static public function unlockMedal(name:String):Void {
-        //if (API.getMedal(name).unlocked)
-            //return;
+    inline static public function getIconPath(id:Int):String {
         
-        //API.unlockMedal(name);
+        return AssetPaths.image('medals/${ICONS[id]}.gif', false);
+    }
+    
+    static public function init():Void {
+        
+    }
+    
+    static public function checkProgressPrize(score:Float):Void {
+        
+        for(goal in GOALS.keys()) {
+            
+            if(score >= GOALS.get(goal))
+                unlockMedal(goal);
+        }
+    }
+    
+    static public function unlockMedal(id:Int):Void {
+        
+        var medal = NG.core.medals.get(id);
+        if (!medal.unlocked)
+            medal.sendUnlock();
     }
     
     static public inline var CREDIT_MEDAL:String = "That's me!";

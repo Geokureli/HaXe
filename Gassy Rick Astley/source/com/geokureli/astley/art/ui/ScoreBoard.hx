@@ -84,6 +84,7 @@ class ScoreBoard extends Nest {
     }
     
     function onRollupComplete():Void {
+        
         if (_new.visible) {
             
             //BestSave.best = _best;

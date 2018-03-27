@@ -1,10 +1,12 @@
 package com.geokureli.astley;
 
+import io.newgrounds.NG;
+
+import com.geokureli.astley.data.Prize;
+import com.geokureli.astley.data.NGData;
+import com.geokureli.astley.art.ui.MedalPopup;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.data.LevelData;
-import motion.easing.Linear;
-import motion.Actuate;
-
 import com.geokureli.astley.art.Grass;
 import com.geokureli.astley.states.RollinState;
 import com.geokureli.krakel.data.AssetPaths;
@@ -15,6 +17,9 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+
+import motion.easing.Linear;
+import motion.Actuate;
 /**
  * ...
  * @author George
@@ -49,12 +54,18 @@ class IntroState extends State {
     override public function create():Void {
         super.create();
         
+        NG.createAndCheckSession(FlxG.stage, NGData.APP_ID);
+        if (!NG.core.attemptingLogin)
+            NG.core.requestMedals();
+        
+        Prize.init();
         LevelData.init();
         FartControl.create();
         FartControl.enabled = false;
         AssetPaths.initBitmapFontMonospace("numbers_10", "0123456789");
+        AssetPaths.initBitmapFontMonospace("letters_med", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.");
         
-        add(_title = new FlxSprite(0, 0, AssetPaths.text("gassy_rick_astley")));
+        add(_title = new FlxSprite(0, 0, AssetPaths.text("gassy_rick_astley_w_char")));
         centerX(_title).y = -_title.height;
         
         add(new FlxSprite(100, 123, AssetPaths.image("tap")));
@@ -64,6 +75,10 @@ class IntroState extends State {
         centerX(_instructions).visible = false;
         
         add(new Grass());
+        add(new FlxSprite(1, 233, AssetPaths.image("ngLogo_small")));
+        
+        // --- DEBUG
+        add(new MedalPopup());
         
         FlxTween.tween(_title, { y:52 }, 1, { type:FlxTween.ONESHOT, ease:FlxEase.sineOut, onComplete:onIntroComplete } );
     }

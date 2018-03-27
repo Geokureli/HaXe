@@ -1,5 +1,6 @@
 package com.geokureli.astley.states;
 
+import com.geokureli.astley.art.ui.MedalPopup;
 import com.geokureli.astley.data.LevelData;
 import com.geokureli.astley.art.hero.Rick;
 import com.geokureli.astley.art.Tilemap;
@@ -33,6 +34,8 @@ class BaseState extends State {
     
     override public function create():Void {
         super.create();
+        
+        add(new MedalPopup());
     }
     
     override function setDefaults():Void 

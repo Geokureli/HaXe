@@ -56,10 +56,10 @@
     <haxelib name="actuate"/>
     <!-- <haxelib name="ash"/> -->
     <haxelib name="openfl" version="3.6.1" />
+    <haxelib name="newgrounds.io" /> 
     <classpath name="../lib" />
     <classpath path="../Krakel/source" />
     <classpath path="../../lib/HxAssert/src" />
-    <!-- <classpath path="../../lib/NG.io/lib/src" /> -->
     
     
     <!--In case you want to use the addons package-->

@@ -1,5 +1,7 @@
 package com.geokureli.astley.states;
 
+import com.geokureli.astley.data.NGData;
+import com.geokureli.astley.data.Prize;
 import com.geokureli.astley.art.Tilemap;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.art.ui.DeathUI;
@@ -108,11 +110,9 @@ class RollinState extends BaseState {
             return;
         
         var numScore:Float = Tilemap.getScore(_hero.x);
-        _score = Std.int(numScore);
+        Prize.checkProgressPrize(numScore);
         
-        //for (var i:int = Prize.GOALS.length - 1; i >= 0; i--)
-            //if(numScore >= Prize.GOALS[i])
-                //Prize.unlockMedal(Prize.ACHIEVEMENTS[i]);
+        _score = Std.int(numScore);
         
         if (_running) {
             
@@ -202,7 +202,7 @@ class RollinState extends BaseState {
     
     private function startResetPan():Void {
         
-        //Prize.unlockMedal(Prize.CONTINUE_MEDAL);
+        Prize.unlockMedal(NGData.PLAY_AGAIN);
         
         _deathUI.killTimer();
         _isResetting = true;
