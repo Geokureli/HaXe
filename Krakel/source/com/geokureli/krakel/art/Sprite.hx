@@ -16,6 +16,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 
 import openfl.Assets;
+import openfl.utils.AssetType;
 
 typedef AnimationData = { graphic:String, ?width:Int, ?height:Int, ?unique:Bool, ?key:String };
 
