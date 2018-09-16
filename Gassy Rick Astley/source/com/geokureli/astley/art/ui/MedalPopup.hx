@@ -1,13 +1,16 @@
 package com.geokureli.astley.art.ui;
 
+import openfl.geom.Rectangle;
+
+import flixel.text.FlxText;
+import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.text.FlxBitmapText;
-import flixel.text.FlxText.FlxTextAlign;
 import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxColor;
-import flixel.util.FlxTimer;
 import flixel.math.FlxRect;
+import flixel.math.FlxPoint;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 
@@ -15,8 +18,18 @@ import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.astley.data.Prize;
 import com.geokureli.astley.art.ui.ScoreText;
 
-import io.newgrounds.NG;
-import io.newgrounds.objects.Medal;
+#if newgrounds
+    import io.newgrounds.NG;
+    import io.newgrounds.objects.Medal;
+#else
+    typedef Medal = {
+        
+        var id         :Int;
+        var name       :String;
+        var icon       :String;
+        var value      :Int;
+    }
+#end
 
 class MedalPopup extends FlxSpriteGroup {
     
@@ -25,7 +38,10 @@ class MedalPopup extends FlxSpriteGroup {
     static inline var PIC_SIZE:Int = 25;
     static inline var AWAY_Y:Int = -50;
     
+    static public var instance:MedalPopup;
+    
     var _animQueue = new Array<Medal>();
+    
     var _iconFrame:FlxSprite;
     var _points:ScoreText;
     var _name:FlxBitmapText;
@@ -37,42 +53,62 @@ class MedalPopup extends FlxSpriteGroup {
         
         y = AWAY_Y;
         visible = false;
+        scrollFactor.x = scrollFactor.y = 0;
         
-        var buffer:Int = Std.int((FlxG.width - WIDTH) / 2);
+        var buffer:FlxPoint = new FlxPoint(Std.int((FlxG.width - WIDTH) / 2), 0);
+        buffer.y = buffer.x - 5;
         
         var board = new BoardSprite(WIDTH, HEIGHT);
-        board.x = board.y = buffer;
+        board.x = buffer.x;
+        board.y = buffer.y;
         add(board);
         
         _iconFrame = new FlxSprite();
         _iconFrame.makeGraphic(PIC_SIZE, PIC_SIZE, FlxColor.BLACK);
-        _iconFrame.x = _iconFrame.y = buffer + Std.int((HEIGHT - PIC_SIZE) / 2);
+        _iconFrame.x = buffer.x + Std.int((HEIGHT - PIC_SIZE) / 2);
+        _iconFrame.y = _iconFrame.x - 5;
         add(_iconFrame);
         
-        add(new FlxSprite(buffer + 17, buffer - 11, AssetPaths.text("medal_get")));
+        add(new FlxSprite(buffer.x + 17, buffer.y - 11, AssetPaths.text("medal_get")));
         
-        add(_points = new ScoreText(buffer + 96, buffer + 6, true));
+        add(new FlxSprite(buffer.x + 98, buffer.y + 10, AssetPaths.text("txt_points")));
+        add(_points = new ScoreText(buffer.x + 91, buffer.y + 6, true));
         add(_name = new FlxBitmapText(AssetPaths.bitmapFont("letters_med")));
-        _name.x = buffer + 36;
-        _name.y = buffer - 29;
+        _name.x = buffer.x + 35;
+        _name.y = buffer.y - 29;
         _nameX = _name.x;
-        _nameRect = new FlxRect(0, 0, 88, _name.height);
+        _name.borderStyle = FlxTextBorderStyle.SHADOW;
+        _nameRect = new FlxRect(0, 0, 86, _name.height);
+        // draw inset for medal name
+        var pixelRect = new Rectangle(_name.x - board.x - 2, _name.y - board.y - 2, _nameRect.width, _nameRect.height);
+        board.pixels.fillRect(pixelRect, 0xffc37739);
+        pixelRect.y += 2;
+        board.pixels.fillRect(pixelRect, 0xfffdbd8a);
+        pixelRect.y -= 1;
+        board.pixels.fillRect(pixelRect, 0xfff09754);// 0xffffa257);
         
+        #if newgrounds
         if (NG.core.medals != null)
             medalsLoaded();
         else
             NG.core.onMedalsLoaded.add(medalsLoaded);
+        #end
+        
+        instance = this;
     }
     
-    function medalsLoaded():Void {
+    #if newgrounds
         
-        for (medal in NG.core.medals) {
+        function medalsLoaded():Void {
             
-            if (!medal.unlocked)
-                medal.onUnlock.add(onMedalOnlock.bind(medal));
-            // onMedalOnlock(medal);// DEBUG medal testing
+            for (medal in NG.core.medals) {
+                
+                if (!medal.unlocked)
+                    medal.onUnlock.add(onMedalOnlock.bind(medal));
+                // onMedalOnlock(medal);// DEBUG medal testing
+            }
         }
-    }
+    #end
     
     function onMedalOnlock(medal:Medal):Void {
         
@@ -92,11 +128,14 @@ class MedalPopup extends FlxSpriteGroup {
         visible = true;
         
         _iconFrame.loadGraphic(Prize.getIconPath(medal.id));
+        var right = _points.x + _points.width;
         _points.text = Std.string(medal.value);
+        _points.x = right - _points.width;// because alignment.right doesn't work
         _name.text = medal.name.toUpperCase();
         _name.x = _nameX + _nameRect.width;
         _nameRect.x = -_nameRect.width;
-        _name.clipRect = _nameRect;
+        _name.clipRect = new FlxRect();
+        _name.clipRect.copyFrom(_nameRect);
         _name.visible = false;
         
         FlxTween.tween(this, { y:0 }, 0.5, { ease:FlxEase.backOut, onComplete:onInComplete } );
@@ -118,7 +157,8 @@ class MedalPopup extends FlxSpriteGroup {
     
     function updateRect(tween:FlxTween):Void {
         
-        _name.clipRect = _nameRect;
+        _name.clipRect.copyFrom(_nameRect);
+        _name.clipRect = _name.clipRect;// trigger redraw
     }
     
     function endAnim(tween:FlxTween):Void {
@@ -134,8 +174,8 @@ class MedalPopup extends FlxSpriteGroup {
     }
     
     override public function destroy():Void {
-        super.destroy();
         
-        
+        // Don't destroy, persist through states
+        //super.destroy();
     }
 }

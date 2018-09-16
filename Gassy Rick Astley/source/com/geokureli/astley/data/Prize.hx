@@ -5,7 +5,9 @@ package com.geokureli.astley.data;
  * @author George
  */
 
-import io.newgrounds.NG;
+#if newgrounds
+    import io.newgrounds.NG;
+#end
 
 import com.geokureli.astley.art.Tilemap;
 import com.geokureli.krakel.data.AssetPaths;
@@ -61,9 +63,11 @@ class Prize {
     
     static public function unlockMedal(id:Int):Void {
         
-        var medal = NG.core.medals.get(id);
-        if (!medal.unlocked)
-            medal.sendUnlock();
+        #if (newgrounds && !ng_lite)
+            var medal = NG.core.medals.get(id);
+            if (!medal.unlocked)
+                medal.sendUnlock();
+        #end
     }
     
     static public inline var CREDIT_MEDAL:String = "That's me!";

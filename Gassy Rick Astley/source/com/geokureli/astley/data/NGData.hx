@@ -3,6 +3,7 @@ package com.geokureli.astley.data;
 class NGData {
     
     inline static public var APP_ID:String = "47215:Ip8uDj9v";
+    // inline static public var APP_ID:String = "48010:uIFuFyui";//GRA TEST
     
     inline static public var CREDITS_ME:Int = 53995;
     inline static public var PLAY_AGAIN:Int = 53997;

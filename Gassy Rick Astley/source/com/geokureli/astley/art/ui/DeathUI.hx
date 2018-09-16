@@ -8,10 +8,9 @@ import com.geokureli.krakel.Nest;
 
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
-
-import motion.Actuate;
-import motion.easing.Back;
 
 /**
  * ...
@@ -49,7 +48,7 @@ class DeathUI extends Nest {
         add(_letDown = new FlxSprite(-13, 0, AssetPaths.text("let_down")));
         add(_hurtMe = new FlxSprite(-13, 0, AssetPaths.text("hurt_me")));
         add(_board = new ScoreBoard());
-        add(_timerTxt = new ScoreText(48, 176, true));
+        add(_timerTxt = new ScoreText(48, 180, true));
         add(_retry = new FlxSprite(15, 196, AssetPaths.text("press_any_key")));
         
         _countDownMusic = new FlxSound().loadEmbedded(AssetPaths.music("count_down"));
@@ -78,37 +77,56 @@ class DeathUI extends Nest {
         _letDown.visible = false;
         _hurtMe.visible = false;
         _retry.visible = false;
-        Actuate.tween(_board, 1, { y:70 } ).onComplete(onBoardIn, [score]).ease(Back.easeOut);
+        FlxTween.tween
+            ( _board
+            , { y:74 }
+            , 1
+            , { ease:FlxEase.backOut, onComplete:function(_) { onBoardIn(score); } }
+            );
     }
     
     public function startTransitionOut():Void {
         
-        Actuate.tween(_board, RollinState.MIN_RESET_TIME, { y: _board.y - (_board.height + _board.y) } )
-            .ease(Back.easeIn);
-            
-        Actuate.tween(_gameOver, RollinState.MIN_RESET_TIME, { y:_gameOver.y - (_board.height + _board.y) } )
-            .ease(Back.easeIn)
-            .delay(0.25);
+        FlxTween.tween
+            ( _board
+            , { y: _board.y - (_board.height + _board.y) }
+            , RollinState.MIN_RESET_TIME
+            , { ease:FlxEase.backIn }
+            );
+        
+        FlxTween.tween
+            ( _gameOver
+            , { y:_gameOver.y - (_board.height + _board.y) }
+            , RollinState.MIN_RESET_TIME
+            , { ease:FlxEase.backIn, startDelay:0.25 }
+            );
     }
     
     function onBoardIn(score:Int):Void {
         
         _gameOver.y = _board.y;
         _giveUp.y = _board.y + _board.height - _giveUp.height;
-        
-        Actuate.tween(_gameOver, .5, { y:_gameOver.y - _gameOver.height } )
-            .ease(Back.easeOut)
-            .onComplete(_callback);
-        
+        var callback = _callback;
         _callback = null;
+        
+        FlxTween.tween
+            ( _gameOver
+            , { y:_gameOver.y - _gameOver.height }
+            , 0.5
+            , { ease:FlxEase.backOut, onComplete:function(_) { callback(); } }
+            );
+        
         _board.setData(score, onScoreSet);
     }
     
     function onScoreSet():Void {
         
-        Actuate.tween(_giveUp, .5, { y: _giveUp.y + _giveUp.height } )
-            .ease(Back.easeOut)
-            .onComplete(startTimer);
+        FlxTween.tween
+            ( _giveUp
+            , { y: _giveUp.y + _giveUp.height }
+            , 0.5
+            , { ease:FlxEase.backOut, onComplete:function(_) { startTimer(); } }
+            );
     }
     
     function startTimer():Void {

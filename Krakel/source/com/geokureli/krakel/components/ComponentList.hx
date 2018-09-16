@@ -135,6 +135,11 @@ private class ClassMap<K:Class<Dynamic>, V> implements Map.IMap<K, V>
         return h.iterator();
     }
     
+    public inline function copy():Map.IMap<K,V>
+    {
+        return null;
+    }
+    
     public inline function toString():String
     {
         return h.toString();
