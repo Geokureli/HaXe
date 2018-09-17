@@ -1,10 +1,13 @@
 package com.geokureli.astley.states;
 
+import com.geokureli.astley.data.NGData;
+import com.geokureli.astley.data.Prize;
 import com.geokureli.astley.art.Tilemap;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.art.ui.DeathUI;
 import com.geokureli.astley.art.ui.ScoreText;
 import com.geokureli.astley.art.hero.Rick;
+import com.geokureli.astley.data.BestSave;
 import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.AssetPaths;
 
@@ -35,7 +38,7 @@ class RollinState extends BaseState {
     var _deathUI:DeathUI;
     var _songReversed:Sound;
     
-    var _score(default, set):Int;
+    var _score(default, set):Float;
     var _running:Bool;
     var _isGameOver:Bool;
     var _isResetting:Bool;
@@ -107,12 +110,7 @@ class RollinState extends BaseState {
         if (_isEnd)
             return;
         
-        var numScore:Float = Tilemap.getScore(_hero.x);
-        _score = Std.int(numScore);
-        
-        //for (var i:int = Prize.GOALS.length - 1; i >= 0; i--)
-            //if(numScore >= Prize.GOALS[i])
-                //Prize.unlockMedal(Prize.ACHIEVEMENTS[i]);
+        _score = Tilemap.getScore(_hero.x);
         
         if (_running) {
             
@@ -120,8 +118,7 @@ class RollinState extends BaseState {
                 
                 _isEnd = true;
                 _hero.playWinAnim(_endPipe.x, _endPipe.y + 5, onPipeCentered);
-                //BestSave.best = _map.numPipes;
-                //API.postScore(LevelData.SCORE_BOARD_ID, _map.numPipes);
+                BestSave.best = _map.numPipes;
             }
             
         } else {
@@ -185,7 +182,7 @@ class RollinState extends BaseState {
         _deathUI.visible = true;
         _hero.canFart = false;
         FartControl.enabled = false;
-        _deathUI.startTransition(_score, onEndScreenIn);
+        _deathUI.startTransition(Std.int(_score), onEndScreenIn);
         _deathUI.x = FlxG.camera.scroll.x + _hero.resetPos.x;
         _scoreTxt.visible = false;
         
@@ -198,11 +195,12 @@ class RollinState extends BaseState {
     function onEndScreenIn():Void {
         
         FartControl.enabled = true;
+        Prize.checkProgressPrize(_score);
     }
     
     private function startResetPan():Void {
         
-        //Prize.unlockMedal(Prize.CONTINUE_MEDAL);
+        Prize.unlockMedal(NGData.PLAY_AGAIN);
         
         _deathUI.killTimer();
         _isResetting = true;
@@ -297,13 +295,13 @@ class RollinState extends BaseState {
         switchState(new ReplayState());
     }
     
-    function set__score(value:Int):Int {
+    function set__score(value:Float):Float {
         
         if (_score == value)
             return value;
         
         _score = value;
-        _scoreTxt.text = Std.string(value);
+        _scoreTxt.text = Std.string(Std.int(value));
         return _score;
     }
 }

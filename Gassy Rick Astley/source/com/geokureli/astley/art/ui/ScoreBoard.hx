@@ -1,12 +1,14 @@
 package com.geokureli.astley.art.ui;
 
 import com.geokureli.astley.data.Prize;
-import com.geokureli.krakel.components.art.NineSliceScaler;
+import com.geokureli.astley.data.BestSave;
+import com.geokureli.astley.art.ui.BoardSprite;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.Nest;
 
-import flixel.FlxSprite;
 import flash.geom.Rectangle;
+
+import flixel.FlxSprite;
 
 import motion.Actuate;
 
@@ -24,7 +26,6 @@ class ScoreBoard extends Nest {
     var _scoreTxt:ScoreText;
     var _bestTxt:ScoreText;
     var _new:FlxSprite;
-    var _scoreSetCallback:Void->Void;
     
     public function new(width:Int = 128, height:Int = 80) {
         super(0, 0);
@@ -32,20 +33,8 @@ class ScoreBoard extends Nest {
         this.width = width;
         this.height = height;
         
-        //_score = 0;
-        //_best = BestSave.best;
-        
         // --- CREATE BACK BOARD
-        var board:FlxSprite = new FlxSprite();
-        board.makeGraphic(width, height, 0, true);
-        
-        board.pixels = NineSliceScaler.createBitmap(
-            AssetPaths.bitmapData("board"),
-            new Rectangle(5, 7, 1, 1),
-            width, height
-        );
-        
-        add(board);
+        add(new BoardSprite(width, height));
         
         // --- TEXT
         add(new FlxSprite(24, 12, AssetPaths.text("txt_medal")));
@@ -61,10 +50,10 @@ class ScoreBoard extends Nest {
         // --- MEDAL
         add(_medal = new FlxSprite(24, 32));
         _medal.loadGraphic(AssetPaths.image("medals"), true, 24);
-        _medal.animation.add(Prize.NONE, [0]);
-        _medal.animation.add(Prize.BRONZE, [1]);
-        _medal.animation.add(Prize.SILVER, [2]);
-        _medal.animation.add(Prize.GOLD, [3]);
+        _medal.animation.add(Prize.NONE    , [0]);
+        _medal.animation.add(Prize.BRONZE  , [1]);
+        _medal.animation.add(Prize.SILVER  , [2]);
+        _medal.animation.add(Prize.GOLD    , [3]);
         _medal.animation.add(Prize.PLATINUM, [4]);
     }
     
@@ -77,30 +66,27 @@ class ScoreBoard extends Nest {
     public function setData(score:Int, callback:Void->Void):Void {
         var duration:Float = score / 10;
         
-        _scoreSetCallback = callback;
-        
         Actuate.tween(this, duration, { score:score } )
-            .onComplete(onRollupComplete);
+            .onComplete(onRollupComplete.bind(score, callback));
     }
     
-    function onRollupComplete():Void {
-        if (_new.visible) {
-            
-            //BestSave.best = _best;
-            //if (API.connected) 
-                //API.postScore(LevelData.SCORE_BOARD_ID, _best);
-        }
+    function onRollupComplete(score:Int, callback:Void->Void):Void {
         
-        if (_scoreSetCallback != null) {
-            
-            _scoreSetCallback();
-            _scoreSetCallback = null;
-        }
+        if (score > BestSave.best)
+            BestSave.best = score;
+        
+        if (callback != null)
+            callback();
     }
     
     public var score(default, set):Int;
     public function set_score(value:Int):Int {
-        score = value;
+        
+        #if html5
+        value = Std.int(value);
+        #end
+        
+        this.score = value;
         
         _scoreTxt.text = Std.string(value);
         if (value > best) {
@@ -113,7 +99,7 @@ class ScoreBoard extends Nest {
     
     public var best(default, set):Int;
     public function set_best(value:Int):Int {
-        best = value;
+        this.best = value;
         
         _bestTxt.text = Std.string(value);
         

@@ -1,4 +1,5 @@
 package com.geokureli.astley.art.hero;
+import com.geokureli.astley.art.hero.ReplayRick.ReplayMouse;
 import flixel.input.keyboard.FlxKeyboard;
 import flixel.system.replay.FrameRecord;
 import openfl.display.Sprite;
@@ -13,8 +14,8 @@ import flixel.util.FlxTimer;
  */
 class ReplayRick extends Rick {
     
-    private static var keys:FlxKeyboard = new FlxKeyboard();
-    private static var mouse:ReplayMouse = new ReplayMouse();
+    private static var keys:FlxKeyboard;
+    private static var mouse:ReplayMouse;
     
     public var startTime:Int;
     public var replayFinished(get, never):Bool;
@@ -23,6 +24,12 @@ class ReplayRick extends Rick {
     
     public function new(x:Float, y:Float, replayData:String) {
         super(x, y);
+        
+        if (keys == null)
+            keys = new FlxKeyboard();
+        
+        if (mouse == null)
+            mouse = new ReplayMouse();
         
         _replay.load(replayData);
     }

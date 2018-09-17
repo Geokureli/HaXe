@@ -29,16 +29,16 @@
 	
 	<set name="BUILD_DIR" value="export" />
 	
-	<library path="assets/test/animations/test_1.swf" id="library" type="swflite"/>
+	<!--<library path="assets/test/animations/test_1.swf" id="library" type="swflite"/>-->
 	
 	<classpath name="source" />
-	<assets path="assets/test" rename="assets"/>
+	<assets path="assets"/>
 	
 	<app path="export/release" />
 	<app path="export" if="debug" />
 	
-	<haxelib name="swf" type="swf"     if    ="flash"/>
-	<haxelib name="swf" type="swflite" unless="flash"/>
-	<haxelib name="openfl" />
+	<haxelib name="flixel" />
+	<haxelib name="actuate" />
+	<classpath path="../../lib/NG.io/src" />
 	
 </project>

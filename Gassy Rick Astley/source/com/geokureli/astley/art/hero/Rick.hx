@@ -98,8 +98,16 @@ class Rick extends RickLite {
             fart();
         
         // --- COLLISION
-        if (y < 0 || y + height > FlxG.height)// || FlxG.overlap(this, Pipe.COLLIDER)) {
+        if (y < 0 || y + height > FlxG.height) {
+            
+            if (y < 0) {
+                
+                velocity.y = 0;
+                y = 0;
+            }
+            
             kill();
+        }
     }
     
     public function fart():Void {

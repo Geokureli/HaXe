@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-    <!------------------------------APPLICATION SETTINGS---------------------------->
+    <!-- _________________________ APPLICATION SETTINGS _________________________ -->
     
-    <app title="Gassy Rick Astley" file="GassyRickAstley" main="com.geokureli.astley.Main" package="com.geokureli.astley" version="0.0.1" company="GeoKureli" />
-    
-    <!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
-    <!--or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"!-->
-    <app preloader="flixel.system.FlxPreloader"/>
+    <app
+        title  ="Gassy Rick Astley"
+        file   ="GassyRickAstley"
+        main   ="com.geokureli.astley.Main"
+        package="com.geokureli.astley"
+        version="0.0.1"
+        company="GeoKureli"
+    />
     
     <!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2 -->
     <set name="SWF_VERSION" value="11.8" />
     
-    <!--------------------------------WINDOW SETTINGS------------------------------->
+    <!-- _________________________ WINDOW SETTINGS _________________________ -->
     
     <!--These window settings apply to all targets-->
     <window width="320" height="512" fps="30" background="#5c94fc" hardware="true" vsync="true" />
     
     <!--Web-specific-->
-    <window if="web" orientation="portrait"  />
+    <window if="html5" orientation="portrait" />
     
     <!--Desktop-specific-->
     <window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
@@ -25,11 +28,10 @@
     <!--Mobile-specific-->
     <window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
     
-    <!--------------------------------PATHS SETTINGS-------------------------------->
+    <!--_________________________PATHS SETTINGS_________________________-->
     
     <set name="BUILD_DIR" value="../export" />
     <classpath name="source" />
-    <classpath name="lib" />
     <assets path="assets" rename="assets" exclude="*.wav|*.ogg|*.xml|NG/|source|*.db" if    ="flash" />
     <assets path="assets" rename="assets" exclude="*.wav|*.mp3|*.xml|NG/|source|*.db" unless="flash" />
     
@@ -40,15 +42,14 @@
         <music path="music"  exclude="*.wav|*.mp3" unless="flash" />
     </assets-->
     
-    <app path="export/release" />
-    <app path="export" if="debug" />
+    <app path="bin/release" />
+    <app path="bin" if="debug" />
     
-    <!--------------------------------LIBRARIES------------------------------------->
+    <!-- _________________________ LIBRARIES _________________________ -->
 
-    <!--haxelib name="openfl-html5" if="html" /-->
     <haxelib name="flixel"/>
     <haxelib name="actuate"/>
-    <haxelib name="ash"/>
+    <haxelib name="newgrounds" />
     <classpath path="../Krakel/source" />
     <classpath path="../../lib/HxAssert/src" />
     
@@ -62,7 +63,7 @@
     <!--In case you want to use nape with flixel-->
     <!--haxelib name="nape" /-->
     
-    <!--------------------------------HAXEDEFINES----------------------------------->
+    <!-- _________________________ HAXEDEFINES _________________________ -->
     
     <!--Enable the Flixel core recording system-->
     <!--haxedef name="FLX_RECORD" /-->
@@ -94,7 +95,7 @@
     <!--Enable this for Nape release builds for a serious peformance improvement-->
     <haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
     
-    <!--------------------------------CUSTOM---------------------------------------->
+    <!-- _________________________ CUSTOM _________________________ -->
     
     <!--haxeflag name="-D haxeJSON" /-->
     
