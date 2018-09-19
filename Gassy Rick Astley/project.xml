@@ -3,12 +3,13 @@
     <!-- _________________________ APPLICATION SETTINGS _________________________ -->
     
     <app
-        title  ="Gassy Rick Astley"
-        file   ="GassyRickAstley"
-        main   ="com.geokureli.astley.Main"
-        package="com.geokureli.astley"
-        version="0.0.1"
-        company="GeoKureli"
+        title    ="Gassy Rick Astley"
+        file     ="GassyRickAstley"
+        main     ="com.geokureli.astley.Main"
+        preloader="com.geokureli.astley.Preloader"
+        package  ="com.geokureli.astley"
+        version  ="0.0.1"
+        company  ="GeoKureli"
     />
     
     <!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2 -->
