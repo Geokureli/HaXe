@@ -146,7 +146,7 @@ class IntroState extends State {
     override function setDefaults():Void {
         super.setDefaults();
         
-        FlxG.camera.bgColor = 0xFF5c94fc;
+        FlxG.camera.bgColor = FlxG.stage.color;
         FlxG.camera.width  = FlxG.width;
         FlxG.camera.height = FlxG.height;
         
