@@ -4,7 +4,6 @@ import com.geokureli.astley.data.Beat;
 import com.geokureli.astley.data.Prize;
 import com.geokureli.astley.states.RollinState;
 import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.Nest;
 
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
@@ -17,10 +16,8 @@ import flixel.util.FlxTimer;
  * @author George
  */
 
-class DeathUI extends Nest {
+class DeathUI extends flixel.group.FlxSpriteGroup {
     
-    public var width:Float;
-    public var height:Float;
     public var onTimeOut:Void->Void;
     public var canRestart:Bool;
     
@@ -57,8 +54,6 @@ class DeathUI extends Nest {
         _timer = new FlxTimer();
         _blinkTimer = new FlxTimer();
         
-        width = _board.x + _board.width;
-        height = _board.height;
         _board.x = -12;
     }
     
@@ -81,7 +76,7 @@ class DeathUI extends Nest {
             ( _board
             , { y:74 }
             , 1
-            , { ease:FlxEase.backOut, onComplete:function(_) { onBoardIn(score); } }
+            , { ease:FlxEase.backOut, onComplete:(_) -> { onBoardIn(score); } }
             );
     }
     
@@ -113,7 +108,7 @@ class DeathUI extends Nest {
             ( _gameOver
             , { y:_gameOver.y - _gameOver.height }
             , 0.5
-            , { ease:FlxEase.backOut, onComplete:function(_) { callback(); } }
+            , { ease:FlxEase.backOut, onComplete:(_) -> { callback(); } }
             );
         
         _board.setData(score, onScoreSet);
@@ -125,7 +120,7 @@ class DeathUI extends Nest {
             ( _giveUp
             , { y: _giveUp.y + _giveUp.height }
             , 0.5
-            , { ease:FlxEase.backOut, onComplete:function(_) { startTimer(); } }
+            , { ease:FlxEase.backOut, onComplete:(_) -> { startTimer(); } }
             );
     }
     

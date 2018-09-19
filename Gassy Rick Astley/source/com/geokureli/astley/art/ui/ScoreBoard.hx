@@ -4,9 +4,6 @@ import com.geokureli.astley.data.Prize;
 import com.geokureli.astley.data.BestSave;
 import com.geokureli.astley.art.ui.BoardSprite;
 import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.Nest;
-
-import flash.geom.Rectangle;
 
 import flixel.FlxSprite;
 
@@ -17,10 +14,7 @@ import motion.Actuate;
  * @author George
  */
 
-class ScoreBoard extends Nest {
-    
-    public var width:Int;
-    public var height:Int;
+class ScoreBoard extends flixel.group.FlxSpriteGroup {
     
     var _medal:FlxSprite;
     var _scoreTxt:ScoreText;
