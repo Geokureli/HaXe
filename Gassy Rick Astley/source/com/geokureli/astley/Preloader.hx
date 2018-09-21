@@ -23,6 +23,7 @@ class Preloader extends DefaultPreloader {
     static inline var FRAMES = 6;
     static inline var FADE_FRAMES = 60;
     static inline var FADE_DELAY = 20;
+    static inline var END_DELAY = 20;
     var _loadBarFrame:Bitmap;
     var _loadBar:Bitmap;
     var _headphones:Bitmap;
@@ -79,7 +80,7 @@ class Preloader extends DefaultPreloader {
                         = _headphones.alpha
                         = 1.0 - ((_frame - outroFrameStart) / FADE_FRAMES);
                 
-            } else {
+            } else if (_frame - outroFrameStart > FADE_FRAMES + END_DELAY) {
                 
                 cast(updateEvent.target, IEventDispatcher).removeEventListener(Event.ENTER_FRAME, updateEnd);
                 callback();
