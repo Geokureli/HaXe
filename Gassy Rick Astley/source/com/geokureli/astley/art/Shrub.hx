@@ -22,6 +22,6 @@ class Shrub extends FlxSprite{
     }
     
     public function new(x:Float) {
-        super(x, DEFAULT_Y, AssetPaths.image("shrub"));
+        super(x, DEFAULT_Y - LevelData.TILE_SIZE, AssetPaths.image("shrub"));
     }
 }

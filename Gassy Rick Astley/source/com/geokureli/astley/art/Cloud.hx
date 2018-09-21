@@ -25,9 +25,13 @@ class Cloud extends FlxSprite
         MIN = Std.int(-1 * LevelData.TILE_SIZE);
     }
     
-    public function new(x:Float) {
-        super(x, Random.between(MIN, MAX, LevelData.TILE_SIZE), AssetPaths.image("cloud"));
+    public function new(x:Float, y:Null<Float> = null) {
         
-        scrollFactor.x = .5;
+        if (y == null)
+            y = Random.between(MIN, MAX, LevelData.TILE_SIZE);
+        
+        super(x, y, AssetPaths.image("cloud"));
+        
+        scrollFactor.x = scrollFactor.y = .5;
     }
 }
