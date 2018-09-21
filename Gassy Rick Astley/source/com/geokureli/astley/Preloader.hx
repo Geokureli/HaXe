@@ -15,16 +15,20 @@ private class LoadingText extends BitmapData {}
 @:keep @:bitmap("assets/images/loading_bar.png")
 private class LoadingBar extends BitmapData {}
 
+@:keep @:bitmap("assets/images/headphones.png")
+private class Headphones extends BitmapData {}
+
 class Preloader extends DefaultPreloader {
     
     static inline var FRAMES = 6;
     static inline var FADE_FRAMES = 60;
-    static inline var FADE_DELAY = 30;
+    static inline var FADE_DELAY = 20;
     var _loadBarFrame:Bitmap;
     var _loadBar:Bitmap;
+    var _headphones:Bitmap;
     var _frame:Int = 0;
     
-    override public function new():Void { super(#if debug 0 #end); }
+    override public function new():Void { super(#if debug 3 #end); }
     
     override function onInit():Void {
         super.onInit();
@@ -38,6 +42,11 @@ class Preloader extends DefaultPreloader {
         _loadBarFrame.x = (Lib.current.stage.stageWidth  - 65 * _loadBarFrame.scaleX) / 2;
         _loadBarFrame.y = (Lib.current.stage.stageHeight - 23 * _loadBarFrame.scaleY) / 2;
         
+        addChild(_headphones = new Bitmap(new Headphones(65, 49)));
+        _headphones.scaleX = _headphones.scaleY = 2;
+        _headphones.x = (Lib.current.stage.stageWidth  - 65 * _headphones.scaleX) / 2;
+        _headphones.y = Lib.current.stage.stageHeight - _headphones.x - 49;
+        
         _loadBar.x = _loadBarFrame.x + 4;
         _loadBar.y = _loadBarFrame.y + (23 - 7 - 2) * 2;
     }
@@ -50,7 +59,6 @@ class Preloader extends DefaultPreloader {
         var rect = _loadBar.scrollRect;
         rect.x = FRAMES - 1 - Std.int(_frame / 3) % FRAMES;
         rect.width = Std.int(percent * (_loadBar.bitmapData.width - FRAMES + 1));
-        trace('${_loadBar.bitmapData.width} - $rect');
         _loadBar.scrollRect = rect;
         
         super.update(percent);
@@ -62,11 +70,14 @@ class Preloader extends DefaultPreloader {
         
         function updateEnd(updateEvent:Event):Void {
             
-            if (_frame - outroFrameStart < FADE_FRAMES) {
+            if (_frame - outroFrameStart <= FADE_FRAMES) {
                 
                 // Wait for delay
                 if (_frame > outroFrameStart)
-                    _loadBar.alpha = _loadBarFrame.alpha = 1.0 - ((_frame - outroFrameStart) / FADE_FRAMES);
+                    _loadBar.alpha 
+                        = _loadBarFrame.alpha
+                        = _headphones.alpha
+                        = 1.0 - ((_frame - outroFrameStart) / FADE_FRAMES);
                 
             } else {
                 
@@ -87,6 +98,10 @@ class Preloader extends DefaultPreloader {
         removeChild(_loadBarFrame);
         _loadBarFrame.bitmapData.dispose();
         _loadBarFrame = null;
+        
+        removeChild(_headphones);
+        _headphones.bitmapData.dispose();
+        _headphones = null;
         
         super.destroy();
     }
