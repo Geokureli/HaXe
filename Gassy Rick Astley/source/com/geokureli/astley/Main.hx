@@ -83,8 +83,6 @@ class IntroState extends State {
         add(_title = new FlxSprite(0, 0, AssetPaths.text("gassy_rick_astley_w_char")));
         centerX(_title).y = -_title.height;
         
-        // testTextStuff();
-        
         add(new FlxSprite(100, 123, AssetPaths.image("tap")));
         add(new FlxSprite(45, 128, AssetPaths.image("keys")));
         
@@ -107,41 +105,6 @@ class IntroState extends State {
             NG.core.requestLogin();
         }
     #end
-    
-    function testTextStuff():Void {
-        
-        var sprite = new flixel.text.FlxBitmapText(AssetPaths.bitmapFont("letters_med"));
-        sprite.text = "TEST TEXT";
-        sprite.scale.x = 2;
-        sprite.background = true;
-        sprite.backgroundColor = flixel.util.FlxColor.BLACK;
-        sprite.borderColor = flixel.util.FlxColor.LIME;
-        sprite.borderSize = 1;
-        // sprite.borderStyle = flixel.text.FlxText.FlxTextBorderStyle.OUTLINE_FAST;
-        centerX(sprite);
-        sprite.clipRect = flixel.math.FlxRect.get(11, 2, sprite.width / 2 + 4, sprite.height + 5);
-        add(sprite);
-        
-        sprite = new flixel.text.FlxBitmapText(AssetPaths.bitmapFont("letters_med"));
-        sprite.text = "TEST TEXT";
-        sprite.scale.x = 2;
-        sprite.y = 15;
-        sprite.background = true;
-        sprite.backgroundColor = flixel.util.FlxColor.BLACK;
-        sprite.borderColor = flixel.util.FlxColor.LIME;
-        sprite.borderSize = 1;
-        // sprite.borderStyle = flixel.text.FlxText.FlxTextBorderStyle.OUTLINE_FAST;
-        centerX(sprite);
-        add(sprite);
-        
-        var sprite2 = new FlxSprite();
-        sprite2.makeGraphic(Std.int(sprite.width), Std.int(sprite.height));
-        sprite2.scale.x = 2;
-        sprite2.y = 30;
-        centerX(sprite2);
-        sprite2.clipRect = flixel.math.FlxRect.get(11, 2, sprite.width / 2 + 4, sprite.height + 5);
-        add(sprite2);
-    }
     
     override function setDefaults():Void {
         super.setDefaults();
