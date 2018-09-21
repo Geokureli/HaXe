@@ -87,10 +87,11 @@ class IntroState extends State {
         AssetPaths.initBitmapFontMonospace("numbers_10", "0123456789");
         AssetPaths.initBitmapFontMonospace("letters_med", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.");
         
-        add(new FlxSprite(100, 123, AssetPaths.image("tap")));
-        add(new FlxSprite(45, 128, AssetPaths.image("keys")));
+        if (getIsMobile())
+            add(_instructions = new FlxSprite(0, 123, AssetPaths.image("tap")))
+        else
+            add(_instructions = new FlxSprite(0, 140, AssetPaths.text("press_any_key")));
         
-        add(_instructions = new FlxSprite(0, 160, AssetPaths.text("press_any_key")));
         centerX(_instructions).visible = false;
         
         add(new Cloud(FlxG.width * 0.75, 40));
@@ -107,6 +108,28 @@ class IntroState extends State {
         #else
             onLogoComplete();
         #end
+    }
+    
+    public static function getIsMobile():Bool {
+        
+        #if mobile
+            return true;
+        #elseif html5
+            var browserAgent:String = js.Browser.navigator.userAgent.toLowerCase();
+            trace(browserAgent);
+            if (browserAgent != null) {
+                
+                return browserAgent.indexOf("android"   ) >= 0
+                    || browserAgent.indexOf("blackBerry") >= 0
+                    || browserAgent.indexOf("iphone"    ) >= 0
+                    || browserAgent.indexOf("ipad"      ) >= 0
+                    || browserAgent.indexOf("ipod"      ) >= 0
+                    || browserAgent.indexOf("opera mini") >= 0
+                    || browserAgent.indexOf("iemobile"  ) >= 0;
+            }
+        #end
+        
+        return false;
     }
     
     function showLogo(callback:Void->Void):Void {
