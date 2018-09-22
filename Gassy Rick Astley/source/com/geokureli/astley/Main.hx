@@ -69,6 +69,7 @@ class IntroState extends State {
     
     var _title:FlxSprite;
     var _instructions:FlxSprite;
+    var _loopTween:FlxTween;
     
     override public function create():Void {
         super.create();
@@ -186,7 +187,7 @@ class IntroState extends State {
         _musicName = AssetPaths.music("intro");
         startMusic();
         
-        FlxTween.tween(_title, { y:52 }, 1, { type:FlxTweenType.ONESHOT, ease:FlxEase.sineOut, onComplete:onIntroComplete } );
+        FlxTween.tween(_title, { y:52 }, 1.0, { ease:FlxEase.sineOut, onComplete:onIntroComplete } );
     }
     
     #if (newgrounds && !ng_lite)
@@ -204,13 +205,18 @@ class IntroState extends State {
         FlxG.camera.height = FlxG.height;
         
         _fadeOutMusic = true;
-        _fadeOutTime = .5;
+        // _fadeOutTime = .5;
     }
     
     function onIntroComplete(tween:FlxTween):Void {
         
         _instructions.visible = true;
-        FlxTween.tween(_title, { y:46 }, 60 / 115.14, { type:FlxTweenType.PINGPONG, ease:FlxEase.sineOut } );
+        _loopTween = FlxTween.tween
+            ( _title
+            , { y:46 }
+            , FlxG.stage.frameRate / 115.14
+            , { type:FlxTweenType.PINGPONG, ease:FlxEase.sineOut }
+            );
         
         FartControl.enabled = true;
     }
@@ -221,7 +227,19 @@ class IntroState extends State {
         if (FartControl.down) {
             
             FartControl.enabled = false;
-            switchState(new RollinState());
+            _music.fadeOut(1.0);
+            _loopTween.cancel();
+            _loopTween.destroy();
+            FlxTween.tween(_title, { y:-_title.height, visible:false }, 1.0, { ease:FlxEase.sineIn })
+                .then(FlxTween.tween
+                    ( FlxG.camera.scroll
+                    , { x:FlxG.width * 2 }
+                    , 1.0
+                    ,   { ease:FlxEase.sineIn
+                        , onComplete:(_) -> { switchState(new RollinState()); }
+                        }
+                    )
+                );
         }
     }
     

@@ -8,6 +8,7 @@ import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.system.FlxSound;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 /**
  * A FlxState which can be used for the game's menu.
@@ -56,7 +57,7 @@ class State extends FlxState {
         _defaultLayerType = FlxGroup;
         _special = [];
         
-        _fadeInColor = _fadeOutColor = FlxColor.BLACK;
+        _fadeInColor = _fadeOutColor = FlxColor.TRANSPARENT;
         _fadeInTime = _fadeOutTime = 0;
         _fadeInMusic = false;
         _fadeOutMusic = true;
@@ -121,12 +122,13 @@ class State extends FlxState {
     
     function startFadeIn():Void {
         
-        FlxG.camera.fade(_fadeInColor, _fadeInTime, true, onFadeInComplete, true);
+        if (_fadeInColor != FlxColor.TRANSPARENT)
+            FlxG.camera.fade(_fadeInColor, _fadeInTime, true, onFadeInComplete, true);
+        else
+            new FlxTimer().start(_fadeInTime, (_) -> { onFadeInComplete(); });
         
-        if (_fadeInMusic && _music != null) {
-            
+        if (_fadeInMusic && _music != null)
             _music.fadeIn(_fadeInTime);
-        }
     }
     
     function onFadeInComplete():Void { }
@@ -143,12 +145,13 @@ class State extends FlxState {
     
     function startFadeOut():Void {
         
-        FlxG.camera.fade(_fadeOutColor, _fadeOutTime, false, onFadeOutComplete, true);
+        if (_fadeOutColor != FlxColor.TRANSPARENT)
+            FlxG.camera.fade(_fadeOutColor, _fadeOutTime, false, onFadeOutComplete, true);
+        else
+            new FlxTimer().start(_fadeOutTime, (_) -> { onFadeOutComplete(); });
         
-        if (_fadeOutMusic && _music != null) {
-            
+        if (_fadeOutMusic && _music != null)
             _music.fadeOut(_fadeOutTime);
-        }
     }
     
     function onFadeOutComplete():Void {

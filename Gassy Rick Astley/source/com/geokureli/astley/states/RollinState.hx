@@ -16,6 +16,8 @@ import flash.Lib;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 
 import motion.Actuate;
 import motion.easing.Sine;
@@ -64,8 +66,9 @@ class RollinState extends BaseState {
         
         _hero = new Rick(BaseState.HERO_SPAWN_X, 64);
         
-        setCameraFollow(_hero);
         FlxG.worldBounds.width = _hero.width + 2;
+        
+        startIntro();
     }
     
     override function addMG():Void {
@@ -91,6 +94,23 @@ class RollinState extends BaseState {
         
         alive = true;
         FartControl.enabled = true;
+    }
+    
+    function startIntro():Void {
+        
+        trace(FlxG.camera.scroll.x);
+        FlxG.camera.scroll.x -= FlxG.width * 2;
+        FlxTween.tween
+            ( FlxG.camera.scroll
+            , { x:0 }
+            , 1.0
+            , { ease:FlxEase.sineOut, onComplete:(_)-> { onIntroComplete(); } }
+            );
+    }
+    
+    function onIntroComplete():Void {
+        
+        setCameraFollow(_hero);
     }
     
     override public function preUpdate(elapsed:Float):Void {
