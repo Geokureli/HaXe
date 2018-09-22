@@ -7,6 +7,10 @@ package com.geokureli.astley;
         import com.geokureli.astley.art.ui.MedalPopup;
     #end
 #end
+
+#if show_loader
+    import flixel.system.FlxSplash;
+#end
 import com.geokureli.astley.art.Grass;
 import com.geokureli.astley.art.Cloud;
 import com.geokureli.astley.art.Shrub;
@@ -53,7 +57,7 @@ class Main extends Shell {
         //_introState = TestAny;
         
         _skipSplash = true;
-        #if (release || showLoader)
+        #if show_loader
             FlxSplash.nextState = _introState;
             _introState = Splash;
         #end
@@ -103,7 +107,7 @@ class IntroState extends State {
             add(new MedalPopup());
         #end
         
-        #if (release || show_loader)
+        #if show_loader
             showLogo(onLogoComplete);
         #else
             onLogoComplete();
@@ -239,8 +243,8 @@ class IntroState extends State {
     }
 }
 
-#if (release || show_loader)
-class Splash extends flixel.system.FlxSplash {
+#if show_loader
+class Splash extends FlxSplash {
     
     override public function create():Void {
         
