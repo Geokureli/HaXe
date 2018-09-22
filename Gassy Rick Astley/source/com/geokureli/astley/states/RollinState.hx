@@ -1,14 +1,16 @@
 package com.geokureli.astley.states;
 
-import com.geokureli.astley.data.NGData;
-import com.geokureli.astley.data.Prize;
+import com.geokureli.astley.art.Cloud;
+import com.geokureli.astley.art.Shrub;
 import com.geokureli.astley.art.Tilemap;
-import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.art.ui.DeathUI;
 import com.geokureli.astley.art.ui.ScoreText;
 import com.geokureli.astley.art.hero.Rick;
-import com.geokureli.astley.data.BestSave;
 import com.geokureli.krakel.audio.Sound;
+import com.geokureli.astley.data.NGData;
+import com.geokureli.astley.data.Prize;
+import com.geokureli.astley.data.FartControl;
+import com.geokureli.astley.data.BestSave;
 import com.geokureli.krakel.data.AssetPaths;
 
 import flash.Lib;
@@ -98,18 +100,23 @@ class RollinState extends BaseState {
     
     function startIntro():Void {
         
-        trace(FlxG.camera.scroll.x);
-        FlxG.camera.scroll.x -= FlxG.width * 2;
+        var introArt = new flixel.group.FlxGroup(3);
+        add(introArt);
+        introArt.add(new Cloud(FlxG.width * -1.0, 60, 3));
+        introArt.add(new Shrub(FlxG.width * -3.0, 2));
+        introArt.add(new Shrub(FlxG.width * -1.5, 3));
+        FlxG.camera.scroll.x -= FlxG.width * 4;
         FlxTween.tween
             ( FlxG.camera.scroll
             , { x:0 }
             , 1.0
-            , { ease:FlxEase.sineOut, onComplete:(_)-> { onIntroComplete(); } }
+            , { ease:FlxEase.sineOut, onComplete:(_)-> { onIntroComplete(introArt); } }
             );
     }
     
-    function onIntroComplete():Void {
+    function onIntroComplete(art):Void {
         
+        remove(art);
         setCameraFollow(_hero);
     }
     

@@ -99,8 +99,11 @@ class IntroState extends State {
         
         centerX(_instructions).visible = false;
         
-        add(new Cloud(FlxG.width * 0.75, 40));
-        add(new Shrub(FlxG.width * 0.25));
+        add(new Cloud(FlxG.width * 0.75, 40, 2));
+        add(new Cloud(FlxG.width * 1.75, 80, 3));
+        add(new Shrub(FlxG.width * 0.25, 2));
+        add(new Shrub(FlxG.width * 1.75, 3));
+        add(new Shrub(FlxG.width * 3.75, 3));
         add(new Grass());
         
         #if (newgrounds && !ng_lite)
@@ -233,7 +236,7 @@ class IntroState extends State {
             FlxTween.tween(_title, { y:-_title.height, visible:false }, 1.0, { ease:FlxEase.sineIn })
                 .then(FlxTween.tween
                     ( FlxG.camera.scroll
-                    , { x:FlxG.width * 2 }
+                    , { x:FlxG.width * 4 }
                     , 1.0
                     ,   { ease:FlxEase.sineIn
                         , onComplete:(_) -> { switchState(new RollinState()); }
