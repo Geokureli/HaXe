@@ -1,7 +1,5 @@
 package com.geokureli.astley.states;
 
-import com.geokureli.astley.art.Cloud;
-import com.geokureli.astley.art.Shrub;
 import com.geokureli.astley.art.Tilemap;
 import com.geokureli.astley.art.ui.DeathUI;
 import com.geokureli.astley.art.ui.ScoreText;
@@ -102,9 +100,6 @@ class RollinState extends BaseState {
         
         var introArt = new flixel.group.FlxGroup(3);
         add(introArt);
-        introArt.add(new Cloud(FlxG.width * -1.0, 60, 3));
-        introArt.add(new Shrub(FlxG.width * -3.0, 2));
-        introArt.add(new Shrub(FlxG.width * -1.5, 3));
         FlxG.camera.scroll.x -= FlxG.width * 4;
         FlxTween.tween
             ( FlxG.camera.scroll

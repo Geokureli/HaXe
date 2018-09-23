@@ -70,17 +70,11 @@ class BaseState extends State {
         add(_ground = new Grass());
         
         // --- CLOUDS
-        var x:Float = 0;
-        while (x < FlxG.camera.x + FlxG.camera.width) {
-            
-            _bg.add(new Cloud(x += Random.between(Cloud.MIN_SPREAD, Cloud.MAX_SPREAD, LevelData.TILE_SIZE)));
-        }
+        _bg.add(new Cloud());
+        _bg.add(new Cloud());
         // --- SHRUBS
-        x = 0;
-        while (x < FlxG.camera.x + FlxG.camera.width) {
-            
-            _bg.add(new Shrub(x += Random.between(Shrub.MIN_SPREAD, Shrub.MAX_SPREAD, LevelData.TILE_SIZE)));
-        }
+        _bg.add(new Shrub());
+        _bg.add(new Shrub());
     }
     
     function addTileMap():Void {
