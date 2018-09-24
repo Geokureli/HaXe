@@ -80,7 +80,8 @@ class Credits extends Layer {
             _scoresSkip += 10;
             loadNextScores();
         } else {
-            trace("fuck");
+            
+            // end logic
         }
     }
     
