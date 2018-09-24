@@ -156,7 +156,7 @@ class CreditsLayer extends Layer {
     }
 }
 
-class CreditsText extends flixel.text.FlxBitmapText {UATE
+class CreditsText extends flixel.text.FlxBitmapText {
     
     public function new ():Void {
         super(AssetPaths.bitmapFont("letters_med"));
