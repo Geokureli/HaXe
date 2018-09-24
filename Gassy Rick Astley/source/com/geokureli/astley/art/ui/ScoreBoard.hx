@@ -6,8 +6,7 @@ import com.geokureli.astley.art.ui.BoardSprite;
 import com.geokureli.krakel.data.AssetPaths;
 
 import flixel.FlxSprite;
-
-import motion.Actuate;
+import flixel.tweens.FlxTween;
 
 /**
  * ...
@@ -60,8 +59,12 @@ class ScoreBoard extends flixel.group.FlxSpriteGroup {
     public function setData(score:Int, callback:Void->Void):Void {
         var duration:Float = score / 10;
         
-        Actuate.tween(this, duration, { score:score } )
-            .onComplete(onRollupComplete.bind(score, callback));
+        FlxTween.tween
+            ( this
+            , { score:score }
+            , duration
+            , { onComplete: (_) -> { onRollupComplete(score, callback); } }
+            );
     }
     
     function onRollupComplete(score:Int, callback:Void->Void):Void {
