@@ -7,6 +7,7 @@ import com.geokureli.astley.art.ui.Credits;
 import com.geokureli.astley.art.hero.ReplayRick;
 import com.geokureli.astley.art.hero.RickLite;
 import com.geokureli.astley.art.Tilemap;
+
 import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.data.serial.DameReader;
@@ -49,7 +50,9 @@ class ReplayState extends BaseState {
         var dameReader:DameReader = new DameReader();
         dameReader.addAutoClassLookup(Credits);
         dameReader.addAutoClassLookup(CreditsLayer);
+        dameReader.addAutoClassLookup(CreditsText);
         add(_credits = dameReader.createLevel(AssetPaths.getParsedData("Credits")));
+        _credits.dameReader = dameReader;
         
         FartControl.enabled = false;
         FartControl.replayMode = true;

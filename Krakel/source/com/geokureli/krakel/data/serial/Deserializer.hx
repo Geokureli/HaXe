@@ -188,7 +188,7 @@ class Deserializer {
 		
 		data = preParse(data);
 		
-		if (!Reflect.isObject(data)) return data;
+		if (!isObject(data)) return data;
 		
 		// --- GET CLASS
 		var typeName:String = Reflect.field(data, 'class');
@@ -244,7 +244,7 @@ class Deserializer {
 					continue;
 			}
 			
-			if (Reflect.isObject(value)) {
+			if (isObject(value)) {
 				
 				newValue = create(value);
 				
@@ -259,7 +259,7 @@ class Deserializer {
 						
 						continue;
 						
-					} else if (Reflect.isObject(childTarget)) {
+					} else if (isObject(childTarget)) {
 						// --- DESERIALIZE EXISTING OBJECT
 						setAllFields(childTarget, newValue); 
 						
@@ -272,6 +272,12 @@ class Deserializer {
 			
 			Reflect.setProperty(target, field, value);
 		}
+	}
+	
+	inline function isObject(v:Dynamic):Bool {
+		
+		return !Std.is(v, String)
+			&& Reflect.isObject(v);
 	}
 	
 	/**
