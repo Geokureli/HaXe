@@ -1,12 +1,5 @@
 package com.geokureli.astley;
 
-#if newgrounds
-    import io.newgrounds.NG;
-    
-    #if !ng_lite
-        import com.geokureli.astley.art.ui.MedalPopup;
-    #end
-#end
 
 #if show_loader
     import flixel.system.FlxSplash;
@@ -14,6 +7,7 @@ package com.geokureli.astley;
 import com.geokureli.astley.art.Grass;
 import com.geokureli.astley.art.Cloud;
 import com.geokureli.astley.art.Shrub;
+import com.geokureli.astley.art.ui.MedalPopup;
 import com.geokureli.astley.data.BestSave;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.data.LevelData;
@@ -106,8 +100,8 @@ class IntroState extends State {
         add(new Shrub(FlxG.width * 3.75, 3, false));
         add(new Grass());
         
-        #if (newgrounds && !ng_lite)
-            add(new Button(1, 233, AssetPaths.image("ngLogo_small"), NG.core.attemptingLogin ? startNgSession : null));
+        #if (newgrounds)
+            add(new FlxSprite(1, 233, AssetPaths.image("ngLogo_small")));
             add(new MedalPopup());
         #end
         
@@ -192,13 +186,6 @@ class IntroState extends State {
         
         FlxTween.tween(_title, { y:52 }, 1.0, { ease:FlxEase.sineOut, onComplete:onIntroComplete } );
     }
-    
-    #if (newgrounds && !ng_lite)
-        function startNgSession():Void {
-            
-            NG.core.requestLogin();
-        }
-    #end
     
     override function setDefaults():Void {
         super.setDefaults();

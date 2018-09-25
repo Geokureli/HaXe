@@ -1,18 +1,16 @@
 package com.geokureli.astley.states;
 
-#if !ng_lite
-    import com.geokureli.astley.art.ui.MedalPopup;
-#end
-import com.geokureli.astley.data.LevelData;
-import com.geokureli.astley.art.hero.Rick;
 import com.geokureli.astley.art.Tilemap;
 import com.geokureli.astley.art.Grass;
 import com.geokureli.astley.art.Cloud;
 import com.geokureli.astley.art.Shrub;
+import com.geokureli.astley.art.hero.Rick;
+import com.geokureli.astley.art.ui.MedalPopup;
+import com.geokureli.astley.data.LevelData;
+
 import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.State;
-import com.geokureli.krakel.utils.Random;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -37,12 +35,10 @@ class BaseState extends State {
     override public function create():Void {
         super.create();
         
-        #if !ng_lite
-            if (MedalPopup.instance == null)
-                new MedalPopup();
-            
-            add(MedalPopup.instance);
-        #end
+        if (MedalPopup.instance == null)
+            new MedalPopup();
+        
+        add(MedalPopup.instance);
     }
     
     override function setDefaults():Void 
