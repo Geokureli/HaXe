@@ -92,11 +92,19 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         
         addText("newgrounds info\nnot found", 0, -10);
         
+        var cancelLogin = () -> {
+            NG.core.cancelLoginRequest();
+            NG.core.sessionId = null;// allows medal popups for non-members
+            showLoginFailed();
+            callback();
+        };
+        
         _page.add(Button.createSimple
             ( 13, 31
             , AssetPaths.image("buttons/btn_login")
             ,   () -> {
                     _onSuccess = () -> { showLoggedIn(); callback(); };
+                    _onCancel = cancelLogin;
                     NG.core.openPassportUrl();
                 }
             )
@@ -105,12 +113,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         _page.add(Button.createSimple
             ( 67, 31
             , AssetPaths.image("buttons/btn_cancel")
-            ,   () -> {
-                    NG.core.cancelLoginRequest();
-                    NG.core.sessionId = null;// allows medal popups for non-members
-                    showLoginFailed();
-                    callback();
-                }
+            , cancelLogin
             )
         );
     }
