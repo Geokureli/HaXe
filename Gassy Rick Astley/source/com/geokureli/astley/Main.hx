@@ -22,6 +22,7 @@ import com.geokureli.krakel.State;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxObject;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxTween.FlxTweenType;
@@ -233,21 +234,21 @@ class IntroState extends State {
         }
     }
     
-    inline function center(sprite:FlxSprite):FlxSprite {
+    inline function center(obj:FlxObject):FlxObject {
         
-        return centerX(centerY(sprite));
+        return centerX(centerY(obj));
     }
     
-    inline function centerX(sprite:FlxSprite):FlxSprite {
+    inline function centerX(obj:FlxObject):FlxObject {
         
-        sprite.x = (FlxG.width - sprite.width) / 2;
-        return sprite;
+        obj.x = (FlxG.width - obj.width) / 2;
+        return obj;
     }
     
-    inline function centerY(sprite:FlxSprite):FlxSprite {
+    inline function centerY(obj:FlxObject):FlxObject {
         
-        sprite.y = (FlxG.height - sprite.height) / 2;
-        return sprite;
+        obj.y = (FlxG.height - obj.height) / 2;
+        return obj;
     }
 }
 
