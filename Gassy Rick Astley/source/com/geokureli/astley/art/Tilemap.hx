@@ -22,7 +22,7 @@ class Tilemap extends FlxTilemap {
     static public var addPipes:Bool = true;
     
     static inline var PIPE_MIN:Int = 2;
-    static inline var PIPE_FRAME:Int = 3;
+    static inline var PIPE_FRAME:Int = 4;
     static inline var PIPE_GAP:Int = 4;
     
     static var CLOUD_STAMP:MapTiles;
@@ -36,7 +36,7 @@ class Tilemap extends FlxTilemap {
         
         CLOUD_STAMP = [[1, 2], [3, 4]];
         PIPE_SHAFT = [2 + PIPE_FRAME, 3 + PIPE_FRAME];
-        PIPE_BASE = [6 + PIPE_FRAME, 7 + PIPE_FRAME];
+        PIPE_BASE = PIPE_SHAFT;//[6 + PIPE_FRAME, 7 + PIPE_FRAME];
         FLOOR_FRAME = PIPE_FRAME-2;
         GROUND_FRAME = PIPE_FRAME-1;
         

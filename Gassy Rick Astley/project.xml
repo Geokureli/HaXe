@@ -3,21 +3,24 @@
     <!-- _________________________ APPLICATION SETTINGS _________________________ -->
     
     <app
-        title  ="Gassy Rick Astley"
-        file   ="GassyRickAstley"
-        main   ="com.geokureli.astley.Main"
-        package="com.geokureli.astley"
-        version="0.0.1"
-        company="GeoKureli"
+        title    ="Gassy Rick Astley"
+        file     ="GassyRickAstley"
+        main     ="com.geokureli.astley.Main"
+        package  ="com.geokureli.astley"
+        version  ="0.0.1"
+        company  ="GeoKureli"
     />
     
     <!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2 -->
     <set name="SWF_VERSION" value="11.8" />
+    <set name="force_loader" />
+    <haxedef name="show_loader" if="force_loader || release" />
+    <app preloader="com.geokureli.astley.Preloader" if="force_loader || release" />
     
     <!-- _________________________ WINDOW SETTINGS _________________________ -->
     
     <!--These window settings apply to all targets-->
-    <window width="320" height="512" fps="30" background="#5c94fc" hardware="true" vsync="true" />
+    <window width="320" height="512" fps="30" background="#63adff" hardware="true" vsync="true" />
     
     <!--Web-specific-->
     <window if="html5" orientation="portrait" />
@@ -48,6 +51,7 @@
     <!-- _________________________ LIBRARIES _________________________ -->
 
     <haxelib name="flixel"/>
+    <haxelib name="flixel-addons"/>
     <haxelib name="actuate"/>
     <haxelib name="newgrounds" />
     <classpath path="../Krakel/source" />

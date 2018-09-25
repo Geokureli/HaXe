@@ -4,23 +4,16 @@ import com.geokureli.astley.data.Prize;
 import com.geokureli.astley.data.BestSave;
 import com.geokureli.astley.art.ui.BoardSprite;
 import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.Nest;
-
-import flash.geom.Rectangle;
 
 import flixel.FlxSprite;
-
-import motion.Actuate;
+import flixel.tweens.FlxTween;
 
 /**
  * ...
  * @author George
  */
 
-class ScoreBoard extends Nest {
-    
-    public var width:Int;
-    public var height:Int;
+class ScoreBoard extends flixel.group.FlxSpriteGroup {
     
     var _medal:FlxSprite;
     var _scoreTxt:ScoreText;
@@ -64,10 +57,20 @@ class ScoreBoard extends Nest {
     }
     
     public function setData(score:Int, callback:Void->Void):Void {
-        var duration:Float = score / 10;
         
-        Actuate.tween(this, duration, { score:score } )
-            .onComplete(onRollupComplete.bind(score, callback));
+        if (score == 0) {
+            
+            onRollupComplete(score, callback);
+            
+        } else {
+            
+            FlxTween.tween
+                ( this
+                , { score:score }
+                , score / 10
+                , { onComplete: (_) -> { onRollupComplete(score, callback); } }
+                );
+        }
     }
     
     function onRollupComplete(score:Int, callback:Void->Void):Void {

@@ -63,7 +63,7 @@ class Prize {
     
     static public function unlockMedal(id:Int):Void {
         
-        #if (newgrounds && !ng_lite)
+        #if newgrounds
             var medal = NG.core.medals.get(id);
             if (!medal.unlocked)
                 medal.sendUnlock();

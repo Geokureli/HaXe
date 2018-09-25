@@ -1,14 +1,14 @@
 package com.geokureli.astley.states;
 
-import com.geokureli.astley.data.NGData;
-import com.geokureli.astley.data.Prize;
 import com.geokureli.astley.art.Tilemap;
-import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.art.ui.DeathUI;
 import com.geokureli.astley.art.ui.ScoreText;
 import com.geokureli.astley.art.hero.Rick;
-import com.geokureli.astley.data.BestSave;
 import com.geokureli.krakel.audio.Sound;
+import com.geokureli.astley.data.NGData;
+import com.geokureli.astley.data.Prize;
+import com.geokureli.astley.data.FartControl;
+import com.geokureli.astley.data.BestSave;
 import com.geokureli.krakel.data.AssetPaths;
 
 import flash.Lib;
@@ -16,6 +16,8 @@ import flash.Lib;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 
 import motion.Actuate;
 import motion.easing.Sine;
@@ -64,8 +66,9 @@ class RollinState extends BaseState {
         
         _hero = new Rick(BaseState.HERO_SPAWN_X, 64);
         
-        setCameraFollow(_hero);
         FlxG.worldBounds.width = _hero.width + 2;
+        
+        startIntro();
     }
     
     override function addMG():Void {
@@ -91,6 +94,25 @@ class RollinState extends BaseState {
         
         alive = true;
         FartControl.enabled = true;
+    }
+    
+    function startIntro():Void {
+        
+        var introArt = new flixel.group.FlxGroup(3);
+        add(introArt);
+        FlxG.camera.scroll.x -= FlxG.width * 4;
+        FlxTween.tween
+            ( FlxG.camera.scroll
+            , { x:0 }
+            , 1.0
+            , { ease:FlxEase.sineOut, onComplete:(_)-> { onIntroComplete(introArt); } }
+            );
+    }
+    
+    function onIntroComplete(art):Void {
+        
+        remove(art);
+        setCameraFollow(_hero);
     }
     
     override public function preUpdate(elapsed:Float):Void {

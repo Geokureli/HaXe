@@ -32,7 +32,7 @@ class BestSave {
         else if (FRESH_START)
             best = 0;
         
-        #if (newgrounds && !ng_lite)
+        #if newgrounds
             NG.core.requestScoreBoards();
         #end
     }
@@ -50,7 +50,7 @@ class BestSave {
             //_saveFile.data.replay = Recordings.getLatest();
             _saveFile.flush();
             
-            #if (newgrounds && !ng_lite)
+            #if newgrounds
                 if (NG.core.loggedIn)
                     NG.core.scoreBoards.get(NGData.SCOREBOARD).postScore(score);
             #end

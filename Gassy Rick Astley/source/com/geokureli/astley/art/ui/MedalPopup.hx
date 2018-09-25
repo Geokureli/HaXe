@@ -2,7 +2,6 @@ package com.geokureli.astley.art.ui;
 
 import openfl.geom.Rectangle;
 
-import flixel.text.FlxText;
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.FlxSprite;
 import flixel.FlxG;
@@ -88,27 +87,34 @@ class MedalPopup extends FlxSpriteGroup {
         board.pixels.fillRect(pixelRect, 0xfff09754);// 0xffffa257);
         
         #if newgrounds
-        if (NG.core.medals != null)
-            medalsLoaded();
-        else
-            NG.core.onMedalsLoaded.add(medalsLoaded);
+            trace(NG.core.medals);
+            if (NG.core.medals != null)
+                medalsLoaded();
+            else
+                NG.core.requestMedals(medalsLoaded);
         #end
         
         instance = this;
     }
     
-    #if newgrounds
+    function medalsLoaded():Void {
         
-        function medalsLoaded():Void {
+        #if newgrounds
             
+            var numMedals = 0;
+            var numMedalsLocked = 0;
             for (medal in NG.core.medals) {
                 
-                if (!medal.unlocked)
+                if (!medal.unlocked) {
+                    
+                    numMedalsLocked++;
                     medal.onUnlock.add(onMedalOnlock.bind(medal));
-                // onMedalOnlock(medal);// DEBUG medal testing
+                }
+                numMedals++;
             }
-        }
-    #end
+            trace('loaded $numMedals medals, $numMedalsLocked locked ');
+        #end
+    }
     
     function onMedalOnlock(medal:Medal):Void {
         
