@@ -7,6 +7,7 @@ import com.geokureli.krakel.components.art.ButtonComponent;
 
 import flash.net.URLRequest;
 
+import flixel.FlxG;
 import flixel.util.FlxSignal;
 
 import openfl.Lib;
@@ -46,15 +47,32 @@ class Button extends Sprite {
         specialParsers["onClick"] = deserializeClick;
     }
     
+    /**
+     * Inits a simple 3 frame button "up "over" "down", respectively
+     * @param graphic 
+     */
+    public function loadSimpleGraphic(graphic:Dynamic):Void {
+        
+        var graph = FlxG.bitmap.add(graphic);
+        loadGraphic(graph, true, Std.int(graph.bitmap.width / 3), graph.bitmap.height);
+        
+        setupSimpleFrames();
+    }
+    
     override function deserializeAnimation(deserializer:Deserializer, value:Dynamic):Bool {
         
         var out = super.deserializeAnimation(deserializer, value);
         
-        setDefaultAnimation("up"  , 0);
-        setDefaultAnimation("down", 1);
-        setDefaultAnimation("over", 2);
+        setupSimpleFrames();
         
         return out;
+    }
+    
+    inline function setupSimpleFrames():Void {
+        
+        setDefaultAnimation("up"  , 0);
+        setDefaultAnimation("over", 1);
+        setDefaultAnimation("down", 2);
     }
     
     function setDefaultAnimation(label:String, frame:Int):Void {
@@ -93,4 +111,16 @@ class Button extends Sprite {
     public function get_onOut ():FlxSignal { return _buttonComponent.onOut ; }
     
     public function get_onChange():FlxTypedSignal<Int->Void> { return _buttonComponent.onChange; }
+    
+    static inline public function createSimple
+        ( x:Float = 0
+        , y:Float = 0
+        , ?simpleGraphic:Dynamic
+        , ?onClick:Void->Void
+        ):Button {
+        
+        var button = new Button(x, y, null, onClick);
+        button.loadSimpleGraphic(simpleGraphic);
+        return button;
+    }
 }
