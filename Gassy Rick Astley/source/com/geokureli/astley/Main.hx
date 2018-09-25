@@ -72,7 +72,7 @@ class IntroState extends State {
         
         _apiConnector = new APIConnector();
         centerX(_apiConnector);
-        _apiConnector.y = 108;
+        _apiConnector.y = 104;
         
         BestSave.init();
         Prize.init();
@@ -100,8 +100,8 @@ class IntroState extends State {
         pipe.y = LevelData.SKY_HEIGHT - pipe.height;
         add(pipe);
         
-        if (getIsMobile())
-            add(_instructions = new FlxSprite(0, 130, AssetPaths.image("tap")))
+        if (!getIsMobile())
+            add(_instructions = new FlxSprite(0, 150, AssetPaths.image("tap")))
         else
             add(_instructions = new FlxSprite(0, 140, AssetPaths.text("press_any_key")));
         

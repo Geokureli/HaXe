@@ -18,7 +18,7 @@ import io.newgrounds.NG;
 class APIConnector extends flixel.group.FlxSpriteGroup {
     
     static inline var WIDTH :Int = 125;
-    static inline var HEIGHT:Int = 34;
+    static inline var HEIGHT:Int = 56;
     
     var _page:FlxSpriteGroup;
     var _board:BoardSprite;
@@ -90,8 +90,10 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         
         switchPage(_board.x, _board.y);
         
+        addText("newgrounds info\nnot found", 0, -10);
+        
         _page.add(Button.createSimple
-            ( 13, 6
+            ( 13, 31
             , AssetPaths.image("buttons/btn_login")
             ,   () -> {
                     _onSuccess = () -> { showLoggedIn(); callback(); };
@@ -101,7 +103,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         );
         
         _page.add(Button.createSimple
-            ( 67, 6
+            ( 67, 31
             , AssetPaths.image("buttons/btn_cancel")
             ,   () -> {
                     NG.core.cancelLoginRequest();
@@ -138,7 +140,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         add(_page = new FlxSpriteGroup(x - this.x, y - this.y, maxSize));
     }
     
-    function addText(text:String):Void {
+    function addText(text:String, x:Float = 0, y:Float = 0):Void {
         
         var field = new FlxBitmapText(AssetPaths.bitmapFont("letters_med"));
         field.text = text.toUpperCase();
@@ -148,7 +150,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         field.borderStyle = FlxTextBorderStyle.OUTLINE;
         _page.add(field);
         // Set x/y after add because nested sprite groups mess up here
-        field.x = _board.x + (_board.width  - field.width ) / 2;
-        field.y = _board.y + (_board.height - field.height) / 2;
+        field.x = x + _board.x + (_board.width  - field.width ) / 2;
+        field.y = y + _board.y + (_board.height - field.height) / 2;
     }
 }
