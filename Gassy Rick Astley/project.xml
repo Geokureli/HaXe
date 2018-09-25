@@ -51,6 +51,7 @@
     <!-- _________________________ LIBRARIES _________________________ -->
 
     <haxelib name="flixel"/>
+    <haxelib name="flixel-addons"/>
     <haxelib name="actuate"/>
     <haxelib name="newgrounds" />
     <classpath path="../Krakel/source" />

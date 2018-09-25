@@ -54,7 +54,7 @@ class DeathUI extends flixel.group.FlxSpriteGroup {
         _timer = new FlxTimer();
         _blinkTimer = new FlxTimer();
         
-        _board.x = -12;
+        _board.x = -15;
     }
     
     public function startTransition(score:Int, callback:Void->Void):Void {
