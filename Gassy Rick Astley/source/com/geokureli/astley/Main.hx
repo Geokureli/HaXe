@@ -23,6 +23,7 @@ import com.geokureli.krakel.State;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxObject;
+import flixel.tile.FlxTilemap;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxTween.FlxTweenType;
@@ -100,6 +101,17 @@ class IntroState extends State {
         add(new Shrub(FlxG.width * 1.75, 3, false));
         add(new Shrub(FlxG.width * 3.75, 3, false));
         add(new Grass());
+        
+        var pipe = new FlxTilemap();
+        pipe.loadMapFromCSV
+            ( "4,5\n6,7\n6,7"
+            , AssetPaths.image("tiles_0")
+            , Std.int(LevelData.TILE_SIZE)
+            , Std.int(LevelData.TILE_SIZE)
+            );
+        pipe.x = LevelData.TILE_SIZE * 6;
+        pipe.y = LevelData.SKY_HEIGHT - pipe.height;
+        add(pipe);
         
         #if (newgrounds)
             add(new FlxSprite(1, 233, AssetPaths.image("ngLogo_small")));
