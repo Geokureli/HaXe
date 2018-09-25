@@ -43,6 +43,7 @@ class Main extends Shell {
     public function new() {
         super();
         
+        FlxG.autoPause = false;
         FlxG.mouse.useSystemCursor = true;
     }
     
