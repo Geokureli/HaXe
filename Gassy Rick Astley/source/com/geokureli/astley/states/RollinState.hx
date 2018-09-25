@@ -67,6 +67,7 @@ class RollinState extends BaseState {
         _hero = new Rick(BaseState.HERO_SPAWN_X, 64);
         
         FlxG.worldBounds.width = _hero.width + 2;
+        FlxG.camera.scroll.x = -FlxG.width * 4;
         
         startIntro();
     }
@@ -100,7 +101,6 @@ class RollinState extends BaseState {
         
         var introArt = new flixel.group.FlxGroup(3);
         add(introArt);
-        FlxG.camera.scroll.x -= FlxG.width * 4;
         FlxTween.tween
             ( FlxG.camera.scroll
             , { x:0 }

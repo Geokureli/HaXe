@@ -34,9 +34,10 @@ class LoopSprite extends flixel.FlxSprite {
     
     function randomise(x:Null<Float> = null, y:Null<Float> = null, size:Int = -1):Void {
         
+        var ran = -1.0;
         if (x == null) {
-            
-            x = FlxG.camera.scroll.x + (FlxG.camera.width + Random.under(FlxG.camera.width)) / scrollFactor.x;
+            ran = Random.under(FlxG.camera.width);
+            x = FlxG.camera.scroll.x + (FlxG.camera.width + ran) / scrollFactor.x;
             
             _lastCamX = FlxG.camera.scroll.x;
             _wasOnScreen = false;
@@ -53,6 +54,13 @@ class LoopSprite extends flixel.FlxSprite {
         this.x = x;
         this.y = y;
         loadGraphic(FlxG.bitmap.get(_key + "_" + size));
+        
+        if (ran >= 0) {
+            
+            // fixes my shitty logic during the intro transition
+            while (isOnScreen())
+                this.x += FlxG.camera.width;
+        }
     }
     
     override public function update(elapsed:Float):Void {
