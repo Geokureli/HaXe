@@ -7,15 +7,14 @@ package com.geokureli.astley;
 import com.geokureli.astley.art.Grass;
 import com.geokureli.astley.art.Cloud;
 import com.geokureli.astley.art.Shrub;
+import com.geokureli.astley.art.ui.APIConnector;
 import com.geokureli.astley.art.ui.MedalPopup;
 import com.geokureli.astley.data.BestSave;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.data.LevelData;
-import com.geokureli.astley.data.NGData;
 import com.geokureli.astley.data.Prize;
 import com.geokureli.astley.states.RollinState;
 
-import com.geokureli.krakel.art.Button;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.Shell;
 import com.geokureli.krakel.State;
@@ -66,19 +65,14 @@ class IntroState extends State {
     var _title:FlxSprite;
     var _instructions:FlxSprite;
     var _loopTween:FlxTween;
+    var _apiConnector:APIConnector;
     
     override public function create():Void {
         super.create();
         
-        #if newgrounds
-            
-            NG.createAndCheckSession(NGData.APP_ID);
-            
-            #if !ng_lite
-                if (!NG.core.attemptingLogin)
-                    NG.core.requestMedals(function ():Void { trace('medals loaded'); } );
-            #end
-        #end
+        _apiConnector = new APIConnector();
+        centerX(_apiConnector);
+        _apiConnector.y = 108;
         
         BestSave.init();
         Prize.init();
@@ -87,13 +81,6 @@ class IntroState extends State {
         FartControl.enabled = false;
         AssetPaths.initBitmapFontMonospace("numbers_10", "0123456789");
         AssetPaths.initBitmapFontMonospace("letters_med", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.");
-        
-        if (getIsMobile())
-            add(_instructions = new FlxSprite(0, 123, AssetPaths.image("tap")))
-        else
-            add(_instructions = new FlxSprite(0, 140, AssetPaths.text("press_any_key")));
-        
-        centerX(_instructions).visible = false;
         
         add(new Cloud(FlxG.width * 0.75, 40, 2, false));
         add(new Cloud(FlxG.width * 1.75, 80, 3, false));
@@ -112,6 +99,14 @@ class IntroState extends State {
         pipe.x = LevelData.TILE_SIZE * 6;
         pipe.y = LevelData.SKY_HEIGHT - pipe.height;
         add(pipe);
+        
+        if (getIsMobile())
+            add(_instructions = new FlxSprite(0, 130, AssetPaths.image("tap")))
+        else
+            add(_instructions = new FlxSprite(0, 140, AssetPaths.text("press_any_key")));
+        
+        centerX(_instructions).visible = false;
+        add(_apiConnector);
         
         #if (newgrounds)
             add(new FlxSprite(1, 233, AssetPaths.image("ngLogo_small")));
@@ -213,15 +208,26 @@ class IntroState extends State {
     
     function onIntroComplete(tween:FlxTween):Void {
         
-        _instructions.visible = true;
+        _apiConnector.show(onLoginComplete);
         _loopTween = FlxTween.tween
             ( _title
             , { y:46 }
             , FlxG.stage.frameRate / 115.14
             , { type:FlxTweenType.PINGPONG, ease:FlxEase.sineOut }
             );
+    }
+    
+    function onLoginComplete():Void {
         
-        FartControl.enabled = true;
+        var y = _instructions.y;
+        _instructions.y = _apiConnector.y;
+        _instructions.visible = true;
+        FlxTween.tween
+            ( _instructions
+            , { y:y }
+            , .5
+            , { onComplete: (_) -> {FartControl.enabled = true;}, ease:FlxEase.sineOut }
+            );
     }
     
     override public function update(elapsed:Float):Void {
