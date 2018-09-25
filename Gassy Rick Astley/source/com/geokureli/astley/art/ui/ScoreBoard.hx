@@ -57,14 +57,20 @@ class ScoreBoard extends flixel.group.FlxSpriteGroup {
     }
     
     public function setData(score:Int, callback:Void->Void):Void {
-        var duration:Float = score / 10;
         
-        FlxTween.tween
-            ( this
-            , { score:score }
-            , duration
-            , { onComplete: (_) -> { onRollupComplete(score, callback); } }
-            );
+        if (score == 0) {
+            
+            onRollupComplete(score, callback);
+            
+        } else {
+            
+            FlxTween.tween
+                ( this
+                , { score:score }
+                , score / 10
+                , { onComplete: (_) -> { onRollupComplete(score, callback); } }
+                );
+        }
     }
     
     function onRollupComplete(score:Int, callback:Void->Void):Void {
