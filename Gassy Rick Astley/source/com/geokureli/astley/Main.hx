@@ -40,7 +40,11 @@ class Main extends Shell {
         //Lib.current.addChild(new Main());
     //}
     
-    public function new() { super(); }
+    public function new() {
+        super();
+        
+        FlxG.mouse.useSystemCursor = true;
+    }
     
     override function setDefaults():Void {
         super.setDefaults();
@@ -100,7 +104,7 @@ class IntroState extends State {
         pipe.y = LevelData.SKY_HEIGHT - pipe.height;
         add(pipe);
         
-        if (!getIsMobile())
+        if (getIsMobile())
             add(_instructions = new FlxSprite(0, 150, AssetPaths.image("tap")))
         else
             add(_instructions = new FlxSprite(0, 140, AssetPaths.text("press_any_key")));

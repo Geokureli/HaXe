@@ -127,5 +127,11 @@ class Replay extends FlxReplay {
 
 class ReplayMouse extends FlxMouse {
     
-    public function new() { super(new Sprite()); }
+    static var sprite = new Sprite();
+    
+    public function new() {
+        super(sprite);
+        
+        useSystemCursor = true;
+    }
 }
