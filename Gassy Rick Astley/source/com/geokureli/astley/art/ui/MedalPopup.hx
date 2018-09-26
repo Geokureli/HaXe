@@ -109,6 +109,7 @@ class MedalPopup extends FlxSpriteGroup {
                     
                     numMedalsLocked++;
                     medal.onUnlock.add(onMedalOnlock.bind(medal));
+                    trace('${medal.unlocked ? "unlocked" : "locked  "} - ${medal.name}');
                 }
                 numMedals++;
             }

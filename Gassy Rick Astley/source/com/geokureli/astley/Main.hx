@@ -224,6 +224,7 @@ class IntroState extends State {
     
     function onLoginComplete():Void {
         
+        BestSave.loadBestScore();
         var y = _instructions.y;
         _instructions.y = _apiConnector.y;
         _instructions.visible = true;

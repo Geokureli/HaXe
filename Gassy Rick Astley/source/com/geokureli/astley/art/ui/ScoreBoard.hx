@@ -38,6 +38,7 @@ class ScoreBoard extends flixel.group.FlxSpriteGroup {
         add(new FlxSprite(94, 48, AssetPaths.text("txt_best")));
         add(_bestTxt = new ScoreText(90, 56));
         //_bestTxt.alignment = FlxBitmapFont.ALIGN_RIGHT;
+        best = BestSave.best;
         _bestTxt.text = Std.string(best);
         
         // --- MEDAL
