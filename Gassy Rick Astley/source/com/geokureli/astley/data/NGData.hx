@@ -5,6 +5,8 @@ class NGData {
     inline static public var APP_ID:String = "47215:Ip8uDj9v";
     // inline static public var APP_ID:String = "48010:uIFuFyui";//GRA TEST
     
+    inline static public var ENCRYPTION:String = "LUp0Zg4f1lukgKgSwchZnQ==";
+    
     inline static public var CREDITS_ME:Int = 53995;
     inline static public var PLAY_AGAIN:Int = 53997;
     inline static public var PROGRESS_0:Int = 53996;

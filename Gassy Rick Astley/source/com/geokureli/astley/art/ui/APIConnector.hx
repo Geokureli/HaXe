@@ -35,6 +35,8 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         
         #if newgrounds
             NG.createAndCheckSession(NGData.APP_ID);
+            NG.core.initEncryption(NGData.ENCRYPTION);
+            // NG.core.verbose = true;
             
             if (!NG.core.attemptingLogin){
                 
