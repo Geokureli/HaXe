@@ -59,6 +59,8 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
     
     public function show(callback:Void->Void):Void {
         
+        callback = end.bind(callback);
+        
         visible = true;
         FlxTween.tween
             ( _board
@@ -66,6 +68,13 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
             , 1
             , { onComplete:(_) -> { finalShow(callback); }, ease:FlxEase.expoOut }
             );
+    }
+    
+    public function end(callback:Void->Void):Void {
+        
+        NG.core.requestScoreBoards();
+        NG.core.requestMedals();
+        callback();
     }
     
     public function finalShow(callback:Void->Void):Void {

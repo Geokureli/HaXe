@@ -53,7 +53,7 @@ class BestSave {
                     board.onUpdate.add(
                         () -> {
                             trace('remote best loaded: ${board.scores[0].value}');
-                            if (board.scores[0].value > _best) {
+                            if (board.scores[0].value >= _best) {
                                 
                                 _best = board.scores[0].value;
                                 saveLocal(_best);
@@ -61,6 +61,7 @@ class BestSave {
                                 
                             } else {
                                 
+                                Prize.unlockLocalMedals(_best);
                                 saveRemote(_best);
                                 trace("saving local best to remote");
                             }

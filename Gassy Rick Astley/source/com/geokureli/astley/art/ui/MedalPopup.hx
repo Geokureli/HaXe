@@ -39,6 +39,8 @@ class MedalPopup extends FlxSpriteGroup {
     
     static public var instance:MedalPopup;
     
+    public var enabled:Bool;
+    
     var _animQueue = new Array<Medal>();
     
     var _iconFrame:FlxSprite;
@@ -49,6 +51,8 @@ class MedalPopup extends FlxSpriteGroup {
     
     public function new() {
         super();
+        
+        enabled = true;
         
         y = AWAY_Y;
         visible = false;
@@ -87,11 +91,10 @@ class MedalPopup extends FlxSpriteGroup {
         board.pixels.fillRect(pixelRect, 0xfff09754);// 0xffffa257);
         
         #if newgrounds
-            trace(NG.core.medals);
             if (NG.core.medals != null)
                 medalsLoaded();
             else
-                NG.core.requestMedals(medalsLoaded);
+                NG.core.onMedalsLoaded.add(medalsLoaded);
         #end
         
         instance = this;
@@ -118,6 +121,9 @@ class MedalPopup extends FlxSpriteGroup {
     }
     
     function onMedalOnlock(medal:Medal):Void {
+        
+        if (!enabled)
+            return;
         
         _animQueue.push(medal);
         

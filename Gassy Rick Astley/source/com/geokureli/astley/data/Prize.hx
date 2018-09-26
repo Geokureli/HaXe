@@ -10,6 +10,8 @@ package com.geokureli.astley.data;
 #end
 
 import com.geokureli.astley.art.Tilemap;
+import com.geokureli.astley.art.ui.MedalPopup;
+
 import com.geokureli.krakel.data.AssetPaths;
 
 class Prize {
@@ -20,6 +22,7 @@ class Prize {
     static public inline var GOLD:String = "gold";
     static public inline var PLATINUM:String = "platinum";
     
+    static public var checkMedals:Bool;
     
     static var TIERS:Array<String> = [
         NONE, BRONZE, SILVER, GOLD, PLATINUM
@@ -50,6 +53,18 @@ class Prize {
     
     static public function init():Void {
         
+    }
+    
+    static public function unlockLocalMedals(best:Int){
+        
+        if (NG.core.medals != null) {
+            
+            MedalPopup.instance.enabled = false;
+            checkProgressPrize(best);
+            MedalPopup.instance.enabled = true;
+            
+        } else
+            NG.core.onMedalsLoaded.add(unlockLocalMedals.bind(best));
     }
     
     static public function checkProgressPrize(score:Float):Void {
