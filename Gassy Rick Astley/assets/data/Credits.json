@@ -18,8 +18,8 @@
 				"rick"            : "text/txt_rick"            ,
 				"bgTileArt"       : "text/txt_bg_tile_art"     ,
 				"nintendo"        : "text/txt_nintendo"        ,
-				"loadingScreen"   : "text/txt_loading_screen"  ,
-				"flixel"          : "text/txt_flixel"          ,
+				"audioLogo"       : "text/txt_audio_logo"      ,
+				"eduard"          : "text/txt_eduard"          ,
 				"characterArt"    : "text/txt_character_art"   ,
 				"theAlex"         : "text/txt_the_alex"        ,
 				"george"          : "text/txt_george"          ,
@@ -64,13 +64,14 @@
 			{
 				"class":"CreditsLayer",
 				"name":"credits2",
-				"children": [
-					{ "class":"Sprite", "graphic":"bgTileArt"    , "x":17, "y":102 },
-					{ "class":"Sprite", "graphic":"nintendo"     , "x":32, "y":119 },
-					{ "class":"Sprite", "graphic":"loadingScreen", "x":17, "y":149 },
-					{ "class":"Sprite", "graphic":"characterArt" , "x":17, "y":52  },
-					{ "class":"Sprite", "graphic":"theAlex"      , "x":31, "y":69  },
-					{ "class":"Sprite", "graphic":"flixel"       , "x":32, "y":166 }
+				"children": 
+				[	{ "class":"Sprite", "graphic":"characterArt" , "x":17, "y":52  }
+				,	{ "class":"Sprite", "graphic":"theAlex"      , "x":31, "y":69  }
+				,	{ "class":"Sprite", "graphic":"bgTileArt"    , "x":17, "y":102 }
+				,	{ "class":"Sprite", "graphic":"nintendo"     , "x":32, "y":119 }
+				,	{ "class":"Sprite", "graphic":"audioLogo"    , "x":17, "y":149 }
+				,	{ "class":"Sprite", "graphic":"george"       , "x":32, "y":168 }
+				,	{ "class":"Sprite", "graphic":"eduard"       , "x":32, "y":184 }
 				]
 			},
 			{
