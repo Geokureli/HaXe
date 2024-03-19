@@ -238,7 +238,7 @@ class Deserializer {
 		for (field in fields) {
 			
 			value = Reflect.field(source, field);
-			if (Std.is(target, IDeserializable)) {
+			if (Std.isOfType(target, IDeserializable)) {
 				parsers = cast(target, IDeserializable).specialParsers;
 				if (parsers.exists(field) && parsers[field](this, value))
 					continue;
@@ -276,7 +276,7 @@ class Deserializer {
 	
 	inline function isObject(v:Dynamic):Bool {
 		
-		return !Std.is(v, String)
+		return !Std.isOfType(v, String)
 			&& Reflect.isObject(v);
 	}
 	

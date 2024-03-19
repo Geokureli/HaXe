@@ -73,7 +73,7 @@ class State extends FlxState {
     
     override public function add(object:FlxBasic):FlxBasic {
         
-        if (Std.is(object, IUpdate)) {
+        if (Std.isOfType(object, IUpdate)) {
             
             _special.push(cast(object));
         }
@@ -83,7 +83,7 @@ class State extends FlxState {
     
     override public function remove(object:FlxBasic, splice:Bool = false):FlxBasic {
         
-        if (Std.is(object, IUpdate)) {
+        if (Std.isOfType(object, IUpdate)) {
             
             _special.remove(cast(object));
         }

@@ -44,7 +44,7 @@ class Layer extends Group
     
     override public function add(obj:FlxBasic):FlxBasic {
         
-        if (Std.is(obj, INamed) && cast(obj, INamed).name != null) {
+        if (Std.isOfType(obj, INamed) && cast(obj, INamed).name != null) {
             
             var layer:Layer = Std.downcast(obj, Layer);
             if (layer != null) {

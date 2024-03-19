@@ -39,7 +39,7 @@ class LoopingTilemap extends FlxTilemap {
         
         if (wrapX || wrapY) {
             
-            if (Std.is(mapData, TilemapData)) {
+            if (Std.isOfType(mapData, TilemapData)) {
                 
                 _rawMap = mapData;
                 

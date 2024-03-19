@@ -122,7 +122,7 @@ class ButtonComponent extends Component
             overlapFound = checkTouchOverlap();
         
         #if FLX_TOUCH // there's only a mouse event listener for onUp
-        if (_currentInput != null && _currentInput.justReleased && Std.is(_currentInput, FlxTouch) && overlapFound)
+        if (_currentInput != null && _currentInput.justReleased && Std.isOfType(_currentInput, FlxTouch) && overlapFound)
             onUpHandler();
         #end
         
@@ -256,9 +256,9 @@ class ButtonComponent extends Component
     
     override function set_target(value:IComponentHolder):IComponentHolder {
         
-        if (hitObject == null && Std.is(value, FlxObject))
+        if (hitObject == null && Std.isOfType(value, FlxObject))
             hitObject = cast value;
-        if (graphic   == null && Std.is(value, FlxSprite))
+        if (graphic   == null && Std.isOfType(value, FlxSprite))
             graphic   = cast value;
         
         return super.set_target(value);

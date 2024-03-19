@@ -28,7 +28,7 @@ class TypedGroup<T:FlxBasic> extends FlxTypedGroup<T> implements IUpdate {
     
     override public function add(object:T):T {
         
-        if (Std.is(object, IUpdate)) {
+        if (Std.isOfType(object, IUpdate)) {
             
             _special.push(cast(object));
         }
@@ -38,7 +38,7 @@ class TypedGroup<T:FlxBasic> extends FlxTypedGroup<T> implements IUpdate {
     
     override public function remove(object:T, splice:Bool = false):T {
         
-        if (Std.is(object, IUpdate)) {
+        if (Std.isOfType(object, IUpdate)) {
             
             _special.remove(cast(object));
         }

@@ -83,7 +83,7 @@ class Button extends Sprite {
     
     function deserializeClick(deserializer:Deserializer, value:Dynamic):Bool {
         
-        if (Std.is(value, String) && _clickEReg.match(value)) {
+        if (Std.isOfType(value, String) && _clickEReg.match(value)) {
             
             switch(_clickEReg.matched(1)) {
                 
