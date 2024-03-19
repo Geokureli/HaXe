@@ -9,6 +9,7 @@ class BoardSprite extends flixel.addons.display.FlxSliceSprite {
     public function new(width:Int, height:Int) {
         
         super(AssetPaths.bitmapData("board"), new FlxRect(5, 7, 1, 1), width, height);
+        stretchBottom = stretchTop = stretchCenter = stretchLeft = stretchRight = true;
     }
     
     //override function set_x(x:Float):Float { return super.set_x(Std.int(x); }
