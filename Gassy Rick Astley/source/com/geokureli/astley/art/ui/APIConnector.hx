@@ -100,7 +100,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
             }
         }
         #else
-        // showLoginFailed();
+        showLoginFailed();
         callback();
         #end
     }

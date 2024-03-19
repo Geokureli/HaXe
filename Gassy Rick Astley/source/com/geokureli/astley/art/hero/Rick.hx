@@ -82,7 +82,7 @@ class Rick extends RickLite {
         // --- DEATH DRAG
         if (isTouching(DOWN)) {
             
-            if (wasTouching.has(DOWN))
+            if (!wasTouching.has(DOWN))
                 AssetPaths.play("hit");
             
             drag.x = 200;
