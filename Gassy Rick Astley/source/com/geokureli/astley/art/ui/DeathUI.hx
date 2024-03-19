@@ -6,7 +6,7 @@ import com.geokureli.astley.states.RollinState;
 import com.geokureli.krakel.data.AssetPaths;
 
 import flixel.FlxSprite;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;

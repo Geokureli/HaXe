@@ -1,6 +1,6 @@
 package com.geokureli.krakel.components;
 
-//import ash.ClassMap;
+import haxe.Constraints.IMap;
 
 /**
  * ...
@@ -92,7 +92,7 @@ class ComponentList {
     }
 }
 
-private class ClassMap<K:Class<Dynamic>, V> implements Map.IMap<K, V>
+private class ClassMap<K:Class<Dynamic>, V> implements IMap<K, V>
 {
     var h:haxe.ds.StringMap<V>;
     
@@ -135,7 +135,19 @@ private class ClassMap<K:Class<Dynamic>, V> implements Map.IMap<K, V>
         return h.iterator();
     }
     
-    public inline function copy():Map.IMap<K,V>
+    public function keyValueIterator():KeyValueIterator<K, V>
+    {
+        var i = h.keys();
+        return {
+            hasNext: i.hasNext,
+            next: function () {
+                final next = i.next();
+                return { key: (cast Type.resolveClass(next):K), value:h.get(next) };
+            }
+        };
+    }
+    
+    public inline function copy():IMap<K,V>
     {
         return null;
     }
@@ -143,5 +155,10 @@ private class ClassMap<K:Class<Dynamic>, V> implements Map.IMap<K, V>
     public inline function toString():String
     {
         return h.toString();
+    }
+    
+    public function clear():Void
+    {
+        h.clear();
     }
 }

@@ -44,7 +44,7 @@ class ButtonComponent extends Component
     /** Dispatched whenever the state changes */
     public var onChange (default, null):FlxTypedSignal<Int->Void>;
     
-    public var state(default, null):Int;
+    public var state(default, null):FlxButtonState;
     public var hitObject(default, set):FlxObject;
     public var graphic:FlxSprite;
     
@@ -57,7 +57,7 @@ class ButtonComponent extends Component
     override function setDefaults() {
         super.setDefaults();
         
-        state = FlxButton.NORMAL;
+        state = NORMAL;
         
         onUp     = new FlxSignal();
         onDown   = new FlxSignal();
@@ -126,7 +126,7 @@ class ButtonComponent extends Component
             onUpHandler();
         #end
         
-        if (state != FlxButton.NORMAL
+        if (state != NORMAL
         && (!overlapFound || (_currentInput != null && _currentInput.justReleased))) {
             
             onOutHandler();
@@ -190,7 +190,7 @@ class ButtonComponent extends Component
             _currentInput = input;
             onDownHandler();
             
-        } else if (state == FlxButton.NORMAL)
+        } else if (state == NORMAL)
             onOverHandler();
     }
     
@@ -208,7 +208,7 @@ class ButtonComponent extends Component
     #if FLX_MOUSE
     private function onUpEventListener(_):Void {
         
-        if (enabled && state == FlxButton.PRESSED)
+        if (enabled && state == PRESSED)
             onUpHandler();
     }
     #end
@@ -216,7 +216,7 @@ class ButtonComponent extends Component
     /** Internal function that handles the onUp event. */
     function onUpHandler():Void {
         
-        state = FlxButton.NORMAL;
+        state = NORMAL;
         _input.release();
         _currentInput = null;
         onUp.dispatch();
@@ -225,7 +225,7 @@ class ButtonComponent extends Component
     /** Internal function that handles the onDown event. */
     function onDownHandler():Void {
         
-        state = FlxButton.PRESSED;
+        state = PRESSED;
         _input.press();
         onDown.dispatch();
     }
@@ -233,14 +233,14 @@ class ButtonComponent extends Component
     /** Internal function that handles the onOver event. */
     function onOverHandler():Void {
         
-        state = FlxButton.HIGHLIGHT;
+        state = HIGHLIGHT;
         onOver.dispatch();
     }
     
     /** Internal function that handles the onOut event. */
     function onOutHandler():Void {
         
-        state = FlxButton.NORMAL;
+        state = NORMAL;
         _input.release();
         onOut.dispatch();
     }

@@ -21,6 +21,6 @@ class Plugin extends FlxBasic {
     
     function init():Void {
         
-        FlxG.plugins.add(this);
+        FlxG.plugins.addIfUniqueType(this);
     }
 }

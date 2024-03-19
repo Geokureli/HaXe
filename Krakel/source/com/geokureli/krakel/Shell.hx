@@ -13,8 +13,8 @@ import flixel.FlxState;
 class Shell extends Sprite {
     
     /** The Game class the program starts with. */
-    var _gameClass:Class<Game>;
-    var _introState:Class<FlxState>;
+    var _gameFactory:()->Game;
+    var _introState:()->FlxState;
     
     var _gameWidth:Int;
     var _gameHeight:Int;
@@ -27,9 +27,9 @@ class Shell extends Sprite {
     
     var _game:Game;
     
-    public function new(?gameClass:Class<Game>) {
+    public function new(?gameFactory:()->Game) {
         
-        _gameClass = gameClass;
+        _gameFactory = gameFactory;
         
         super();
         
@@ -57,23 +57,23 @@ class Shell extends Sprite {
         _fullScreen = false;
         
         _scale = 1;
-        _introState = State;
+        _introState = State.new;
     }
     
     function init(?e:Event):Void {
         
         if (e != null) removeEventListener(e.type, init);
         
-        trace(BuildInfo.buildInfo);
+        // trace(BuildInfo.buildInfo);
         
         setupGame();
     }
     
     function setupGame():Void {
         
-        if (_gameClass != null) {
+        if (_gameFactory != null) {
             
-            addChild(_game = Type.createInstance(_gameClass, []));
+            addChild(_game = _gameFactory());
             
         } else {
             
@@ -96,7 +96,6 @@ class Shell extends Sprite {
                 _game = new Game(
                     _gameWidth, _gameHeight,
                     _introState,
-                    _scale,
                     _updateRate, _frameRate,
                     _skipSplash,
                     _fullScreen

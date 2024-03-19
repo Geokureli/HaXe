@@ -6,7 +6,7 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 

@@ -1,6 +1,6 @@
 package com.geokureli.krakel.audio;
 
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 
 /**
  * ...

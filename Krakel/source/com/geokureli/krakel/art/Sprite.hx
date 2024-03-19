@@ -108,7 +108,7 @@ class Sprite extends FlxSprite
         if (moves) updateMotion(elapsed);
         
         wasTouching = touching;
-        touching = FlxObject.NONE;
+        touching = NONE;
         
         components.preUpdateAll(elapsed);
     }

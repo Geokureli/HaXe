@@ -46,7 +46,7 @@ class Layer extends Group
         
         if (Std.is(obj, INamed) && cast(obj, INamed).name != null) {
             
-            var layer:Layer = Std.instance(obj, Layer);
+            var layer:Layer = Std.downcast(obj, Layer);
             if (layer != null) {
                 
                 for (name in layer._assetsByName.keys()) {

@@ -1,10 +1,13 @@
 package com.geokureli.astley.art.ui;
 
+#if newgrounds
+import io.newgrounds.NG;
 import io.newgrounds.objects.Error;
-import com.geokureli.astley.data.NGData;
+#end
 
 import com.geokureli.krakel.art.Button;
 import com.geokureli.krakel.data.AssetPaths;
+import com.geokureli.astley.data.NGData;
 
 import flixel.group.FlxSpriteGroup;
 import flixel.tweens.FlxEase;
@@ -12,8 +15,6 @@ import flixel.tweens.FlxTween;
 import flixel.text.FlxBitmapText;
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.text.FlxText.FlxTextAlign;
-
-import io.newgrounds.NG;
 
 class APIConnector extends flixel.group.FlxSpriteGroup {
     
@@ -25,7 +26,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
     
     var _onSuccess:Void->Void;
     var _onPending:Void->Void;
-    var _onError:Error->Void;
+    var _onError:String->Void;
     var _onCancel:Void->Void;
     
     public function new () {
@@ -45,7 +46,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
                 NG.core.requestLogin
                     ( () -> { if (_onSuccess != null) _onSuccess(); }
                     , () -> { if (_onPending != null) _onPending(); }
-                    , (e) -> { if (_onError != null) _onError(e); }
+                    , (e) -> { if (_onError != null) _onError(Std.string(e)); }
                     , () -> { if (_onCancel != null) _onCancel(); }
                     );
             }
@@ -72,13 +73,16 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
     
     public function end(callback:Void->Void):Void {
         
+        #if newgrounds
         NG.core.requestScoreBoards();
         NG.core.requestMedals();
+        #end
         callback();
     }
     
     public function finalShow(callback:Void->Void):Void {
         
+        #if newgrounds
         if (NG.core.loggedIn) {
             
             showLoggedIn();
@@ -95,8 +99,13 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
                 callback();
             }
         }
+        #else
+        // showLoginFailed();
+        callback();
+        #end
     }
     
+    #if newgrounds
     function showLogin(callback:Void->Void) {
         
         switchPage(_board.x, _board.y);
@@ -135,6 +144,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         
         addText("welcome\n" + NG.core.user.name);
     }
+    #end
     
     function showLoginFailed():Void { 
         

@@ -1,12 +1,12 @@
 package com.geokureli.astley.data;
 
-import io.newgrounds.components.ScoreBoardComponent.Period;
 import flixel.util.FlxSave;
 
 #if newgrounds
     import com.geokureli.astley.data.NGData;
     
     import io.newgrounds.NG;
+    import io.newgrounds.components.ScoreBoardComponent;
 #end
 
 /**

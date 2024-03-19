@@ -98,16 +98,16 @@ class LoopingTilemap extends FlxTilemap {
         if (wrapX || wrapY) {
             
             var camTileIndex:FlxPoint = new FlxPoint(
-                Math.ffloor(FlxG.camera.scroll.x / _tileWidth * scrollFactor.x),
-                Math.ffloor(FlxG.camera.scroll.y / _tileHeight * scrollFactor.y)
+                Math.ffloor(FlxG.camera.scroll.x / tileWidth * scrollFactor.x),
+                Math.ffloor(FlxG.camera.scroll.y / tileHeight * scrollFactor.y)
             );
             
             var dirty:Bool = false;
             var delta:Int;
-            if (wrapX && x * scrollFactor.x / _tileWidth != camTileIndex.x) {
+            if (wrapX && x * scrollFactor.x / tileWidth != camTileIndex.x) {
                 
                 dirty = true;
-                delta = Std.int(x / _tileWidth - camTileIndex.x);
+                delta = Std.int(x / tileWidth - camTileIndex.x);
                 
                 while (delta > 0) {
                     
@@ -127,13 +127,13 @@ class LoopingTilemap extends FlxTilemap {
                     delta++;
                 }
                 
-                x = camTileIndex.x * _tileWidth;
+                x = camTileIndex.x * tileWidth;
             }
             
-            if (wrapY && y * scrollFactor.y / _tileHeight != camTileIndex.y) {
+            if (wrapY && y * scrollFactor.y / tileHeight != camTileIndex.y) {
                 
                 dirty = true;
-                delta = Std.int(y / _tileHeight - camTileIndex.y);
+                delta = Std.int(y / tileHeight - camTileIndex.y);
                 
                 while (delta > 0) {
                     
@@ -147,7 +147,7 @@ class LoopingTilemap extends FlxTilemap {
                     delta++;
                 }
                 
-                y = camTileIndex.y * _tileHeight;
+                y = camTileIndex.y * tileHeight;
             }
             
             if (dirty) {

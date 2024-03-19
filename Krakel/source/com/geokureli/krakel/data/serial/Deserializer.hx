@@ -321,7 +321,7 @@ private class SuperClassMap<K:Class<Dynamic>, V> {
 		var value:Dynamic = null;
         for (i in 0 ... _keys.length) {
 			
-			if (Std.is(obj, _keys[i])) {
+			if (Std.isOfType(obj, _keys[i])) {
 				
 				value = _values[i];
 				break;
@@ -355,7 +355,7 @@ private class SuperClassMap<K:Class<Dynamic>, V> {
 		var found = false;
         for (i in 0 ... _keys.length) {
 			
-			if (Std.is(obj, _keys[i])){ 
+			if (Std.isOfType(obj, _keys[i])){ 
 				
 				found = true;
 				break;

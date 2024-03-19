@@ -1,9 +1,5 @@
 package com.geokureli.astley;
 
-
-#if show_loader
-    import flixel.system.FlxSplash;
-#end
 import com.geokureli.astley.art.Grass;
 import com.geokureli.astley.art.Cloud;
 import com.geokureli.astley.art.Shrub;
@@ -52,14 +48,14 @@ class Main extends Shell {
         
         _frameRate = 60;
         _scale = 2;
-        _introState = IntroState;
-        //_introState = ReplayState;
-        //_introState = TestAny;
+        _introState = IntroState.new;
+        //_introState = ReplayState.new;
+        //_introState = TestAny.new;
         
         _skipSplash = true;
         #if show_loader
-            FlxSplash.nextState = _introState;
-            _introState = Splash;
+            final nextState = _introState;
+            _introState = ()->new Splash(nextState);
         #end
         Actuate.defaultEase = Linear.easeNone;
     }
@@ -277,7 +273,7 @@ class IntroState extends State {
 }
 
 #if show_loader
-class Splash extends FlxSplash {
+class Splash extends flixel.system.FlxSplash {
     
     override public function create():Void {
         

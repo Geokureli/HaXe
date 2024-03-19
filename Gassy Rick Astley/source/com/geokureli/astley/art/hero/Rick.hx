@@ -80,9 +80,9 @@ class Rick extends RickLite {
         if (!moves) return;
         
         // --- DEATH DRAG
-        if (isTouching(FlxObject.DOWN)) {
+        if (isTouching(DOWN)) {
             
-            if ((wasTouching & FlxObject.DOWN) == 0)
+            if (wasTouching.has(DOWN))
                 AssetPaths.play("hit");
             
             drag.x = 200;

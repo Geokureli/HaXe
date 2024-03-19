@@ -8,7 +8,7 @@ import com.geokureli.krakel.audio.Sound;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxBitmapFont;
 import flixel.math.FlxPoint;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 
 import haxe.Json;
 
