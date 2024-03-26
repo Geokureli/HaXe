@@ -65,7 +65,7 @@ class Prize {
             MedalPopup.instance.enabled = true;
             
         } else
-            NG.core.onMedalsLoaded.add(unlockLocalMedals.bind(best));
+            NG.core.medals.onLoad.add(unlockLocalMedals.bind(best));
         #end
     }
     

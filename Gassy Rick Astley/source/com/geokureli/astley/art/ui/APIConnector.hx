@@ -1,5 +1,7 @@
 package com.geokureli.astley.art.ui;
 
+import flixel.util.FlxSignal;
+import io.newgrounds.NGLite;
 #if newgrounds
 import io.newgrounds.NG;
 import io.newgrounds.objects.Error;
@@ -24,88 +26,105 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
     var _page:FlxSpriteGroup;
     var _board:BoardSprite;
     
-    var _onSuccess:Void->Void;
-    var _onPending:Void->Void;
-    var _onError:String->Void;
-    var _onCancel:Void->Void;
+    var _outcome:Null<LoginOutcome> = null;
+    var _outcomeReceived:FlxSignal = new FlxSignal();
     
     public function new () {
         super();
         
         add(_board = new BoardSprite(1, 1));
+        visible = false;
         
         #if newgrounds
-            NG.createAndCheckSession(NGData.APP_ID);
-            NG.core.initEncryption(NGData.ENCRYPTION);
+            // NG.createAndCheckSession(NGData.APP_ID);
+            NG.create(NGData.APP_ID);
+            NG.core.setupEncryption(NGData.ENCRYPTION, RC4);
             // NG.core.verbose = true;
             
-            if (!NG.core.attemptingLogin){
+            final sessionId = NG.core.session.initialId
+                // ?? "99991271.47ff052d7b1066f2c7229d0f30c622fa4e7aad262957c4"
+                ;
                 
-                _onError = (error) -> { trace(error); };
+            if (sessionId != null) {
                 
-                NG.core.requestLogin
-                    ( () -> { if (_onSuccess != null) _onSuccess(); }
-                    , () -> { if (_onPending != null) _onPending(); }
-                    , (e) -> { if (_onError != null) _onError(Std.string(e)); }
-                    , () -> { if (_onCancel != null) _onCancel(); }
-                    );
+                NG.core.session.connectTo(sessionId, (outcome)->switch outcome {
+                    
+                    case SUCCESS(session):
+                        
+                        _outcome = SUCCESS;
+                        _outcomeReceived.dispatch();
+                        
+                    case FAIL(error):
+                        
+                        startNewSession();
+                }, (_)->{});
+                
+            } else {
+                
+                startNewSession();
             }
         #end
-        
-        // add(new FlxSprite(18, -10, AssetPaths.text("txt_logging_in")));
-        // add(new FlxSprite(4 ,  40, AssetPaths.image("ngLogo_small")));
-        
-        visible = false;
     }
     
-    public function show(callback:Void->Void):Void {
+    function startNewSession()
+    {
+        NG.core.session.autoConnect((outcome)-> {
+            
+            _outcome = outcome;
+            _outcomeReceived.dispatch();
+        }, (_)->{});
+    }
+    
+    public function show(callback:()->Void):Void {
         
-        callback = end.bind(callback);
+        #if (!newgrounds)
+        callback();
+        #end
         
         visible = true;
         FlxTween.tween
             ( _board
             , { x:x - WIDTH / 2, y:y - HEIGHT / 2, width:WIDTH, height:HEIGHT }
             , 1
-            , { onComplete:(_) -> { finalShow(callback); }, ease:FlxEase.expoOut }
+            , { onComplete:(_)->onTweenComplete(callback), ease:FlxEase.expoOut }
             );
     }
     
-    public function end(callback:Void->Void):Void {
+    #if newgrounds
+    function onTweenComplete(callback:()->Void):Void {
         
-        #if newgrounds
-        NG.core.requestScoreBoards();
-        NG.core.requestMedals();
-        #end
-        callback();
+        NG.core.scoreBoards.loadList();
+        NG.core.medals.loadList();
+        
+        updateSessionStatus(callback);
     }
     
-    public function finalShow(callback:Void->Void):Void {
+    function updateSessionStatus(callback:()->Void) {
         
-        #if newgrounds
-        if (NG.core.loggedIn) {
-            
-            showLoggedIn();
-            callback();
-            
-        } else {
-            
-            if (NG.core.attemptingLogin && NG.core.sessionId != null)
-                showLogin(callback);
-            else {
+        switch (NG.core.session.status)
+        {
+            case LOGGED_OUT:
                 
-                NG.core.sessionId = null;
                 showLoginFailed();
                 callback();
-            }
+                
+            case AWAITING_PASSPORT(_):
+                
+                showLogin(callback);
+                
+            case CHECKING_STATUS(_)
+                | STARTING_NEW:
+                
+                showLoggingIn();
+                _outcomeReceived.add(onTweenComplete.bind(callback));
+                
+            case LOGGED_IN(_):
+                
+                showLoggedIn();
+                callback();
         }
-        #else
-        showLoginFailed();
-        callback();
-        #end
     }
     
-    #if newgrounds
     function showLogin(callback:Void->Void) {
         
         switchPage(_board.x, _board.y);
@@ -113,8 +132,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         addText("newgrounds info\nnot found", 0, -10);
         
         var cancelLogin = () -> {
-            NG.core.cancelLoginRequest();
-            NG.core.sessionId = null;// allows medal popups for non-members
+            NG.core.session.cancel();
             showLoginFailed();
             callback();
         };
@@ -122,10 +140,11 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         _page.add(Button.createSimple
             ( 13, 31
             , AssetPaths.image("buttons/btn_login")
-            ,   () -> {
-                    _onSuccess = () -> { showLoggedIn(); callback(); };
-                    _onCancel = cancelLogin;
-                    NG.core.openPassportUrl();
+            ,   ()->{
+                    
+                    _outcomeReceived.add(()->updateSessionStatus(callback));
+                    NG.core.session.openPassportUrl();
+                    showLoggingIn();
                 }
             )
         );
@@ -138,13 +157,19 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         );
     }
     
+    function showLoggingIn():Void {
+        
+        switchPage();
+        
+        addText("Loggin in to NG");
+    }
+    
     function showLoggedIn():Void {
         
         switchPage();
         
-        addText("welcome\n" + NG.core.user.name);
+        addText("welcome\n" + NG.core.session.current.user.name);
     }
-    #end
     
     function showLoginFailed():Void { 
         
@@ -152,6 +177,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         
         addText("login failed");
     }
+    #end
     
     function switchPage(x:Float = 0, y:Float = 0, maxSize:Int = 0):Void {
         

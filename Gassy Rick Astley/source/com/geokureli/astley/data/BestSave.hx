@@ -5,8 +5,10 @@ import flixel.util.FlxSave;
 #if newgrounds
     import com.geokureli.astley.data.NGData;
     
+    import io.newgrounds.Call;
     import io.newgrounds.NG;
     import io.newgrounds.components.ScoreBoardComponent;
+    import io.newgrounds.objects.events.Outcome;
 #end
 
 /**
@@ -41,36 +43,38 @@ class BestSave {
     static public function loadBestScore():Void {
         
         #if newgrounds
-            var callback:Void->Void = null;
+            var callback:(Outcome<CallError>)->Void = null;
             
-            if (NG.core.loggedIn && !FRESH_START && !PRETEND_ZERO) {
+            if (NG.core.session.status.match(LOGGED_IN(_)) && !FRESH_START && !PRETEND_ZERO) {
                 
-                callback = () -> {
+                // callback = (outcome) -> switch (outcome) {
                     
-                    var board = NG.core.scoreBoards.get(NGData.SCOREBOARD);
-                    //TODO: allow null
-                    board.requestScores(10, 0, Period.ALL, false, null, NG.core.user);
-                    board.onUpdate.add(
-                        () -> {
-                            trace('remote best loaded: ${board.scores[0].value}');
-                            if (board.scores[0].value >= _best) {
-                                
-                                _best = board.scores[0].value;
-                                saveLocal(_best);
-                                trace("saving remote best to local");
-                                
-                            } else {
-                                
-                                Prize.unlockLocalMedals(_best);
-                                saveRemote(_best);
-                                trace("saving local best to remote");
-                            }
-                        }
-                    );
-                };
+                //     case FAIL(_):
+                //     case SUCCESS:
+                //         var board = NG.core.scoreBoards.get(NGData.SCOREBOARD);
+                //         //TODO: allow null
+                //         board.requestScores(10, 0, Period.ALL, false, null, NG.core.user);
+                //         board.onUpdate.add(
+                //             () -> {
+                //                 trace('remote best loaded: ${board.scores[0].value}');
+                //                 if (board.scores[0].value >= _best) {
+                                    
+                //                     _best = board.scores[0].value;
+                //                     saveLocal(_best);
+                //                     trace("saving remote best to local");
+                                    
+                //                 } else {
+                                    
+                //                     Prize.unlockLocalMedals(_best);
+                //                     saveRemote(_best);
+                //                     trace("saving local best to remote");
+                //                 }
+                //             }
+                //         );
+                // };
             }
             
-            NG.core.requestScoreBoards(callback);
+            NG.core.scoreBoards.loadList(callback);
         #end
     }
     
@@ -100,7 +104,7 @@ class BestSave {
     static inline function saveRemote(score:Int):Void {
          
         #if newgrounds
-            if (NG.core.loggedIn)
+            if (NG.core.session.status.match(LOGGED_IN(_)))
                 NG.core.scoreBoards.get(NGData.SCOREBOARD).postScore(score);
         #end
     }

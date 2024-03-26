@@ -91,10 +91,13 @@ class MedalPopup extends FlxSpriteGroup {
         board.pixels.fillRect(pixelRect, 0xfff09754);// 0xffffa257);
         
         #if newgrounds
-            if (NG.core.medals != null)
+        if (NG.core != null) {
+            
+            if (NG.core.medals.state == Loaded)
                 medalsLoaded();
             else
-                NG.core.onMedalsLoaded.add(medalsLoaded);
+                NG.core.medals.onLoad.add(medalsLoaded);
+        }
         #end
         
         instance = this;
