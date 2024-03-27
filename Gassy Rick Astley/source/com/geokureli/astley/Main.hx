@@ -148,11 +148,10 @@ class IntroState extends State {
         FlxG.camera.scroll.y -= FlxG.height * 2;
         
         var logo = new FlxSprite();
-        logo.loadGraphic(AssetPaths.image("logo-animated"), true, 36);
-        logo.animation.add("idleStart", [0]);
-        logo.animation.add("main", [1,1,1,2,2,2,3,3,4,4,4,4,5,5,5,5], 8, false);
-        logo.animation.add("idleEnd", [5]);
-        logo.animation.play("idleStart");
+        logo.frames = FlxAtlasFrames.fromAseprite("assets/images/logo-animated.png", "assets/images/logo-animated.json");
+        logo.animation.addByPrefix("idle", "intro", 1, false);
+        logo.animation.addByPrefix("main", "anim", 1000/62, false);
+        logo.animation.play("idle");
         logo.scale.x = logo.scale.y = 2;
         add(center(logo));
         logo.y += FlxG.camera.scroll.y;
