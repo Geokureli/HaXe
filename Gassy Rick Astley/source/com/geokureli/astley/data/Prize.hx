@@ -58,7 +58,7 @@ class Prize {
     static public function unlockLocalMedals(best:Int){
         
         #if newgrounds
-        if (NG.core.medals != null) {
+        if (NG.core.medals.state == Loaded) {
             
             MedalPopup.instance.enabled = false;
             checkProgressPrize(best);
@@ -81,9 +81,12 @@ class Prize {
     static public function unlockMedal(id:Int):Void {
         
         #if newgrounds
+        if (NG.core.medals.state == Loaded) {
+            
             var medal = NG.core.medals.get(id);
             if (!medal.unlocked)
                 medal.sendUnlock();
+        }
         #end
     }
     
