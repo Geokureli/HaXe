@@ -1,15 +1,16 @@
 package com.geokureli.astley.art.hero;
 
-import com.geokureli.astley.data.Recordings;
 import com.geokureli.astley.data.Beat;
 import com.geokureli.astley.data.FartControl;
+import com.geokureli.astley.data.Recordings;
+
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.utils.Random;
 
 import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.system.replay.FlxReplay;
 import flixel.math.FlxPoint;
+import flixel.system.replay.FlxReplay;
 
 /**
  * ...

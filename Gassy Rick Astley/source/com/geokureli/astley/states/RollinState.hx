@@ -5,11 +5,11 @@ import com.geokureli.astley.art.ui.DeathUI;
 import com.geokureli.astley.art.ui.ScoreText;
 import com.geokureli.astley.art.hero.Rick;
 import com.geokureli.krakel.audio.Sound;
+import com.geokureli.krakel.data.AssetPaths;
+import com.geokureli.astley.data.BestSave;
+import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.data.NGData;
 import com.geokureli.astley.data.Prize;
-import com.geokureli.astley.data.FartControl;
-import com.geokureli.astley.data.BestSave;
-import com.geokureli.krakel.data.AssetPaths;
 
 import flash.Lib;
 

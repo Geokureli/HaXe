@@ -17,8 +17,6 @@ class FartControl extends Plugin {
     static public var replayMode:Bool = false;
     static private var _instance:FartControl;
     
-    
-    var _keysDown:Array<Int>;
     var lastCount:Int;
     var _antiPress:Bool;
     
@@ -36,7 +34,6 @@ class FartControl extends Plugin {
     override function setDefaults():Void {
         super.setDefaults();
         
-        _keysDown = [];
         isButtonDown = false;
         _antiPress = true;
     }
