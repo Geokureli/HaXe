@@ -1,5 +1,6 @@
 package com.geokureli.astley.data;
 
+import flixel.FlxG;
 import flixel.util.FlxSave;
 
 #if newgrounds
@@ -17,18 +18,17 @@ import flixel.util.FlxSave;
  */
 class BestSave {
     
-    static inline var SAVE_ID:String = "GRA_Best";
     static inline var FRESH_START:Bool = #if fresh_start_best_score true #else false #end;
     static inline var PRETEND_ZERO:Bool = #if pretend_zero_score true #else false #end;
     
     static public var best(get, set):Int;
     
     static var _best:Int;
-    static var _saveFile:FlxSave = new FlxSave();
+    static var _saveFile:FlxSave;
     
     static public function init():Void {
         
-        _saveFile.bind(SAVE_ID);
+        _saveFile = FlxG.save;
         
         _best = 0;
         if (Reflect.hasField(_saveFile.data, "best") && (!FRESH_START || PRETEND_ZERO)){
@@ -47,31 +47,30 @@ class BestSave {
             
             if (NG.core.session.status.match(LOGGED_IN(_)) && !FRESH_START && !PRETEND_ZERO) {
                 
-                // callback = (outcome) -> switch (outcome) {
+                callback = (outcome) -> switch (outcome) {
                     
-                //     case FAIL(_):
-                //     case SUCCESS:
-                //         var board = NG.core.scoreBoards.get(NGData.SCOREBOARD);
-                //         //TODO: allow null
-                //         board.requestScores(10, 0, Period.ALL, false, null, NG.core.user);
-                //         board.onUpdate.add(
-                //             () -> {
-                //                 trace('remote best loaded: ${board.scores[0].value}');
-                //                 if (board.scores[0].value >= _best) {
+                    case FAIL(_):
+                    case SUCCESS:
+                        final board = NG.core.scoreBoards.get(NGData.SCOREBOARD);
+                        board.requestScores(10, 0, Period.ALL, false, null, NG.core.session.current.user);
+                        board.onUpdate.add(
+                            () -> {
+                                trace('remote best loaded: ${board.scores[0].value}');
+                                if (board.scores[0].value >= _best) {
                                     
-                //                     _best = board.scores[0].value;
-                //                     saveLocal(_best);
-                //                     trace("saving remote best to local");
+                                    _best = board.scores[0].value;
+                                    saveLocal(_best);
+                                    trace("saving remote best to local");
                                     
-                //                 } else {
+                                } else {
                                     
-                //                     Prize.unlockLocalMedals(_best);
-                //                     saveRemote(_best);
-                //                     trace("saving local best to remote");
-                //                 }
-                //             }
-                //         );
-                // };
+                                    Prize.unlockLocalMedals(_best);
+                                    saveRemote(_best);
+                                    trace("saving local best to remote");
+                                }
+                            }
+                        );
+                };
             }
             
             NG.core.scoreBoards.loadList(callback);
