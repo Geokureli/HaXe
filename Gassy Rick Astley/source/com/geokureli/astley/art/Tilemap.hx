@@ -29,6 +29,7 @@ class Tilemap extends FlxTilemap {
     static var PIPE_STAMP:MapTiles;
     static var PIPE_SHAFT:Array<Int>;
     static var PIPE_BASE:Array<Int>;
+    static final PIPE_ALL = [for (i in 0...6) PIPE_FRAME+i];
     static var FLOOR_FRAME:Int;
     static var GROUND_FRAME:Int;
     
@@ -142,6 +143,18 @@ class Tilemap extends FlxTilemap {
     private function stampCloud(x:Int, data:MapTiles):Void {
         
         stampImage(x, Random.ibetween(Std.int(y)), data, CLOUD_STAMP);
+    }
+    
+    public function disablePipes()
+    {
+        for (tile in PIPE_ALL)
+            setTileProperties(tile, NONE);
+    }
+    
+    public function enablePipes()
+    {
+        for (tile in PIPE_ALL)
+            setTileProperties(tile, ANY);
     }
     
     public function stampPipe(x:Int, data:MapTiles):Int {

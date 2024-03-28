@@ -1,5 +1,6 @@
 package com.geokureli.astley.art.hero;
 
+import com.geokureli.astley.art.GlowShader;
 import com.geokureli.astley.data.Beat;
 import com.geokureli.astley.data.FartControl;
 import com.geokureli.astley.data.Recordings;
@@ -11,6 +12,8 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.math.FlxPoint;
 import flixel.system.replay.FlxReplay;
+import flixel.util.FlxTimer;
+import flixel.tweens.FlxTween;
 
 /**
  * ...
@@ -37,6 +40,7 @@ class Rick extends RickLite {
     public var canFart:Bool;
     public var playSounds:Bool;
     public var resetPos(default, null):FlxPoint;
+    public var godMode(default, null):Bool;
     
     var _recorder:FlxReplay;
     var _input:FartControl;
@@ -69,13 +73,13 @@ class Rick extends RickLite {
             _recorder.create(_recordSeed++);
     }
     
-    override public function preUpdate(elapsed:Float):Void {
+    override function preUpdate(elapsed:Float):Void {
         super.preUpdate(elapsed);
         
         _input.update(elapsed);
     }
     
-    override public function update(elapsed:Float):Void {
+    override function update(elapsed:Float):Void {
         super.update(elapsed);
         
         if (!moves) return;
@@ -93,7 +97,10 @@ class Rick extends RickLite {
         
         if (_recorder != null)
             _recorder.recordFrame();
-            
+        
+        if (godMode)
+            (cast shader:GlowShader).update(elapsed);
+        
         // --- FARTING
         if (canFart && _input.isButtonDown)
             fart();
@@ -133,6 +140,40 @@ class Rick extends RickLite {
         alive = false;
         animation.play("dead");
         endRecording();
+        
+        if (godMode) {
+            
+            godMode = false;
+            shader = null;
+        }
+    }
+    
+    public function activateGodMode(callback:Void->Void):Void {
+        
+        canFart = false;
+        var oldV = FlxPoint.weak().copyFrom(velocity);
+        var oldA = FlxPoint.weak().copyFrom(acceleration);
+        velocity.set(0, 0);
+        acceleration.set(0, 0);
+        
+        FlxTimer.wait
+            ( 1.5
+            , () -> {
+                
+                godMode = true;
+                shader = new GlowShader();
+                
+                FlxTimer.wait
+                    ( 1.0
+                    ,   () -> {
+                            velocity.copyFrom(oldV);
+                            acceleration.copyFrom(oldA);
+                            canFart = true;
+                            callback();
+                        }
+                    );
+            }
+        );
     }
     
     public function playWinAnim(targetX:Float, targetY:Float, callback:Void->Void):Void {
