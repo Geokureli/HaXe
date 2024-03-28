@@ -20,7 +20,9 @@
     <!-- _________________________ WINDOW SETTINGS _________________________ -->
     
     <!--These window settings apply to all targets-->
-    <window width="320" height="512" fps="30" background="#63adff" hardware="true" vsync="true" />
+    <window width="480" height="768" if="big_mode"/>
+    <window width="320" height="512" unless="big_mode"/>
+    <window fps="30" background="#63adff" hardware="true" vsync="true"/>
     
     <!--Web-specific-->
     <window if="html5" orientation="portrait" />

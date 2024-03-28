@@ -1,5 +1,6 @@
 package com.geokureli.astley;
 
+import openfl.events.MouseEvent;
 import openfl.events.ProgressEvent;
 import openfl.events.IEventDispatcher;
 import openfl.events.Event;
@@ -12,6 +13,9 @@ import flash.Lib;
 @:keep @:bitmap("assets/images/loading_bar_frame.png")
 private class LoadingText extends BitmapData {}
 
+@:keep @:bitmap("assets/images/play_bar_frame.png")
+private class PlayText extends BitmapData {}
+
 @:keep @:bitmap("assets/images/loading_bar.png")
 private class LoadingBar extends BitmapData {}
 
@@ -20,8 +24,9 @@ private class Headphones extends BitmapData {}
 
 class Preloader extends DefaultPreloader {
     
+    static inline var SCALE = #if big_mode 3 #else 2 #end;
     static inline var FRAMES = 6;
-    static inline var FADE_FRAMES = 60;
+    static inline var FADE_FRAMES = 30;
     static inline var FADE_DELAY = 20;
     static inline var END_DELAY = 20;
     var _loadBarFrame:Bitmap;
@@ -34,35 +39,41 @@ class Preloader extends DefaultPreloader {
     override function onInit():Void {
         super.onInit();
         
-        addChild(_loadBar = new Bitmap(new LoadingBar(61, 7)));
-        _loadBar.scaleX = _loadBar.scaleY = 2;
+        addChild(_loadBar = new PixelBitmap(new LoadingBar(61, 7)));
+        _loadBar.scaleX = _loadBar.scaleY = SCALE;
         _loadBar.scrollRect = new Rectangle(0, 0, 61, 7);
         
-        addChild(_loadBarFrame = new Bitmap(new LoadingText(65, 23)));
-        _loadBarFrame.scaleX = _loadBarFrame.scaleY = 2;
+        addChild(_loadBarFrame = new PixelBitmap(new LoadingText(65, 23)));
+        _loadBarFrame.scaleX = _loadBarFrame.scaleY = SCALE;
         _loadBarFrame.x = (Lib.current.stage.stageWidth  - 65 * _loadBarFrame.scaleX) / 2;
         _loadBarFrame.y = (Lib.current.stage.stageHeight - 23 * _loadBarFrame.scaleY) / 2;
         
-        addChild(_headphones = new Bitmap(new Headphones(65, 49)));
-        _headphones.scaleX = _headphones.scaleY = 2;
+        addChild(_headphones = new PixelBitmap(new Headphones(65, 49)));
+        _headphones.scaleX = _headphones.scaleY = SCALE;
         _headphones.x = (Lib.current.stage.stageWidth  - 65 * _headphones.scaleX) / 2;
         _headphones.y = Lib.current.stage.stageHeight - _headphones.x - 49;
         
         _loadBar.x = _loadBarFrame.x + 4;
-        _loadBar.y = _loadBarFrame.y + (23 - 7 - 2) * 2;
+        _loadBar.y = _loadBarFrame.y + (23 - 7 - 2) * SCALE;
     }
     
     override function update(percent:Float):Void {
+        super.update(percent);
         
         _frame++;
         
         // Animate load bar
         var rect = _loadBar.scrollRect;
-        rect.x = FRAMES - 1 - Std.int(_frame / 3) % FRAMES;
+        if (!_loaded || !_waited)
+            rect.x = FRAMES - 1 - Std.int(_frame / 3) % FRAMES;
         rect.width = Std.int(percent * (_loadBar.bitmapData.width - FRAMES + 1));
         _loadBar.scrollRect = rect;
-        
-        super.update(percent);
+    }
+    
+    override function onComplete()
+    {
+        _loadBarFrame.bitmapData = new PlayText(65, 23);
+        stage.addEventListener(MouseEvent.CLICK, (_)->startOutro(endOutro));
     }
     
     override function startOutro(callback:Void->Void) {
@@ -133,7 +144,7 @@ private class DefaultPreloader extends openfl.display.Sprite {
                 updateByteProgess(loaderInfo.bytesLoaded, loaderInfo.bytesTotal);
                 
                 addEventListener(ProgressEvent.PROGRESS, onProgress);
-                addEventListener(Event.COMPLETE, onComplete);
+                addEventListener(Event.COMPLETE, onLoadComplete);
                 
                 _startTime = Date.now().getTime();
                 addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -141,8 +152,6 @@ private class DefaultPreloader extends openfl.display.Sprite {
         );
         
     }
-    
-    
     
     function onInit() {}
     
@@ -160,7 +169,6 @@ private class DefaultPreloader extends openfl.display.Sprite {
     
     @:noCompletion
     function onEnterFrame(event:Event):Void {
-        
         
         var time = Date.now().getTime() - _startTime;
         if (time > _waitTime * 1000.0) {
@@ -187,13 +195,13 @@ private class DefaultPreloader extends openfl.display.Sprite {
         updateByteProgess(Std.int(event.bytesLoaded), Std.int(event.bytesTotal));
     }
     
-    function onComplete(event:Event):Void {
+    function onLoadComplete(event:Event):Void {
         
         updateByteProgess(loaderInfo.bytesLoaded, loaderInfo.bytesTotal);
         
         event.preventDefault();
         removeEventListener(ProgressEvent.PROGRESS, onProgress);
-        removeEventListener(Event.COMPLETE, onComplete);
+        removeEventListener(Event.COMPLETE, onLoadComplete);
         
         _loaded = true;
         checkForOutro();
@@ -202,7 +210,12 @@ private class DefaultPreloader extends openfl.display.Sprite {
     function checkForOutro():Void {
         
         if (_loaded && _waited)
-            startOutro(endOutro);
+            onComplete();
+    }
+    
+    function onComplete() {
+        
+        startOutro(endOutro);
     }
     
     function startOutro(callback:Void->Void):Void {
@@ -219,5 +232,13 @@ private class DefaultPreloader extends openfl.display.Sprite {
     function destroy():Void {
         
         removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+    }
+}
+
+abstract PixelBitmap(Bitmap) to Bitmap {
+    
+    public function new (data) {
+        
+        this = new Bitmap(data, openfl.display.PixelSnapping.ALWAYS, false);
     }
 }

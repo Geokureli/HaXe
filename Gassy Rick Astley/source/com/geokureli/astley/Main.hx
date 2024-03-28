@@ -18,10 +18,12 @@ import com.geokureli.krakel.State;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxObject;
+import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.tile.FlxTilemap;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxTween.FlxTweenType;
+import flixel.util.FlxColor;
 
 import motion.easing.Linear;
 import motion.Actuate;
@@ -47,7 +49,7 @@ class Main extends Shell {
         super.setDefaults();
         
         _frameRate = 60;
-        _scale = 2;
+        _scale = #if big_mode 3 #else 2 #end;
         _introState = IntroState.new;
         //_introState = ReplayState.new;
         //_introState = TestAny.new;
@@ -125,9 +127,11 @@ class IntroState extends State {
         
         #if mobile
             return true;
-        #elseif html5
+        #else
+            
+            #if html5
             var browserAgent:String = js.Browser.navigator.userAgent.toLowerCase();
-            trace(browserAgent);
+            // trace(browserAgent);
             if (browserAgent != null) {
                 
                 return browserAgent.indexOf("android"   ) >= 0
@@ -138,9 +142,10 @@ class IntroState extends State {
                     || browserAgent.indexOf("opera mini") >= 0
                     || browserAgent.indexOf("iemobile"  ) >= 0;
             }
-        #end
+            #end
         
         return false;
+        #end
     }
     
     function showLogo(callback:Void->Void):Void {
@@ -149,8 +154,8 @@ class IntroState extends State {
         
         var logo = new FlxSprite();
         logo.frames = FlxAtlasFrames.fromAseprite("assets/images/logo-animated.png", "assets/images/logo-animated.json");
-        logo.animation.addByPrefix("idle", "intro", 1, false);
-        logo.animation.addByPrefix("main", "anim", 1000/62, false);
+        logo.animation.addByPrefix("idle", "intro-", 1, false);
+        logo.animation.addByPrefix("main", "anim-", 1000/62, false);
         logo.animation.play("idle");
         logo.scale.x = logo.scale.y = 2;
         add(center(logo));
@@ -274,13 +279,32 @@ class IntroState extends State {
 #if show_loader
 class Splash extends flixel.system.FlxSplash {
     
+    inline static var BG_COLOR = 0xFF003975;
+    
     override public function create():Void {
         
-        FlxG.cameras.bgColor = FlxG.stage.color;
+        FlxG.cameras.bgColor = BG_COLOR;
         
+        flixel.system.FlxSplash.muted = false;
         super.create();
         
         FlxG.cameras.bgColor = FlxG.stage.color;
+        
+        FlxTween.num(0, 1, 0.25, null, function (num) {
+            
+            FlxG.cameras.bgColor = FlxColor.interpolate(FlxG.stage.color, BG_COLOR, num);
+        });
+    }
+    
+    override function startOutro(onOutroComplete:() -> Void) {
+        
+        super.startOutro(function () {
+            
+            FlxTween.num(0, 1, 0.5, { onComplete:(_)->onOutroComplete() }, function (num) {
+                
+                FlxG.cameras.bgColor = FlxColor.interpolate(BG_COLOR, FlxG.stage.color, num);
+            });
+        });
     }
 }
 #end
