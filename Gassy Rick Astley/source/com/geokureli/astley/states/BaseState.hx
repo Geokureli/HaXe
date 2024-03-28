@@ -79,6 +79,9 @@ class BaseState extends State {
     }
     
     function setCameraFollow(target:Rick):Void {
+        
+        FlxG.camera.minScrollY = 0;
+        FlxG.camera.maxScrollY = FlxG.height;
         FlxG.camera.target = target;
         FlxG.camera.deadzone = new FlxRect (
             target.x,
