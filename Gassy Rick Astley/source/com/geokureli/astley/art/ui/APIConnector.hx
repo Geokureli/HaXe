@@ -41,6 +41,10 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
             NG.core.setupEncryption(NGData.ENCRYPTION, RC4);
             // NG.core.verbose = true;
             
+            #if (debug && skip_login)
+            return;
+            #end
+            
             final sessionId = NG.core.session.initialId
                 // ?? "99991271.47ff052d7b1066f2c7229d0f30c622fa4e7aad262957c4"
                 ;
@@ -95,6 +99,13 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         
         NG.core.scoreBoards.loadList();
         NG.core.medals.loadList();
+        
+        #if (debug && skip_login)
+            
+            showLoginFailed();
+            callback();
+            return;
+        #end
         
         updateSessionStatus(callback);
     }
