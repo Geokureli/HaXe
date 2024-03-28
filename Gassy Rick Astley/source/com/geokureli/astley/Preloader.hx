@@ -1,14 +1,13 @@
 package com.geokureli.astley;
 
+import openfl.Lib;
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
 import openfl.events.MouseEvent;
 import openfl.events.ProgressEvent;
 import openfl.events.IEventDispatcher;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
-
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.Lib;
 
 @:keep @:bitmap("assets/images/loading_bar_frame.png")
 private class LoadingText extends BitmapData {}
