@@ -81,7 +81,7 @@ class Prize {
     static public function unlockMedal(id:Int):Void {
         
         #if newgrounds
-        if (NG.core.medals.state == Loaded) {
+        if (NG.core.session.status.match(LOGGED_IN(_)) && NG.core.medals.state == Loaded) {
             
             var medal = NG.core.medals.get(id);
             if (!medal.unlocked)

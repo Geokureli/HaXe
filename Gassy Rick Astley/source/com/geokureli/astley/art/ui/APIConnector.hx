@@ -1,9 +1,9 @@
 package com.geokureli.astley.art.ui;
 
 import flixel.util.FlxSignal;
-import io.newgrounds.NGLite;
 #if newgrounds
 import io.newgrounds.NG;
+import io.newgrounds.NGLite;
 import io.newgrounds.objects.Error;
 #end
 
@@ -26,8 +26,10 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
     var _page:FlxSpriteGroup;
     var _board:BoardSprite;
     
+    #if newgrounds
     var _outcome:Null<LoginOutcome> = null;
     var _outcomeReceived:FlxSignal = new FlxSignal();
+    #end
     
     public function new () {
         super();
@@ -70,6 +72,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
         #end
     }
     
+    #if newgrounds
     function startNewSession()
     {
         NG.core.session.autoConnect((outcome)-> {
@@ -78,12 +81,13 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
             _outcomeReceived.dispatch();
         }, (_)->{});
     }
+    #end
     
     public function show(callback:()->Void):Void {
         
         #if (!newgrounds)
         callback();
-        #end
+        #else
         
         visible = true;
         FlxTween.tween
@@ -92,6 +96,7 @@ class APIConnector extends flixel.group.FlxSpriteGroup {
             , 1
             , { onComplete:(_)->onTweenComplete(callback), ease:FlxEase.expoOut }
             );
+        #end
     }
     
     #if newgrounds

@@ -1,13 +1,11 @@
 package com.geokureli.astley.states;
 
 import com.geokureli.astley.data.Recordings;
-import com.geokureli.astley.art.hero.Rick;
 import com.geokureli.astley.data.FartControl;
-#if newgrounds
-import com.geokureli.astley.art.ui.Credits;
-#end
 import com.geokureli.astley.art.hero.ReplayRick;
+import com.geokureli.astley.art.hero.Rick;
 import com.geokureli.astley.art.hero.RickLite;
+import com.geokureli.astley.art.ui.Credits;
 import com.geokureli.astley.art.Tilemap;
 
 import com.geokureli.krakel.audio.Sound;
@@ -34,9 +32,7 @@ class ReplayState extends BaseState {
     
     var _finishedGhosts:TypedGroup<ReplayRick>;
     var _ghosts:TypedGroup<ReplayRick>;
-    #if newgrounds
     var _credits:Credits;
-    #end
     
     var _songIntro:Sound;
     var _songLoop:Sound;
@@ -51,14 +47,12 @@ class ReplayState extends BaseState {
         _songLoop = AssetPaths.getMusic("credit_loop");
         _timerMusic = new FlxTimer();
         
-        #if newgrounds
         var dameReader:DameReader = new DameReader();
         dameReader.addAutoClassLookup(Credits);
         dameReader.addAutoClassLookup(CreditsLayer);
         dameReader.addAutoClassLookup(CreditsText);
         add(_credits = dameReader.createLevel(AssetPaths.getParsedData("Credits")));
         _credits.dameReader = dameReader;
-        #end
         
         FartControl.enabled = false;
         FartControl.replayMode = true;
@@ -132,9 +126,7 @@ class ReplayState extends BaseState {
     override function start():Void {
         super.start();
         
-        #if newgrounds
         _credits.start();
-        #end
         _songIntro.play();
         _timerMusic.start(_songIntro.duration - BUFFER_TIME, playLoop);
         

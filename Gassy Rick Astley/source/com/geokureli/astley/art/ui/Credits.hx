@@ -15,8 +15,10 @@ import flixel.util.FlxTimer;
 
 import haxe.Json;
 
+#if newgrounds
 import io.newgrounds.NG;
 import io.newgrounds.objects.ScoreBoard;
+#end
 
 /**
  * ...
@@ -26,26 +28,34 @@ class Credits extends Layer {
     
     var _currentPage:Int;
     var _pages:Array<CreditsLayer>;
+    #if newgrounds
     var _scoreBoard:ScoreBoard;
     var _scoresSkip:Int;
+    #end
     public var dameReader:DameReader;
     
     public function new() { super(); }
     
     public function start():Void {
         
-        _currentPage = 1;
-        _scoresSkip = 0;
-        _scoreBoard = NG.core.scoreBoards.get(NGData.SCOREBOARD);
-        loadNextScores();
         
         _pages = [];
-        while(_assetsByName.exists('credits' + Std.string(_currentPage))) {
+        var page = 1;
+        while(_assetsByName.exists('credits' + Std.string(page))) {
             
-            _pages.push(cast _assetsByName['credits' + Std.string(_currentPage)]);
+            _pages.push(cast _assetsByName['credits' + Std.string(page)]);
             
-            _currentPage++;
+            page++;
         }
+        
+        #if newgrounds
+        _scoresSkip = 0;
+        if (NG.core.session.status.match(LOGGED_IN(_)))
+        {
+            _scoreBoard = NG.core.scoreBoards.get(NGData.SCOREBOARD);
+            loadNextScores();
+        }
+        #end
         _currentPage = 0;
         
         _assetsByName['press'].visible = false;
@@ -59,8 +69,8 @@ class Credits extends Layer {
             _pages[_currentPage].startTransition(startNextPage);
             
             _currentPage++;
-            
-        } else if (_scoreBoard.scores.length > 0) {
+        #if newgrounds
+        } else if (_scoreBoard != null && _scoreBoard.scores.length > 0) {
             
             var data:String = "";
             var y:Int = 71;
@@ -79,16 +89,19 @@ class Credits extends Layer {
             
             _scoresSkip += 10;
             loadNextScores();
+        #end
         } else {
             
             // end logic
         }
     }
     
+    #if newgrounds
     function loadNextScores():Void {
         
         _scoreBoard.requestScores(10, _scoresSkip);
     }
+    #end
 }
 
 
