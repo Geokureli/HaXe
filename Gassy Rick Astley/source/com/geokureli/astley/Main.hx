@@ -27,6 +27,10 @@ import flixel.util.FlxColor;
 
 import motion.easing.Linear;
 import motion.Actuate;
+
+#if (quick_start && !debug)
+#error "cannot use quick_start in release mode"
+#end
 /**
  * ...
  * @author George
@@ -66,16 +70,20 @@ class Main extends Shell {
 class IntroState extends State {
     
     var _title:FlxSprite;
+    #if !quick_start
     var _instructions:FlxSprite;
     var _loopTween:FlxTween;
     var _apiConnector:APIConnector;
+    #end
     
     override public function create():Void {
         super.create();
         
+        #if !quick_start
         _apiConnector = new APIConnector();
         centerX(_apiConnector);
         _apiConnector.y = 104;
+        #end
         
         BestSave.init();
         Prize.init();
@@ -103,6 +111,7 @@ class IntroState extends State {
         pipe.y = LevelData.SKY_HEIGHT - pipe.height;
         add(pipe);
         
+        #if !quick_start
         if (getIsMobile())
             add(_instructions = new FlxSprite(0, 150, AssetPaths.image("tap")))
         else
@@ -110,6 +119,7 @@ class IntroState extends State {
         
         centerX(_instructions).visible = false;
         add(_apiConnector);
+        #end
         
         #if (newgrounds)
             add(new FlxSprite(1, 233, AssetPaths.image("ngLogo_small")));
@@ -213,6 +223,9 @@ class IntroState extends State {
     
     function onIntroComplete(tween:FlxTween):Void {
         
+        #if quick_start
+        onLoginComplete();
+        #else
         _apiConnector.show(onLoginComplete);
         _loopTween = FlxTween.tween
             ( _title
@@ -220,11 +233,15 @@ class IntroState extends State {
             , FlxG.stage.frameRate / 115.14
             , { type:FlxTweenType.PINGPONG, ease:FlxEase.sineOut }
             );
+        #end
     }
     
     function onLoginComplete():Void {
         
         BestSave.loadBestScore();
+        #if quick_start
+        FartControl.enabled = true;
+        #else
         var y = _instructions.y;
         _instructions.y = _apiConnector.y;
         _instructions.visible = true;
@@ -234,17 +251,24 @@ class IntroState extends State {
             , .5
             , { onComplete: (_) -> {FartControl.enabled = true;}, ease:FlxEase.sineOut }
             );
+        #end
     }
     
     override public function update(elapsed:Float):Void {
         super.update(elapsed);
         
-        if (FartControl.down) {
+        final startOutro = #if quick_start FartControl.enabled #else FartControl.down #end;
+        
+        if (startOutro) {
             
             FartControl.enabled = false;
             _music.fadeOut(1.0);
+            
+            #if !quick_start
             _loopTween.cancel();
             _loopTween.destroy();
+            #end
+            
             FlxTween.tween(_title, { y:-_title.height, visible:false }, 1.0, { ease:FlxEase.sineIn })
                 .then(FlxTween.tween
                     ( FlxG.camera.scroll

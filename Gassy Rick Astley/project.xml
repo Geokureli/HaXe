@@ -55,7 +55,7 @@
     <haxelib name="flixel"/>
     <haxelib name="flixel-addons"/>
     <haxelib name="actuate"/>
-    <haxelib name="newgrounds" />
+    <haxelib name="newgrounds" unless="quick_start"/>
     <classpath path="../Krakel/source" />
     <classpath path="../../lib/HxAssert/src" />
     
