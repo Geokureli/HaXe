@@ -105,7 +105,7 @@ class ReplayState extends BaseState {
             ghost = new ReplayRick(BaseState.HERO_SPAWN_X, 64, replay);
             _ghosts.add(ghost);
             ghost.playSounds = false;
-            length = replay.split('\n').length;
+            length = ghost.replay.getDuration();
             ghost.startTime = 0;
             // ghost.startTime = Random.ibetween(minFrame, maxFrame);
             

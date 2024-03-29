@@ -46,6 +46,11 @@ class Rick extends RickLite {
     var _input:FartControl;
     var _recordSeed:Int;
     
+    #if (count_farts && debug)
+    var _fartCount = 0;
+    final _fartCounter = new flixel.text.FlxBitmapText();
+    #end
+    
     public function new(x:Float = 0, y:Float = 0) { super(x, y); }
     
     override function setDefaults():Void {
@@ -103,7 +108,14 @@ class Rick extends RickLite {
         
         // --- FARTING
         if (canFart && _input.isButtonDown)
+        {
             fart();
+            
+            #if (count_farts && debug)
+            _fartCount++;
+            _fartCounter.text = '$_fartCount';
+            #end
+        }
         
         // --- COLLISION
         if (y < 0 || y + height > FlxG.height) {
@@ -116,6 +128,21 @@ class Rick extends RickLite {
             
             kill();
         }
+        
+        #if (count_farts && debug)
+        _fartCounter.update(elapsed);
+        #end
+    }
+    
+    override function draw()
+    {
+        super.draw();
+        
+        #if (count_farts && debug)
+        _fartCounter.x = x + (width - _fartCounter.width) / 2;
+        _fartCounter.y = y - _fartCounter.height;
+        _fartCounter.draw();
+        #end
     }
     
     public function fart():Void {
@@ -133,6 +160,11 @@ class Rick extends RickLite {
         velocity.x = SPEED;
         drag.x = 0;
         animation.play("idle");
+        
+        #if (count_farts && debug)
+        _fartCount = 0;
+        _fartCounter.text = '';
+        #end
     }
     
     override public function kill():Void {

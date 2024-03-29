@@ -14,13 +14,13 @@ import flixel.util.FlxTimer;
  */
 class ReplayRick extends Rick {
     
-    private static var keys:FlxKeyboard;
-    private static var mouse:ReplayMouse;
+    static var keys:FlxKeyboard;
+    static var mouse:ReplayMouse;
     
     public var startTime:Int = 0;
     public var replayFinished(get, never):Bool;
     
-    private var _replay:FlxReplay;
+    public var replay(default, null):FlxReplay;
     
     public function new(x:Float, y:Float, replayData:String) {
         super(x, y);
@@ -31,14 +31,14 @@ class ReplayRick extends Rick {
         if (mouse == null)
             mouse = new ReplayMouse();
         
-        _replay.load(replayData);
+        replay.load(replayData);
     }
     
     override function setDefaults():Void {
         super.setDefaults();
         
         _recorder = null;
-        _replay = new Replay(keys, mouse);
+        replay = new Replay(keys, mouse);
         _input.keys = keys;
         _input.mouse = mouse;
     }
@@ -52,20 +52,20 @@ class ReplayRick extends Rick {
         
         // --- PLAY RECORDING UNTIL RICK HITS HIS DESIRED X.
         do {
-            _replay.playNextFrame();
+            replay.playNextFrame();
             
             super.preUpdate(elapsed);
             
             // --- STOP WHEN UP TO SPEED
-            if(_replay.frame < startTime)
+            if(replay.frame < startTime)
                 updateMotion(elapsed);
             
-        } while (_replay.frame < startTime);
+        } while (replay.frame < startTime);
     }
     
     override public function start():Void {
         
-        if (startTime >= _replay.frameCount)
+        if (startTime >= replay.frameCount)
         {
             startTime = 0;
         }
@@ -76,7 +76,7 @@ class ReplayRick extends Rick {
     override public function reset(x:Float, y:Float):Void {
         super.reset(x, y);
         
-        _replay.rewind();
+        replay.rewind();
     }
     
     public function timedStart(timer:FlxTimer):Void {
@@ -86,7 +86,7 @@ class ReplayRick extends Rick {
     
     public function get_replayFinished():Bool {
         
-        return _replay.frameCount - _replay.frame < 3;
+        return replay.frameCount - replay.frame < 3;
     }
 }
 
