@@ -19,11 +19,13 @@ class Recordings {
         return _replays[_replays.length - 1];
     }
     
-    static public function getReplay():String {
+    static public function getReplays() {
         
-        if (_replays.length == 0)
-            return null;
+        return _replays.copy();
+    }
+    
+    static public function wipeReplays() {
         
-        return _replays.pop();
+        _replays.resize(0);
     }
 }

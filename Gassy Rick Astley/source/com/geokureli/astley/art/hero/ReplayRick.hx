@@ -17,7 +17,7 @@ class ReplayRick extends Rick {
     private static var keys:FlxKeyboard;
     private static var mouse:ReplayMouse;
     
-    public var startTime:Int;
+    public var startTime:Int = 0;
     public var replayFinished(get, never):Bool;
     
     private var _replay:FlxReplay;

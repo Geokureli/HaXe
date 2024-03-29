@@ -96,23 +96,25 @@ class ReplayState extends BaseState {
         var longest:Int = -1;
         var leadGhost:ReplayRick = null;
         var length:Int;
-        do {
-            replay = Recordings.getReplay();
-            if (replay != null) {
-                ghost = new ReplayRick(BaseState.HERO_SPAWN_X, 64, replay);
-                _ghosts.add(ghost);
-                ghost.playSounds = false;
-                length = replay.split('\n').length;
-                ghost.startTime = Random.ibetween(minFrame, maxFrame);
-                
-                if (length > longest) {
-                    
-                    longest = length;
-                    leadGhost = ghost;
-                }
-            } else break;
+        final replays = Recordings.getReplays();
+        
+        while (replays.length > 0) {
             
-        } while (replay != null);
+            final replay = replays.pop();
+            
+            ghost = new ReplayRick(BaseState.HERO_SPAWN_X, 64, replay);
+            _ghosts.add(ghost);
+            ghost.playSounds = false;
+            length = replay.split('\n').length;
+            ghost.startTime = 0;
+            // ghost.startTime = Random.ibetween(minFrame, maxFrame);
+            
+            if (length > longest) {
+                
+                longest = length;
+                leadGhost = ghost;
+            }
+        }
         
         if (leadGhost != null) {
             
@@ -133,11 +135,13 @@ class ReplayState extends BaseState {
         var count:Int = 0;
         for (ghost in _ghosts.members) {
             
+            trace('ghost[$count] = { start:${ghost.startTime} x:${ghost.x} y:${ghost.y} }');
             if (ghost != null && ghost.startTime >= 0) {
                 
                 count++;
-                ghost.reset(0, 0);
+                ghost.reset(ghost.x, ghost.y);
                 ghost.start();
+                trace('ghost[$count] started { x:${ghost.x} y:${ghost.y} }');
             }
         }
     }
@@ -147,7 +151,7 @@ class ReplayState extends BaseState {
         _songLoop.play();
     }
     
-    override public function preUpdate(elapsed:Float):Void {
+    override function preUpdate(elapsed:Float):Void {
         super.preUpdate(elapsed);
         
         for (ghost in _ghosts.members) {
@@ -166,6 +170,15 @@ class ReplayState extends BaseState {
         
         FlxG.collide(_finishedGhosts, _map, onGhostHit);
         FlxG.collide(_finishedGhosts, _ground, onGhostHit);
+    }
+    
+    override function update(elapsed:Float):Void {
+        super.update(elapsed);
+        
+        #if debug
+        if (FlxG.keys.justPressed.R)
+            FlxG.resetState();
+        #end
     }
     
     override function updateWorldBounds():Void {
