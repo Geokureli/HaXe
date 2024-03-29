@@ -165,6 +165,14 @@ class RollinState extends BaseState {
             
             if (_isGameOver && !_isResetting) {
                 
+                #if debug
+                if (FlxG.keys.justPressed.ESCAPE) {
+                    
+                    _deathUI.debugSkipTimer();
+                    return;
+                }
+                #end
+                
                 _deathUI.x = FlxG.camera.scroll.x + _hero.resetPos.x;
             }
             

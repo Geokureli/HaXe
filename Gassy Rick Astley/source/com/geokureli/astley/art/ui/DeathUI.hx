@@ -158,6 +158,14 @@ class DeathUI extends flixel.group.FlxSpriteGroup {
         }
     }
     
+    #if debug
+    public function debugSkipTimer()
+    {
+        _timerTxt.text = '0';
+        onGiveUp();
+    }
+    #end
+    
     public function killTimer():Void {
         
         _timer.cancel();
