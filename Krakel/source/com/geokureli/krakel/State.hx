@@ -9,6 +9,7 @@ import flixel.group.FlxGroup;
 import flixel.sound.FlxSound;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.util.typeLimit.NextState;
 
 /**
  * A FlxState which can be used for the game's menu.
@@ -28,7 +29,7 @@ class State extends FlxState {
     var _mg:FlxGroup;
     var _fg:FlxGroup;
     
-    var _nextState:FlxState;
+    var _nextState:NextState;
     
     var _musicName:Dynamic;
     var _music:FlxSound;
@@ -133,7 +134,7 @@ class State extends FlxState {
     
     function onFadeInComplete():Void { }
     
-    function switchState(state:FlxState):Void {
+    function switchState(state:NextState):Void {
         
         _nextState = state;
         if (_fadeOutTime > 0) {

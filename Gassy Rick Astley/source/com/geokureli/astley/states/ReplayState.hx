@@ -38,6 +38,12 @@ class ReplayState extends BaseState {
     var _songLoop:Sound;
     var _timerMusic:FlxTimer;
     
+    public function new (randomSeed:Int) {
+        
+        FlxG.random.initialSeed = randomSeed;
+        super();
+    }
+    
     override public function create():Void {
         
         //Tilemap.addPipes = false;

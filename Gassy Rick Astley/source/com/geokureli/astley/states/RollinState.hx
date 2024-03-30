@@ -51,6 +51,14 @@ class RollinState extends BaseState {
     var _isEnd:Bool;
     var _endTime:Float;
     
+    public function new (?randomSeed:Null<Int>) {
+        
+        if (randomSeed != null)
+            FlxG.random.initialSeed = randomSeed;
+        
+        super();
+    }
+    
     override function setDefaults():Void {
         super.setDefaults();
         
@@ -362,7 +370,7 @@ class RollinState extends BaseState {
     function showEndScreen():Void {
         _deathUI.killTimer();
         
-        switchState(new ReplayState());
+        switchState(()->new ReplayState(FlxG.random.initialSeed));
     }
     
     function set__score(value:Float):Float {

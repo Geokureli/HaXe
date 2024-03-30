@@ -1,12 +1,15 @@
 package com.geokureli.krakel.utils;
 
-import flash.geom.Point;
+import flixel.FlxG;
+import openfl.geom.Point;
 
 /**
  * ...
  * @author George
  */
 class Random {
+    
+    static function random() return FlxG.random.float();
     
     static public function between(low:Float, high:Float = 0, round:Float = 1):Float {
         
@@ -17,18 +20,18 @@ class Random {
         
         if (round > 0) {
             
-            return low + Std.int(Math.random() * (high - low) / round) * round;
+            return low + Std.int(random() * (high - low) / round) * round;
         }
-        return low + Math.random() * (high - low);
+        return low + random() * (high - low);
     }
     
     static public function under(num:Float, round:Float = 1):Float {
         
         if (round > 0) {
             
-            return Std.int(Math.random() * num / round) * round;
+            return Std.int(random() * num / round) * round;
         }
-        return Math.random() * num;
+        return random() * num;
     }
     
     static public function ibetween(low:Int, high:Int = 0):Int {
@@ -37,7 +40,7 @@ class Random {
             return ibetween(high, low);
         }
         
-        return low + Std.int(Math.random() * (high - low));
+        return low + Std.int(random() * (high - low));
     }
     
     static private function setBetween(length:Int, low:Float, high:Float = 0, round:Float = 1):Array<Float> {
@@ -62,7 +65,7 @@ class Random {
         return list;
     }
     
-    static public function bool(chance:Float = .5):Bool { return Math.random() < chance; }
+    static public function bool(chance:Float = .5):Bool { return random() < chance; }
     
     static public function index<T>(array:Array<T>):Int { return ibetween(array.length); }
     
