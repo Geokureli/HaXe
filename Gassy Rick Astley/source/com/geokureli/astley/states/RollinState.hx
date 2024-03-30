@@ -48,8 +48,9 @@ class RollinState extends BaseState {
     var _running:Bool;
     var _isGameOver:Bool;
     var _isResetting:Bool;
-    var _isEnd:Bool;
     var _endTime:Float;
+    
+    var status:RollinStatus = INTRO;
     
     public function new (?randomSeed:Null<Int>) {
         
@@ -73,8 +74,8 @@ class RollinState extends BaseState {
         _isResetting = false;
         _isGameOver = false;
         _running = false;
-        _isEnd = false;
         alive = false;
+        status = INTRO;
         
         _hero = new Rick(BaseState.HERO_SPAWN_X, 64);
         
@@ -137,6 +138,7 @@ class RollinState extends BaseState {
     
     function onIntroComplete(art):Void {
         
+        status = UNSTARTED;
         remove(art);
         setCameraFollow(_hero);
     }
@@ -155,8 +157,10 @@ class RollinState extends BaseState {
     override public function update(elapsed:Float):Void {
         super.update(elapsed);
         
-        if (_isEnd)
-            return;
+        switch (status) {
+            case INTRO | END: return;
+            case UNSTARTED: // nothing
+        }
         
         _score = Tilemap.getScore(_hero.x);
         
@@ -164,7 +168,7 @@ class RollinState extends BaseState {
             
             if (_score >= _map.numPipes) {
                 
-                _isEnd = true;
+                status = END;
                 _hero.playWinAnim(_endPipe.x, _endPipe.y + 5, onPipeCentered);
                 BestSave.best = _map.numPipes;
             }
@@ -401,4 +405,12 @@ class IntroUI extends FlxGroup {
         sprite.x = (FlxG.width - sprite.width) / 2;
         return sprite;
     }
+}
+
+enum RollinStatus {
+    
+    INTRO;
+    UNSTARTED;
+    END;
+    //todo convert other bools to states
 }
