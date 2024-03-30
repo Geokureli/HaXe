@@ -152,8 +152,8 @@ class Rick extends RickLite {
         #end
     }
     
-    override public function reset(x:Float, y:Float):Void {
-        super.reset(resetPos.x, resetPos.y);
+    override function reset(x:Float, y:Float):Void {
+        super.reset(x, y);
         
         velocity.x = SPEED;
         drag.x = 0;
@@ -163,6 +163,11 @@ class Rick extends RickLite {
         _fartCount = 0;
         _fartCounter.text = '';
         #end
+    }
+    
+    public function resetToSpawn() {
+        
+        reset(resetPos.x, resetPos.y);
     }
     
     override public function kill():Void {

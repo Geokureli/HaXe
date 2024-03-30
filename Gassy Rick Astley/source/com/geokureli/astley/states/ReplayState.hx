@@ -112,8 +112,6 @@ class ReplayState extends BaseState {
             _ghosts.add(ghost);
             ghost.playSounds = false;
             length = ghost.replay.getDuration();
-            ghost.startTime = 0;
-            // ghost.startTime = Random.ibetween(minFrame, maxFrame);
             
             if (length > longest) {
                 
@@ -125,7 +123,6 @@ class ReplayState extends BaseState {
         if (leadGhost != null) {
             
             leadGhost.playSounds = true;
-            leadGhost.startTime = 0;
             setCameraFollow(leadGhost);
             //FlxG.worldBounds.width = leadGhost.x + leadGhost.width;
         }
@@ -144,9 +141,9 @@ class ReplayState extends BaseState {
             if (ghost != null) {
                 
                 count++;
-                ghost.reset(ghost.x, ghost.y);
-                ghost.start();
-                trace('ghost[$count] started { x:${ghost.x} y:${ghost.y} }');
+                final duration = ghost.replay.getDuration();
+                final maxFrame = 120;
+                ghost.startReplay(duration > maxFrame ? Random.ibetween(0, maxFrame) : 0);
             }
         }
     }
@@ -162,11 +159,6 @@ class ReplayState extends BaseState {
         for (ghost in _ghosts.members) {
             
             if (ghost != null) {
-                if (ghost.startTime < 0){
-                    ghost.startTime++;
-                    if (ghost.startTime == 0)
-                        ghost.start();
-                }
                 
                 if (ghost.replayFinished)
                     _finishedGhosts.add(ghost);
@@ -183,6 +175,9 @@ class ReplayState extends BaseState {
         #if debug
         if (FlxG.keys.justPressed.R)
             FlxG.resetState();
+        
+        if (FlxG.keys.justPressed.ESCAPE)
+            FlxG.switchState(()->new RollinState(FlxG.random.initialSeed));
         #end
     }
     

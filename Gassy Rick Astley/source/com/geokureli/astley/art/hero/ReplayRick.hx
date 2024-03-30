@@ -1,9 +1,7 @@
 package com.geokureli.astley.art.hero;
-import com.geokureli.astley.art.hero.ReplayRick.ReplayMouse;
-import flixel.input.keyboard.FlxKeyboard;
+
 import flixel.system.replay.FrameRecord;
 import openfl.display.Sprite;
-import flixel.input.mouse.FlxMouse;
 import flixel.FlxG;
 import flixel.system.replay.FlxReplay;
 import flixel.util.FlxTimer;
@@ -14,7 +12,6 @@ import flixel.util.FlxTimer;
  */
 class ReplayRick extends Rick {
     
-    public var startTime:Int = 0;
     public var replayFinished(get, never):Bool;
     
     public var replay(default, null):FlxReplay;
@@ -30,8 +27,8 @@ class ReplayRick extends Rick {
         
         _recorder = null;
         
-        final keys = new FlxKeyboard();
-        final mouse = new ReplayMouse();
+        final keys = new ReplayKeyboard(this);
+        final mouse = new ReplayMouse(this);
         replay = new Replay(keys, mouse);
         _input.keys = keys;
         _input.mouse = mouse;
@@ -44,38 +41,23 @@ class ReplayRick extends Rick {
             
         if (!moves || !exists) return;
         
-        // --- PLAY RECORDING UNTIL RICK HITS HIS DESIRED X.
-        do {
-            replay.playNextFrame();
-            
-            super.preUpdate(elapsed);
-            
-            // --- STOP WHEN UP TO SPEED
-            if(replay.frame < startTime)
-                updateMotion(elapsed);
-            
-        } while (replay.frame < startTime);
+        replay.playNextFrame();
+        
+        super.preUpdate(elapsed);
     }
     
-    override public function start():Void {
-        
-        if (startTime >= replay.frameCount)
-        {
-            startTime = 0;
-        }
-        
-        super.start();
-    }
-    
-    override public function reset(x:Float, y:Float):Void {
-        super.reset(x, y);
-        
+    public function startReplay(offset = 0)
+    {
+        resetToSpawn();
         replay.rewind();
-    }
-    
-    public function timedStart(timer:FlxTimer):Void {
         
         start();
+        
+        while (offset-- > 0) {
+            
+            preUpdate(FlxG.elapsed);
+            update(FlxG.elapsed);
+        }
     }
     
     public function get_replayFinished():Bool {
@@ -86,10 +68,10 @@ class ReplayRick extends Rick {
 
 class Replay extends FlxReplay {
     
-    public var keys (default, null):FlxKeyboard;
-    public var mouse(default, null):FlxMouse;
+    public var keys (default, null):ReplayKeyboard;
+    public var mouse(default, null):ReplayMouse;
     
-    public function new (keys:FlxKeyboard, mouse:FlxMouse) {
+    public function new (keys:ReplayKeyboard, mouse:ReplayMouse) {
         super();
         
         this.keys = keys;
@@ -113,11 +95,38 @@ class Replay extends FlxReplay {
     }
 }
 
-class ReplayMouse extends FlxMouse {
+class ReplayKeyboard extends flixel.input.keyboard.FlxKeyboard {
+    
+    #if debug
+    // for debugging
+    var _rick:ReplayRick;
+    #end
+    
+    public function new(rick:ReplayRick) {
+        
+        #if debug
+        this._rick = rick;
+        #end
+        
+        super();
+    }
+}
+
+class ReplayMouse extends flixel.input.mouse.FlxMouse {
     
     static var sprite = new Sprite();
     
-    public function new() {
+    #if debug
+    // for debugging
+    var _rick:ReplayRick;
+    #end
+    
+    public function new(rick:ReplayRick) {
+        
+        #if debug
+        this._rick = rick;
+        #end
+        
         super(sprite);
         
         useSystemCursor = true;

@@ -43,7 +43,7 @@ class FartControl extends Plugin {
         
         isButtonDown = false;
         
-        final keys = this.keys  != null ? this.keys : FlxG.keys;
+        final keys  = this.keys  != null ? this.keys  : FlxG.keys;
         final mouse = this.mouse != null ? this.mouse : FlxG.mouse;
         if (!keys.justPressed.ANY && !mouse.justPressed) {
             

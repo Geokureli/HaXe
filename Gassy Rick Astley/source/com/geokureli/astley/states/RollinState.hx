@@ -361,7 +361,7 @@ class RollinState extends BaseState {
         _deathUI.visible = false;
         _introUI.visible = true;
         _hero.moves = false;
-        _hero.reset(0, 0);// --- POSITION SET INTERNALLY
+        _hero.resetToSpawn();
         _isGameOver = false;
         _hero.canFart = true;
         _password.enabled = true;
