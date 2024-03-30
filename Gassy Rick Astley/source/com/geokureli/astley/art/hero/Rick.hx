@@ -108,14 +108,7 @@ class Rick extends RickLite {
         
         // --- FARTING
         if (canFart && _input.isButtonDown)
-        {
             fart();
-            
-            #if (count_farts && debug)
-            _fartCount++;
-            _fartCounter.text = '$_fartCount';
-            #end
-        }
         
         // --- COLLISION
         if (y < 0 || y + height > FlxG.height) {
@@ -152,6 +145,11 @@ class Rick extends RickLite {
         
         velocity.y = -JUMP;
         animation.play("farting");
+        
+        #if (count_farts && debug)
+        _fartCount++;
+        _fartCounter.text = '$_fartCount:${_input.lastPressId}';
+        #end
     }
     
     override public function reset(x:Float, y:Float):Void {

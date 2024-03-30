@@ -23,6 +23,7 @@ class FartControl extends Plugin {
     public var keys:FlxKeyboard;
     public var mouse:FlxMouse;
     public var isButtonDown:Bool;
+    public var lastPressId:String;
     
     static public function create():Void {
         
@@ -42,8 +43,9 @@ class FartControl extends Plugin {
         
         isButtonDown = false;
         
-        if (!(keys  != null ? keys.justPressed.ANY : FlxG.keys.justPressed.ANY)
-        &&  !(mouse != null ? mouse.pressed : FlxG.mouse.pressed)) {
+        final keys = this.keys  != null ? this.keys : FlxG.keys;
+        final mouse = this.mouse != null ? this.mouse : FlxG.mouse;
+        if (!keys.justPressed.ANY && !mouse.justPressed) {
             
             _antiPress = true;
             
@@ -51,7 +53,29 @@ class FartControl extends Plugin {
             
             _antiPress = false;
             isButtonDown = enabled || replayMode;
+            
+            lastPressId = mouse.justPressed ? "m" : getLastPressedKey(keys);
         }
+    }
+    
+    function getLastPressedKey(keys:FlxKeyboard) {
+        
+        @:privateAccess
+        for (key in keys._keyListArray) {
+            
+            if (key != null && key.justPressed) {
+                
+                return switch (key.ID) {
+                    
+                    case LEFT : "L-A";
+                    case RIGHT: "R-A";
+                    case UP   : "U-A";
+                    case DOWN : "D-A";
+                    case key  : String.fromCharCode(key);
+                }
+            }
+        }
+        return "";
     }
     
     static public function get_down():Bool { return _instance.isButtonDown; }

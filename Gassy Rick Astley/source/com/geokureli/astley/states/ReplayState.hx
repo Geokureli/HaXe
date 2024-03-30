@@ -141,8 +141,7 @@ class ReplayState extends BaseState {
         var count:Int = 0;
         for (ghost in _ghosts.members) {
             
-            trace('ghost[$count] = { start:${ghost.startTime} x:${ghost.x} y:${ghost.y} }');
-            if (ghost != null && ghost.startTime >= 0) {
+            if (ghost != null) {
                 
                 count++;
                 ghost.reset(ghost.x, ghost.y);
