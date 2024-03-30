@@ -14,9 +14,6 @@ import flixel.util.FlxTimer;
  */
 class ReplayRick extends Rick {
     
-    static var keys:FlxKeyboard;
-    static var mouse:ReplayMouse;
-    
     public var startTime:Int = 0;
     public var replayFinished(get, never):Bool;
     
@@ -25,12 +22,6 @@ class ReplayRick extends Rick {
     public function new(x:Float, y:Float, replayData:String) {
         super(x, y);
         
-        if (keys == null)
-            keys = new FlxKeyboard();
-        
-        if (mouse == null)
-            mouse = new ReplayMouse();
-        
         replay.load(replayData);
     }
     
@@ -38,6 +29,9 @@ class ReplayRick extends Rick {
         super.setDefaults();
         
         _recorder = null;
+        
+        final keys = new FlxKeyboard();
+        final mouse = new ReplayMouse();
         replay = new Replay(keys, mouse);
         _input.keys = keys;
         _input.mouse = mouse;
@@ -98,17 +92,11 @@ class Replay extends FlxReplay {
     public function new (keys:FlxKeyboard, mouse:FlxMouse) {
         super();
         
-        if (keys == null)
-            keys = FlxG.keys;
-        
-        if (mouse == null)
-            mouse = FlxG.mouse;
-        
         this.keys = keys;
         this.mouse = mouse;
     }
     
-    override public function playNextFrame():Void {
+    override function playNextFrame():Void {
         
         if (_marker >= frameCount)
         {
