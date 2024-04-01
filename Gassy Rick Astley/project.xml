@@ -47,8 +47,8 @@
         <music path="music"  exclude="*.wav|*.mp3" unless="flash" />
     </assets-->
     
-    <app path="bin/release" />
-    <app path="bin" if="debug" />
+    <app path="export/release" unless="debug"/>
+    <app path="export" if="debug" />
     
     <!-- _________________________ LIBRARIES _________________________ -->
 
