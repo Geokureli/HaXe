@@ -1,10 +1,12 @@
 package com.geokureli.astley.art.hero;
 
-import flixel.system.replay.FrameRecord;
-import openfl.display.Sprite;
 import flixel.FlxG;
 import flixel.system.replay.FlxReplay;
+import flixel.system.replay.FrameRecord;
 import flixel.util.FlxTimer;
+
+import openfl.display.Sprite;
+import openfl.events.MouseEvent;
 
 /**
  * ...
@@ -128,6 +130,9 @@ class ReplayMouse extends flixel.input.mouse.FlxMouse {
         #end
         
         super(sprite);
+        
+        _stage.removeEventListener(MouseEvent.MOUSE_DOWN, _leftButton.onDown);
+        _stage.removeEventListener(MouseEvent.MOUSE_UP, _leftButton.onUp);
         
         useSystemCursor = true;
     }
