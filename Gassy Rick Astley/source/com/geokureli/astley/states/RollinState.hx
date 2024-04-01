@@ -215,13 +215,8 @@ class RollinState extends BaseState {
     
     function onPipeCentered():Void {
         
-        //FlxG.fade(0xFFFFFFFF, 1, onFadeComplete)
         _song.stop();
-    }
-    
-    function onFadeComplete():Void {
-        
-        //FlxG.switchState(new ReplayState());
+        switchState(()->new ReplayState(FlxG.random.initialSeed));
     }
     
     function onPlayerDie():Void {

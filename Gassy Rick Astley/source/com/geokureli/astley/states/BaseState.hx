@@ -3,6 +3,7 @@ package com.geokureli.astley.states;
 import com.geokureli.astley.art.Tilemap;
 import com.geokureli.astley.art.Grass;
 import com.geokureli.astley.art.Cloud;
+import com.geokureli.astley.art.EndPipe;
 import com.geokureli.astley.art.Shrub;
 import com.geokureli.astley.art.hero.Rick;
 import com.geokureli.astley.art.ui.MedalPopup;
@@ -76,6 +77,13 @@ class BaseState extends State {
     function addTileMap():Void {
         //Tilemap.addPipes = false;
         add(_map = new Tilemap());
+    }
+    
+    override function addFG() {
+        super.addFG();
+        
+        add(_endPipe = new EndPipe(_map.endX, _map.endY));
+        FlxG.camera.maxScrollX = _endPipe.x + _endPipe.width;
     }
     
     function setCameraFollow(target:Rick):Void {

@@ -242,7 +242,7 @@ class Rick extends RickLite {
         );
     }
     
-    public function playWinAnim(targetX:Float, targetY:Float, callback:Void->Void):Void {
+    public function playWinAnim(targetX:Float, targetY:Float, callback:()->Void):Void {
         
         x = targetX - width;
         acceleration.y = 0;
@@ -252,9 +252,9 @@ class Rick extends RickLite {
         
         endRecording(true);
         
-        var speed:Int = 10;
-        var duration:Float = (y - targetY) / speed;
-        //~TweenMax.to(this, duration, { y:targetY, ease:Linear.easeNone, onComplete:onPipeCentered, onCompleteParams:[callback] } );
+        final speed:Int = 10;
+        final duration:Float = (y - targetY) / speed;
+        FlxTween.tween(this, { y: targetY }, duration, { onComplete: (_)->onPipeCentered(callback) });
     }
     
     private function onPipeCentered(callback:Void->Void):Void {
