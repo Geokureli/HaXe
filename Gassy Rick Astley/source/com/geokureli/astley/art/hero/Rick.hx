@@ -74,6 +74,7 @@ class Rick extends RickLite {
         moves = false;
         canFart = true;
         playSounds = true;
+        godMode = false;
         
         _password = new Password(activateGodMode);
     }
@@ -108,7 +109,8 @@ class Rick extends RickLite {
             if (!wasTouching.has(DOWN))
                 AssetPaths.play("hit");
             
-            drag.x = 200;
+            if (applyDrag())
+                drag.x = 200;
         }
         
         if (!alive) return;
@@ -138,6 +140,11 @@ class Rick extends RickLite {
         #if (count_farts && debug)
         _fartCounter.update(elapsed);
         #end
+    }
+    
+    function applyDrag()
+    {
+        return #if (no_kill_god && debug) godMode == false #else true #end;
     }
     
     override function draw()

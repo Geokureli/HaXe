@@ -193,13 +193,15 @@ class RollinState extends BaseState {
     
     function checkHit():Bool {
         
-        if (_hero.godMode)
-            _map.disablePipes();
+        final result = FlxG.collide(_hero.godMode ? _ground : _map, _hero);
         
-        final result = FlxG.collide(_map, _hero);
-        
-        if (_hero.godMode)
-            _map.enablePipes();
+        #if (no_kill_god && debug)
+        if (result && _hero.godMode) {
+            
+            _hero.fart();
+            return false;
+        }
+        #end
         
         return result;
     }

@@ -180,6 +180,10 @@ class ReplayState extends BaseState {
             }
         }
         
+        #if (debug && no_kill_god)
+        FlxG.collide(_ghosts, _ground);
+        #end
+        
         FlxG.collide(_finishedGhosts, _map, onGhostHit);
         FlxG.collide(_finishedGhosts, _ground, onGhostHit);
     }
