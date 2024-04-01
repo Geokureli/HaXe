@@ -29,21 +29,21 @@ class Prize {
     ];
     
     static var GOALS = 
-        [ NGData.PROGRESS_4 => 131.0
-        , NGData.PROGRESS_3 =>  51.0
-        , NGData.PROGRESS_2 =>  20.0
-        , NGData.PROGRESS_1 =>   8.0
-        , NGData.PROGRESS_0 =>   1.5
+        [ SecretData.PROGRESS_4 => 131.0
+        , SecretData.PROGRESS_3 =>  51.0
+        , SecretData.PROGRESS_2 =>  20.0
+        , SecretData.PROGRESS_1 =>   8.0
+        , SecretData.PROGRESS_0 =>   1.5
         ];
     
     static var ICONS = 
-        [ NGData.CREDITS_ME => "me"
-        , NGData.PLAY_AGAIN => "rick"
-        , NGData.PROGRESS_0 => "pipe"
-        , NGData.PROGRESS_1 => "bronze"
-        , NGData.PROGRESS_2 => "silver"
-        , NGData.PROGRESS_3 => "gold"
-        , NGData.PROGRESS_4 => "platinum"
+        [ SecretData.CREDITS_ME => "me"
+        , SecretData.PLAY_AGAIN => "rick"
+        , SecretData.PROGRESS_0 => "pipe"
+        , SecretData.PROGRESS_1 => "bronze"
+        , SecretData.PROGRESS_2 => "silver"
+        , SecretData.PROGRESS_3 => "gold"
+        , SecretData.PROGRESS_4 => "platinum"
         ];
     
     inline static public function getIconPath(id:Int):String {

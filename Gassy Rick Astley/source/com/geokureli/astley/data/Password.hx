@@ -1,6 +1,6 @@
 package com.geokureli.astley.data;
 
-import com.geokureli.astley.system.Macros.generateHashes;
+import com.geokureli.astley.data.SecretData;
 
 import com.geokureli.krakel.data.AssetPaths;
 
@@ -14,9 +14,8 @@ import openfl.events.KeyboardEvent;
 
 class Password extends flixel.text.FlxBitmapText {
     
-    static inline var SALT = "GRA-10yDX";
-    static var _password:haxe.ds.ReadOnlyArray<String> = generateHashes("TAAT", "GRA-10yDX");
-    // static var _password:haxe.ds.ReadOnlyArray<String> = generateHashes("THROWTHEHEAT", "GRA-10yDX");
+    static inline var SALT = SecretData.SALT;
+    static var _password = SecretData.password;
     
     inline static var SUCCESS = "GOD MODE ACTIVATED";
     

@@ -8,9 +8,9 @@ import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.astley.data.BestSave;
 import com.geokureli.astley.data.FartControl;
-import com.geokureli.astley.data.NGData;
 import com.geokureli.astley.data.Password;
 import com.geokureli.astley.data.Prize;
+import com.geokureli.astley.data.SecretData;
 
 import flash.Lib;
 
@@ -280,7 +280,7 @@ class RollinState extends BaseState {
     
     private function startResetPan():Void {
         
-        Prize.unlockMedal(NGData.PLAY_AGAIN);
+        Prize.unlockMedal(SecretData.PLAY_AGAIN);
         
         _deathUI.killTimer();
         _isResetting = true;

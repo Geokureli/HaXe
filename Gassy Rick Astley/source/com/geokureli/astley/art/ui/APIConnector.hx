@@ -9,7 +9,7 @@ import io.newgrounds.objects.Error;
 
 import com.geokureli.krakel.art.Button;
 import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.astley.data.NGData;
+import com.geokureli.astley.data.SecretData;
 
 import flixel.group.FlxSpriteGroup;
 import flixel.tweens.FlxEase;

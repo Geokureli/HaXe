@@ -1,7 +1,5 @@
 package com.geokureli.astley.art.ui;
 
-import com.geokureli.astley.data.NGData;
-
 import com.geokureli.krakel.art.Layer;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.data.serial.DameReader;
