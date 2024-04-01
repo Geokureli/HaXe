@@ -14,8 +14,6 @@ import openfl.events.MouseEvent;
  */
 class ReplayRick extends Rick {
     
-    public var replayFinished(get, never):Bool;
-    
     public var replay(default, null):FlxReplay;
     
     public function new(x:Float, y:Float, replayData:String) {
@@ -62,10 +60,17 @@ class ReplayRick extends Rick {
         }
     }
     
-    public function get_replayFinished():Bool {
+    public function getReplayFramesLeft():Int {
         
-        return replay.frameCount - replay.frame < 3;
+        return replay.getDuration() - replay.frame;
     }
+    
+    #if no_kill_god
+    override function applyDrag():Bool
+    {
+        return getReplayFramesLeft() < 1 && super.applyDrag();
+    }
+    #end
 }
 
 class Replay extends FlxReplay {

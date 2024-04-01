@@ -93,15 +93,11 @@ class ReplayState extends BaseState {
     override function addMG():Void {
         super.addMG();
         
-        var frameSpeed:Float = Rick.SPEED * FlxG.elapsed;
-        var maxFrame:Int = Std.int((FlxG.width - RickLite.WIDTH - BUFFER - BaseState.HERO_SPAWN_X) / frameSpeed + 1);
-        var minFrame:Int = Std.int((BUFFER - BaseState.HERO_SPAWN_X) / frameSpeed);
-        
         var longest:Int = -1;
         var leadGhost:ReplayRick = null;
         
-        final numRepeats = #if (debug && replay_stress_test) 50 #else 1 #end;
-        for (repeats in 0...numRepeats) {
+        var numRepeats = #if (debug && replay_stress_test) 50 #else 1 #end;
+        while (numRepeats-- > 0) {
             
             final replays = Recordings.getReplays();
             
@@ -124,7 +120,6 @@ class ReplayState extends BaseState {
             
             leadGhost.playSounds = true;
             setCameraFollow(leadGhost);
-            //FlxG.worldBounds.width = leadGhost.x + leadGhost.width;
         }
     }
     
@@ -180,7 +175,7 @@ class ReplayState extends BaseState {
             
             if (ghost != null) {
                 
-                if (ghost.replayFinished)
+                if (ghost.getReplayFramesLeft() < 3)
                     _finishedGhosts.add(ghost);
             }
         }
