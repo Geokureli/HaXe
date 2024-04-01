@@ -8,7 +8,6 @@ import com.geokureli.krakel.audio.Sound;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.astley.data.BestSave;
 import com.geokureli.astley.data.FartControl;
-import com.geokureli.astley.data.Password;
 import com.geokureli.astley.data.Prize;
 import com.geokureli.astley.data.SecretData;
 
@@ -19,7 +18,6 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
-import flixel.addons.effects.FlxTrail;
 
 import motion.Actuate;
 import motion.easing.Sine;
@@ -41,8 +39,6 @@ class RollinState extends BaseState {
     var _introUI:IntroUI;
     var _deathUI:DeathUI;
     var _songReversed:Sound;
-    var _password:Password;
-    var _trail:FlxTrail;
     
     var _score(default, set):Float;
     var _running:Bool;
@@ -101,8 +97,6 @@ class RollinState extends BaseState {
         _scoreTxt.x = (FlxG.width - _scoreTxt.width) / 2;
         _scoreTxt.scrollFactor.x = 0;
         _scoreTxt.visible = false;
-        
-        add(_password = new Password(activateGodMode));
     }
     
     override function onFadeInComplete():Void {
@@ -110,18 +104,6 @@ class RollinState extends BaseState {
         
         alive = true;
         FartControl.enabled = true;
-    }
-    
-    function activateGodMode():Void {
-        
-        if (!_hero.alive)
-            return;
-        
-        _password.enabled = false;
-        _song.pause();
-        _trail = new FlxTrail(_hero, null, 12, 0, 0.4, 0.02);
-        add(_trail);
-        _hero.activateGodMode(_song.resume);
     }
     
     function startIntro():Void {
@@ -229,9 +211,6 @@ class RollinState extends BaseState {
         _scoreTxt.visible = true;
         _hero.start();
         _running = true;
-        #if (debug && test_god_mode)
-        activateGodMode();
-        #end
     }
     
     function onPipeCentered():Void {
@@ -246,14 +225,6 @@ class RollinState extends BaseState {
     }
     
     function onPlayerDie():Void {
-        
-        if (_trail != null) {
-            
-            remove(_trail);
-            _trail.destroy();
-            _trail = null;
-        }
-        
         _hero.kill();
         _running = false;
         _isGameOver = true;
@@ -263,8 +234,6 @@ class RollinState extends BaseState {
         _deathUI.startTransition(Std.int(_score), onEndScreenIn);
         _deathUI.x = FlxG.camera.scroll.x + _hero.resetPos.x;
         _scoreTxt.visible = false;
-        _password.enabled = false;
-        _password.resetText();
         
         AssetPaths.play("death");
         
@@ -368,7 +337,6 @@ class RollinState extends BaseState {
         _hero.resetToSpawn();
         _isGameOver = false;
         _hero.canFart = true;
-        _password.enabled = true;
     }
     
     function showEndScreen():Void {

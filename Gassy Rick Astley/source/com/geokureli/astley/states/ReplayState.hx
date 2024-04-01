@@ -97,26 +97,26 @@ class ReplayState extends BaseState {
         var maxFrame:Int = Std.int((FlxG.width - RickLite.WIDTH - BUFFER - BaseState.HERO_SPAWN_X) / frameSpeed + 1);
         var minFrame:Int = Std.int((BUFFER - BaseState.HERO_SPAWN_X) / frameSpeed);
         
-        var replay:String;
-        var ghost:ReplayRick;
         var longest:Int = -1;
         var leadGhost:ReplayRick = null;
-        var length:Int;
-        final replays = Recordings.getReplays();
         
-        while (replays.length > 0) {
+        final numRepeats = #if (debug && replay_stress_test) 50 #else 1 #end;
+        for (repeats in 0...numRepeats) {
             
-            final replay = replays.pop();
+            final replays = Recordings.getReplays();
             
-            ghost = new ReplayRick(BaseState.HERO_SPAWN_X, 64, replay);
-            _ghosts.add(ghost);
-            ghost.playSounds = false;
-            length = ghost.replay.getDuration();
-            
-            if (length > longest) {
+            while (replays.length > 0) {
                 
-                longest = length;
-                leadGhost = ghost;
+                final ghost = new ReplayRick(BaseState.HERO_SPAWN_X, 64, replays.pop());
+                _ghosts.add(ghost);
+                ghost.playSounds = false;
+                final duration = ghost.replay.getDuration();
+                
+                if (duration > longest) {
+                    
+                    longest = duration;
+                    leadGhost = ghost;
+                }
             }
         }
         
@@ -135,17 +135,37 @@ class ReplayState extends BaseState {
         _songIntro.play();
         _timerMusic.start(_songIntro.duration - BUFFER_TIME, playLoop);
         
-        var count:Int = 0;
+        var i = 0;
         for (ghost in _ghosts.members) {
             
             if (ghost != null) {
                 
-                count++;
                 final duration = ghost.replay.getDuration();
-                final maxFrame = 120;
-                ghost.startReplay(duration > maxFrame ? Random.ibetween(0, maxFrame) : 0);
+                final max = 128;
+                
+                final offset = distribute(i++, max);
+                ghost.startReplay(duration <= max * 2 ? 0 : offset);
             }
         }
+    }
+    
+    /**
+     * Distributes n from 0 to max so that any adjacent sequence of numbers end up being spaced out pretty well
+     * @param  n    Which index of the distribution sequence to return
+     * @param  max  Needs to be a power of 2
+     */
+    @:pure
+    function distribute(n:Int, max:Int) {
+        
+        inline function pow2(n) return Std.int(Math.pow(2, n));
+        
+        if(n == 0) return 0;
+        n = n % max;// repeat the pattern
+        
+        final lg = Std.int(Math.log(n) / Math.log(2));
+        final p = pow2(lg); // i rounded to nearest power of 2
+        final p2 = p << 1; // double p
+        return Std.int((max / p2) + (n - p) * (max / p));
     }
     
     function playLoop(timer:FlxTimer):Void {

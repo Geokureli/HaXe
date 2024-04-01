@@ -3,6 +3,7 @@ package com.geokureli.astley.art.hero;
 import com.geokureli.astley.art.GlowShader;
 import com.geokureli.astley.data.Beat;
 import com.geokureli.astley.data.FartControl;
+import com.geokureli.astley.data.Password;
 import com.geokureli.astley.data.Recordings;
 
 import com.geokureli.krakel.data.AssetPaths;
@@ -14,6 +15,8 @@ import flixel.math.FlxPoint;
 import flixel.system.replay.FlxReplay;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
+
+import flixel.addons.effects.FlxTrail;
 
 /**
  * ...
@@ -45,6 +48,8 @@ class Rick extends RickLite {
     var _recorder:FlxReplay;
     var _input:FartControl;
     var _recordSeed:Int;
+    var _password:Password;
+    var _trail:FlxTrail;
     
     #if (count_farts && debug)
     var _fartCount = 0;
@@ -69,6 +74,8 @@ class Rick extends RickLite {
         moves = false;
         canFart = true;
         playSounds = true;
+        
+        _password = new Password(activateGodMode);
     }
     
     public function start():Void {
@@ -88,6 +95,12 @@ class Rick extends RickLite {
         super.update(elapsed);
         
         if (!moves) return;
+        
+        if (_trail != null)
+            _trail.update(elapsed);
+        
+        if (_password != null)
+            _password.update(elapsed);
         
         // --- DEATH DRAG
         if (isTouching(DOWN)) {
@@ -129,7 +142,12 @@ class Rick extends RickLite {
     
     override function draw()
     {
+        if (_trail != null)
+            _trail.draw();
+        
         super.draw();
+        
+        _password.draw();
         
         #if (count_farts && debug)
         _fartCounter.x = x + (width - _fartCounter.width) / 2;
@@ -158,6 +176,7 @@ class Rick extends RickLite {
         velocity.x = SPEED;
         drag.x = 0;
         animation.play("idle");
+        _password.enabled = true;
         
         #if (count_farts && debug)
         _fartCount = 0;
@@ -176,14 +195,26 @@ class Rick extends RickLite {
         animation.play("dead");
         endRecording();
         
+        _password.enabled = false;
+        _password.resetText();
+        
         if (godMode) {
             
             godMode = false;
             shader = null;
+            _trail.destroy();
+            _trail = null;
         }
     }
     
-    public function activateGodMode(callback:Void->Void):Void {
+    public function activateGodMode():Void {
+        
+        godMode = true;
+        shader = new GlowShader();
+        _trail = new FlxTrail(this, null, 12, 0, 0.4, 0.02);
+    }
+    
+    public function activateGodModeCutscene(callback:Void->Void):Void {
         
         canFart = false;
         var oldV = FlxPoint.weak().copyFrom(velocity);

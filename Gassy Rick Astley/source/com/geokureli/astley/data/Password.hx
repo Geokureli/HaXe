@@ -1,5 +1,6 @@
 package com.geokureli.astley.data;
 
+import flixel.tweens.FlxTween;
 import com.geokureli.astley.data.SecretData;
 
 import com.geokureli.krakel.data.AssetPaths;
@@ -33,14 +34,21 @@ class Password extends flixel.text.FlxBitmapText {
         padding = 1;
         text = "";
         
-        //TODO: remove listener (weak ref?)
-        FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, function (e) {
-            
-            final char = String.fromCharCode(e.charCode).toUpperCase();
-            
-            if (~/[A-Z0-9]/.match(char))
-                addChar(char);
-        });
+        FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+    }
+    
+    override function destroy() {
+        super.destroy();
+        
+        FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+    }
+    
+    function onKeyPress(e:KeyboardEvent) {
+        
+        final char = String.fromCharCode(e.charCode).toUpperCase();
+        
+        if (~/[A-Z0-9]/.match(char))
+            addChar(char);
     }
     
     function outputHashString(password:String):Void {
@@ -64,6 +72,7 @@ class Password extends flixel.text.FlxBitmapText {
             if(text.length == _password.length) {
                 
                 text = SUCCESS;
+                FlxTween.flicker(this, 0.5);
                 _onActivate();
                 // enabled = false;// disabled for re-activation and easier testing
             }
