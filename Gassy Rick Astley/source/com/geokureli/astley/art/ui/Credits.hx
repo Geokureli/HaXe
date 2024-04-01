@@ -1,5 +1,7 @@
 package com.geokureli.astley.art.ui;
 
+import com.geokureli.astley.data.SecretData;
+
 import com.geokureli.krakel.art.Layer;
 import com.geokureli.krakel.data.AssetPaths;
 import com.geokureli.krakel.data.serial.DameReader;
@@ -50,7 +52,7 @@ class Credits extends Layer {
         _scoresSkip = 0;
         if (NG.core.session.status.match(LOGGED_IN(_)))
         {
-            _scoreBoard = NG.core.scoreBoards.get(NGData.SCOREBOARD);
+            _scoreBoard = NG.core.scoreBoards.get(SecretData.SCOREBOARD);
             loadNextScores();
         }
         #end

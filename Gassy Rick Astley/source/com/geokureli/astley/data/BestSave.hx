@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.util.FlxSave;
 
 #if newgrounds
-    import com.geokureli.astley.data.NGData;
+    import com.geokureli.astley.data.SecretData;
     
     import io.newgrounds.Call;
     import io.newgrounds.NG;
@@ -51,7 +51,7 @@ class BestSave {
                     
                     case FAIL(_):
                     case SUCCESS:
-                        final board = NG.core.scoreBoards.get(NGData.SCOREBOARD);
+                        final board = NG.core.scoreBoards.get(SecretData.SCOREBOARD);
                         board.requestScores(10, 0, Period.ALL, false, null, NG.core.session.current.user);
                         board.onUpdate.add(
                             () -> {
@@ -104,7 +104,7 @@ class BestSave {
          
         #if newgrounds
             if (NG.core.session.status.match(LOGGED_IN(_)))
-                NG.core.scoreBoards.get(NGData.SCOREBOARD).postScore(score);
+                NG.core.scoreBoards.get(SecretData.SCOREBOARD).postScore(score);
         #end
     }
 }
