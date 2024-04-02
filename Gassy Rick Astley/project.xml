@@ -5,8 +5,8 @@
     <app
         title    ="Gassy Rick Astley"
         file     ="GassyRickAstley"
-        main     ="com.geokureli.astley.Main"
-        package  ="com.geokureli.astley"
+        main     ="astley.Main"
+        package  ="astley"
         version  ="0.0.1"
         company  ="GeoKureli"
     />
@@ -15,7 +15,7 @@
     <set name="SWF_VERSION" value="11.8" />
     <!-- <set name="force_loader" /> -->
     <haxedef name="show_loader" if="force_loader || release" />
-    <app preloader="com.geokureli.astley.Preloader" if="force_loader || release" />
+    <app preloader="astley.Preloader" if="force_loader || release" />
     
     <!-- _________________________ WINDOW SETTINGS _________________________ -->
     
