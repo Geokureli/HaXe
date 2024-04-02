@@ -3,7 +3,7 @@ package astley.data;
 import flixel.tweens.FlxTween;
 import astley.data.SecretData;
 
-import com.geokureli.krakel.data.AssetPaths;
+import krakel.data.AssetPaths;
 
 import flixel.FlxG;
 import flixel.text.FlxText.FlxTextAlign;

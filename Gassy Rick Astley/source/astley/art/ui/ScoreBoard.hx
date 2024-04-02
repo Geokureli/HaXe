@@ -3,7 +3,7 @@ package astley.art.ui;
 import astley.data.Prize;
 import astley.data.BestSave;
 import astley.art.ui.BoardSprite;
-import com.geokureli.krakel.data.AssetPaths;
+import krakel.data.AssetPaths;
 
 import flixel.FlxSprite;
 import flixel.tweens.FlxTween;

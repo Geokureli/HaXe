@@ -1,6 +1,6 @@
 package astley.art.ui;
 
-import com.geokureli.krakel.data.AssetPaths;
+import krakel.data.AssetPaths;
 
 import flixel.math.FlxRect;
 

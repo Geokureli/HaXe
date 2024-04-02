@@ -12,7 +12,7 @@ package astley.data;
 import astley.art.Tilemap;
 import astley.art.ui.MedalPopup;
 
-import com.geokureli.krakel.data.AssetPaths;
+import krakel.data.AssetPaths;
 
 class Prize {
     

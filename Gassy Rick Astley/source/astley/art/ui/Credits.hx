@@ -2,9 +2,9 @@ package astley.art.ui;
 
 import astley.data.SecretData;
 
-import com.geokureli.krakel.art.Layer;
-import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.data.serial.DameReader;
+import krakel.art.Layer;
+import krakel.data.AssetPaths;
+import krakel.data.serial.DameReader;
 
 import flixel.FlxBasic;
 import flixel.FlxSprite;

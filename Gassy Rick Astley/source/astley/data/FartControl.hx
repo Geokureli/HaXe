@@ -1,6 +1,6 @@
 package astley.data;
 
-import com.geokureli.krakel.components.Plugin;
+import krakel.components.Plugin;
 
 import flixel.input.mouse.FlxMouse;
 import flixel.input.keyboard.FlxKeyboard;

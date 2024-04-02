@@ -6,8 +6,8 @@ import astley.data.FartControl;
 import astley.data.Password;
 import astley.data.Recordings;
 
-import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.utils.Random;
+import krakel.data.AssetPaths;
+import krakel.utils.Random;
 
 import flixel.FlxG;
 import flixel.FlxObject;

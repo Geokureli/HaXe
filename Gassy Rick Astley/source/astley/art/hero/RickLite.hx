@@ -1,7 +1,7 @@
 package astley.art.hero;
 
-import com.geokureli.krakel.art.Sprite;
-import com.geokureli.krakel.data.AssetPaths;
+import krakel.art.Sprite;
+import krakel.data.AssetPaths;
 import flixel.FlxSprite;
 
 /**

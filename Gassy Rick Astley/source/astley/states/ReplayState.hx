@@ -8,11 +8,11 @@ import astley.art.hero.RickLite;
 import astley.art.ui.Credits;
 import astley.art.Tilemap;
 
-import com.geokureli.krakel.audio.Sound;
-import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.data.serial.DameReader;
-import com.geokureli.krakel.Group.TypedGroup;
-import com.geokureli.krakel.utils.Random;
+import krakel.audio.Sound;
+import krakel.data.AssetPaths;
+import krakel.data.serial.DameReader;
+import krakel.Group.TypedGroup;
+import krakel.utils.Random;
 
 import flixel.FlxG;
 import flixel.FlxObject;

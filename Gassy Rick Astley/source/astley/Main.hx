@@ -11,9 +11,9 @@ import astley.data.LevelData;
 import astley.data.Prize;
 import astley.states.RollinState;
 
-import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.Shell;
-import com.geokureli.krakel.State;
+import krakel.data.AssetPaths;
+import krakel.Shell;
+import krakel.State;
 
 import flixel.FlxG;
 import flixel.FlxSprite;

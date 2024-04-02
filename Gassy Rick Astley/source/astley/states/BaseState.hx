@@ -9,9 +9,9 @@ import astley.art.hero.Rick;
 import astley.art.ui.MedalPopup;
 import astley.data.LevelData;
 
-import com.geokureli.krakel.audio.Sound;
-import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.State;
+import krakel.audio.Sound;
+import krakel.data.AssetPaths;
+import krakel.State;
 
 import flixel.FlxG;
 import flixel.FlxSprite;

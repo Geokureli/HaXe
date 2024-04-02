@@ -7,8 +7,8 @@ import io.newgrounds.NGLite;
 import io.newgrounds.objects.Error;
 #end
 
-import com.geokureli.krakel.art.Button;
-import com.geokureli.krakel.data.AssetPaths;
+import krakel.art.Button;
+import krakel.data.AssetPaths;
 import astley.data.SecretData;
 
 import flixel.group.FlxSpriteGroup;

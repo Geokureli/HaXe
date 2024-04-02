@@ -1,8 +1,8 @@
 package astley.art;
 
 import astley.data.LevelData;
-import com.geokureli.krakel.data.AssetPaths;
-import com.geokureli.krakel.utils.Random;
+import krakel.data.AssetPaths;
+import krakel.utils.Random;
 import flixel.FlxG;
 import flixel.tile.FlxBaseTilemap.FlxTilemapAutoTiling;
 import flixel.tile.FlxTilemap;

@@ -3,7 +3,7 @@ package astley.art.ui ;
 import astley.data.Beat;
 import astley.data.Prize;
 import astley.states.RollinState;
-import com.geokureli.krakel.data.AssetPaths;
+import krakel.data.AssetPaths;
 
 import flixel.FlxSprite;
 import flixel.sound.FlxSound;

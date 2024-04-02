@@ -13,7 +13,7 @@ import flixel.math.FlxPoint;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 
-import com.geokureli.krakel.data.AssetPaths;
+import krakel.data.AssetPaths;
 import astley.data.Prize;
 import astley.art.ui.ScoreText;
 
