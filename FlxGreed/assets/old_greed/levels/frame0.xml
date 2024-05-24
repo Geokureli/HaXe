@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level name="frame0" bounds.x="-16" bounds.y="0" bounds.width="640" bounds.height="384" bgColor = "0xff777777" >
+	<layer name="map" xScroll="1.000" yScroll="1.000" >
+		<map csv="maps/frame0.csv" tiles="../graphics/greed_props.png" x="-16.000" y="0.000" tileWidth="16" tileHeight="16" collide="false" collIdx="2" drawIdx="1" >
+			<properties>
+				<tile id="5" kills="true" range="6" />
+				<tile id="11" cloud="true" range="2" />
+				<tile id="13" triggerEdge="DOWN" hitFrame="14" />
+				<tile id="17" type="fade" killTime="0.5" reviveTime="2" />
+				<tile id="20" frames="#,0" frameTimer="3" />
+				<tile id="22" type="ladder" range="2" edges="NONE" />
+				<tile id="23" cloud="true" />
+				<tile id="25" type="spring" edges="CEILING" />
+			</properties>
+		</map>
+	</layer>
+	<layer name="sprites" xScroll="1.000" yScroll="1.000" >
+		<sprite type="hero" x="6.00" y="328.00" flip="false" xScale="1.00" yScale="1.00" jumpV="180" jumpMax="26" jumpMin="6" maxVelocity.x="150" maxVelocity.y="180" acc="800" drag.x="800" solid="true" callback="true" falls="true" passClouds="true" recenter="true" />
+	</layer>
+</level>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level name="MainMenu" bounds.x="0" bounds.y="0" bounds.width="320" bounds.height="192" bgColor = "0xff777777" class="Overworld" >
+	<layer name="Map2" xScroll="1.000" yScroll="1.000" >
+		<map csv="levels/maps/MainMenu.csv" tiles="graphics/greed_props.png" x="0.000" y="0.000" tileWidth="16" tileHeight="16" collide="false" collIdx="1" drawIdx="1" >
+			<properties>
+				<tile id="5" kills="true" range="6" />
+				<tile id="11" cloud="true" range="2" />
+				<tile id="13" triggerEdge="DOWN" hitFrame="14" />
+				<tile id="17" type="Fade" killTime="0.5" reviveTime="2" />
+				<tile id="20" frames="#,0" frameTimer="3" />
+				<tile id="22" type="Ladder" range="2" edges="NONE" />
+				<tile id="23" cloud="true" />
+				<tile id="25" type="Spring" edges="CEILING" />
+			</properties>
+		</map>
+	</layer>
+	<layer name="Layer3" xScroll="1.000" yScroll="1.000" >
+		<path spline="false" closed ="false" type="LevelPath" draw="true" >
+			<nodes>
+				<node x="64.00" y="64.00" />
+				<node x="128.00" y="64.00" />
+				<node x="192.00" y="64.00" />
+				<node x="256.00" y="64.00" />
+				<node x="256.00" y="128.00" />
+				<node x="192.00" y="128.00" />
+				<node x="128.00" y="128.00" />
+				<node x="64.00" y="128.00" />
+			</nodes>
+		</path>
+	</layer>
+	<layer name="Layer1" xScroll="1.000" yScroll="1.000" >
+		<sprite type="OverworldHero" x="48.00" y="42.00" flip="false" xScale="1.00" yScale="1.00"  pathId="0" startNode="0.00" pathT="0.00" pathMode="PATH_YOYO" pathSpeed="120" />
+	</layer>
+</level>

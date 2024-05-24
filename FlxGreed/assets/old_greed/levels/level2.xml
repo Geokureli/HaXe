@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level name="level2" bounds.x="0" bounds.y="0" bounds.width="1280" bounds.height="400" bgColor = "0xff777777" gravity="1800" >
+	<layer name="bg" xScroll="1.000" yScroll="1.000" >
+		<sprite type="KrkSprite" x="1248.00" y="368.00" flip="false" xScale="1.00" yScale="1.00" anim="right" graphic="arrow" />
+	</layer>
+	<layer name="Layer3" xScroll="1.000" yScroll="1.000" >
+		<shape type="text" x="1152.00" y="352.00" angle="0.00" width="96.00" height="16.00" text="Press R to reset." font="system" size="8" color="0xffffff"align="center" />
+		<shape type="text" x="1250.00" y="369.00" angle="0.00" width="10.00" height="16.00" text="R" font="Arial" size="8" color="0x000000"align="center" />
+	</layer>
+	<layer name="map" xScroll="1.000" yScroll="1.000" >
+		<map csv="levels/maps/level2.csv" tiles="graphics/greed_props.png" x="0.000" y="0.000" tileWidth="16" tileHeight="16" collide="false" collIdx="1" drawIdx="2" >
+			<properties>
+				<tile id="5" kills="true" range="6" />
+				<tile id="11" cloud="true" range="2" />
+				<tile id="13" triggerEdge="DOWN" hitFrame="14" />
+				<tile id="17" type="Fade" killTime="0.5" reviveTime="2" />
+				<tile id="20" frames="#,0" frameTimer="3" />
+				<tile id="22" type="Ladder" range="2" edges="NONE" />
+				<tile id="23" cloud="true" />
+				<tile id="25" type="Spring" edges="CEILING" />
+			</properties>
+		</map>
+	</layer>
+	<layer name="fg" xScroll="1.000" yScroll="1.000" >
+		<sprite type="Gold" x="421.00" y="339.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="484.00" y="272.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="572.00" y="355.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="96.00" y="352.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="112.00" y="336.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="128.00" y="352.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="224.00" y="352.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="256.00" y="320.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="288.00" y="352.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="1040.00" y="336.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="1072.00" y="336.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="1104.00" y="336.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="1104.00" y="160.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Hero" x="22.00" y="344.00" flip="false" xScale="1.00" yScale="1.00" jumpV="180" jumpMax="26" jumpMin="6" maxVelocity.x="150" maxVelocity.y="180" acc="800" drag.x="800" solid="true" callback="true" falls="true" passClouds="true" recenter="true" />
+		<sprite type="Gold" x="1056.00" y="160.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Door" x="800.00" y="360.00" flip="false" xScale="1.00" yScale="1.00" callback="true" />
+		<sprite type="Treasure" x="752.00" y="208.00" flip="false" xScale="1.00" yScale="1.00" callback="true" resets="true" recenter="true" anim="ruby" />
+		<sprite type="Treasure" x="176.00" y="320.00" flip="false" xScale="1.00" yScale="1.00" callback="true" resets="true" recenter="true" anim="emerald" />
+		<sprite type="Treasure" x="1248.00" y="368.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" anim="diamond" />
+	</layer>
+</level>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level name="level1" bounds.x="0" bounds.y="0" bounds.width="640" bounds.height="400" bgColor = "0xff777777" gravity="1800" >
+	<layer name="bg" xScroll="1.000" yScroll="1.000" >
+		<sprite type="KrkSprite" x="536.00" y="24.00" flip="false" xScale="1.00" yScale="1.00" graphic="sign_button" />
+	</layer>
+	<layer name="map" xScroll="1.000" yScroll="1.000" >
+		<map csv="levels/maps/level1.csv" tiles="graphics/greed_props.png" x="0.000" y="0.000" tileWidth="16" tileHeight="16" collide="false" collIdx="1" drawIdx="2" >
+			<properties>
+				<tile id="5" kills="true" range="6" />
+				<tile id="11" cloud="true" range="2" />
+				<tile id="13" triggerEdge="DOWN" hitFrame="14" />
+				<tile id="17" type="Fade" killTime="0.5" reviveTime="2" />
+				<tile id="20" frames="#,0" frameTimer="3" />
+				<tile id="22" type="Ladder" range="2" edges="NONE" />
+				<tile id="23" cloud="true" />
+				<tile id="25" type="Spring" edges="CEILING" />
+			</properties>
+		</map>
+	</layer>
+	<layer name="fg" xScroll="1.000" yScroll="1.000" >
+		<sprite type="Gold" x="176.00" y="320.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="16.00" y="128.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="368.00" y="112.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="608.00" y="128.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="592.00" y="112.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="272.00" y="112.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="336.00" y="336.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="544.00" y="240.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="560.00" y="256.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="576.00" y="240.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="528.00" y="112.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="544.00" y="128.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="560.00" y="112.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="576.00" y="128.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="384.00" y="128.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="400.00" y="112.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="416.00" y="128.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="432.00" y="112.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="448.00" y="128.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="464.00" y="112.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="480.00" y="128.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="496.00" y="112.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="512.00" y="128.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="304.00" y="16.00" flip="true" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Gold" x="96.00" y="160.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" />
+		<sprite type="Door" x="608.00" y="24.00" flip="false" xScale="1.00" yScale="1.00" callback="true" />
+		<sprite type="Hero" x="22.00" y="360.00" flip="false" xScale="1.00" yScale="1.00" jumpV="180" jumpMax="26" jumpMin="6" maxVelocity.x="150" maxVelocity.y="180" acc="800" drag.x="800" solid="true" callback="true" falls="true" passClouds="true" recenter="true" />
+		<sprite type="Button" x="32.00" y="64.00" flip="false" xScale="1.00" yScale="1.00" callback="true" resets="true" action="beam:kill()" />
+		<sprite type="Treasure" x="16.00" y="64.00" flip="false" xScale="1.00" yScale="1.00" callback="true" recenter="true" resets="true" anim="diamond" />
+		<sprite type="Treasure" x="352.00" y="128.00" flip="false" xScale="1.00" yScale="1.00" callback="true" resets="true" recenter="true" anim="ruby" />
+		<sprite type="KrkSprite" x="576.00" y="16.00" flip="false" xScale="1.00" yScale="2.00" graphic="beam" solid="true" resets="true" immovable="true" group="beam" />
+		<sprite type="Treasure" x="496.00" y="304.00" flip="false" xScale="1.00" yScale="1.00" callback="true" resets="true" recenter="true" anim="emerald" />
+	</layer>
+</level>
