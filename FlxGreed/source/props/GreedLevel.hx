@@ -47,6 +47,7 @@ class GreedLevel extends LdtkLevel
     
     public var hero:Hero;
     public var door:Door;
+    public var totalCoins = 0;
     
     public final refs = new Map<String, IEntityRef>();
     public final colliders = new FlxTypedGroup<FlxObject>();
@@ -79,6 +80,11 @@ class GreedLevel extends LdtkLevel
         buttons.clear();
         safes.clear();
         texts.clear();
+    }
+    
+    public function isHeroAtEnd()
+    {
+        return hero.overlaps(door) && hero.touching.has(FLOOR);
     }
     
     override function loadLtdk(level:Ldtk_Level)
@@ -145,6 +151,7 @@ class GreedLevel extends LdtkLevel
             case Coin:
                 final coin = new Coin();
                 collectibles.add(coin);
+                totalCoins++;
                 coin;
             case Emerald:
                 final emerald = new Treasure(EMERALD);

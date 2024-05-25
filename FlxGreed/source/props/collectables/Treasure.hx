@@ -15,12 +15,14 @@ class Treasure extends flixel.FlxSprite implements data.ICollectable
         animation.add("emerald", [36]);
         animation.add("diamond", [37]);
         animation.add("ruby", [38]);
+        
         if (type != null)
             setType(type);
     }
     
     public function setType(type:TreasureType)
     {
+        this.type = type;
         animation.play(type.anim);
     }
     
@@ -35,6 +37,7 @@ class Treasure extends flixel.FlxSprite implements data.ICollectable
 
 enum abstract TreasureType(String) from String
 {
+    public static final all:haxe.ds.ReadOnlyArray<TreasureType> = [EMERALD, DIAMOND, RUBY];
     var EMERALD = "emerald";
     var DIAMOND = "diamond";
     var RUBY = "ruby";

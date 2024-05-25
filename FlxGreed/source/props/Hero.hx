@@ -27,10 +27,10 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         ];
     
     static var springData:Map<Int, JumpData> =
-        [ 0 => { minJump:5.0, maxJump:6.25, toApex:0.50 }
-        , 1 => { minJump:4.0, maxJump:5.25, toApex:0.45 }
-        , 2 => { minJump:3.0, maxJump:4.25, toApex:0.40 }
-        , 3 => { minJump:2.0, maxJump:3.25, toApex:0.35 }
+        [ 0 => { minJump:5.0, maxJump:7.0, toApex:0.55 }
+        , 1 => { minJump:4.0, maxJump:6.0, toApex:0.50 }
+        , 2 => { minJump:3.0, maxJump:5.0, toApex:0.45 }
+        , 3 => { minJump:2.0, maxJump:4.0, toApex:0.40 }
         ];
     
     inline static final TILE_SIZE = 16;

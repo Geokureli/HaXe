@@ -20,7 +20,7 @@ class Main extends krakel.Shell
         
         _frameRate = 60;
         _scale = 4;
-        _introState = ()->new PlayState();
+        _introState = ()->new CollectState();
         // _introState = ()->new IntroState(PlayState.new);
     }
 }
