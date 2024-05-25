@@ -1,5 +1,6 @@
 import flixel.util.typeLimit.NextState;
 import states.PlayState;
+import states.MenuState;
 
 import flixel.text.FlxBitmapText;
 import flixel.FlxG;
@@ -20,33 +21,10 @@ class Main extends krakel.Shell
         
         _frameRate = 60;
         _scale = 4;
+        #if debug
         _introState = ()->new CollectState();
-        // _introState = ()->new IntroState(PlayState.new);
-    }
-}
-
-class IntroState extends flixel.FlxState
-{
-    var nextState:NextState;
-    public function new (nextState:NextState)
-    {
-        this.nextState = nextState;
-        
-        super();
-    }
-    
-    override function create()
-    {
-        final text = new FlxBitmapText("Greed");
-        text.screenCenter();
-        add(text);
-    }
-    
-    override function update(elapsed:Float)
-    {
-        super.update(elapsed);
-        
-        if (FlxG.mouse.pressed)
-            FlxG.switchState(nextState);
+        #else
+        _introState = ()->new MenuState(()->new CollectState());
+        #end
     }
 }

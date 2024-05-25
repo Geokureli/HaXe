@@ -11,7 +11,7 @@ class Treasure extends flixel.FlxSprite implements data.ICollectable
     {
         super(x, y);
         
-        loadGraphic("assets/images/props-normal.png", true, 16, 16);
+        loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
         animation.add("emerald", [36]);
         animation.add("diamond", [37]);
         animation.add("ruby", [38]);

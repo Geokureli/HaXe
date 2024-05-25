@@ -11,7 +11,7 @@ class Coin extends FlxSprite implements data.ICollectable
     {
         super(x, y);
         
-        loadGraphic("assets/images/props-normal.png", true, 16, 16);
+        loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
         animation.add("idle", [32, 33, 34, 35], 10);
         animation.add("collect", [32, 33, 34, 35], 20);
         animation.play("idle");

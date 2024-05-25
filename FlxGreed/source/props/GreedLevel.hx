@@ -23,21 +23,7 @@ import props.ldtk.LdtkLevel;
 import props.ldtk.LdtkTilemap;
 import props.ui.Arrow;
 import props.ui.Text;
-
-enum abstract EntityTags(String) from String
-{
-    /** Whether this object has physics */
-    var MOVES = "moves";
-    
-    /** Whether this object should collide with other collidables */
-    var COLLIDES = "collides";
-    
-    /** Only used in the editor */
-    var FG = "fg";
-    
-    /** Only used in the editor */
-    var BG = "bg";
-}
+import props.ui.Sign;
 
 class GreedLevel extends LdtkLevel
 {
@@ -57,6 +43,7 @@ class GreedLevel extends LdtkLevel
     public final buttons = new FlxTypedGroup<Button>();
     public final safes = new FlxTypedGroup<Safe>();
     public final texts = new FlxTypedGroup<Text>();
+    public final textsById = new Map<String, Text>();
     
     public final onCollect = new FlxTypedSignal<(collector:Hero, collectable:ICollectable)->Void>();
     
@@ -169,6 +156,7 @@ class GreedLevel extends LdtkLevel
                 final textData:Entity_Text = cast data;
                 final text = new Text(textData.f_text.split("\n").join(" "));
                 texts.add(text);
+                textsById[textData.f_textId] = text;
                 text;
             case Spring:
                 final spring = new Spring();
@@ -194,6 +182,9 @@ class GreedLevel extends LdtkLevel
             case ArrowRight: new Arrow(RIGHT);
             case ArrowUp   : new Arrow(UP   );
             case ArrowDown : new Arrow(DOWN );
+            
+            case SignButton : new Sign(BUTTON);
+            case SignHold   : new Sign(HOLD  );
         }
         
         initEntity(entity, data);
@@ -227,14 +218,6 @@ class GreedLevel extends LdtkLevel
         
         FlxG.collide(colliders, tiles);
         FlxG.collide(colliders, colliders);
-        
-        if (tiles.overlapsTag(hero, HURT))
-            hero.onSpike();
-        
-        if (tiles.overlapsTag(hero, LADDER))
-        {
-            //TODO:
-        }
         
         FlxG.overlap(hero, collectibles, (h, c)->collect(h, cast(c, ICollectable)));
         FlxG.overlap(hero, springs, onSpring, (hero, spring)->hero.isLandingOn(spring));
@@ -273,10 +256,12 @@ class GreedTilemap extends LdtkTilemap<Enum_TileTags>
             tile.allowCollisions = NONE;
             
             final tags = tile.tags;
+            #if debug
             if (tags.contains(EDITOR_ONLY))
             {
                 tile.debugBoundingBoxColor = 0xFFFF00FF;
             }
+            #end
             
             if (tags.contains(SOLID))
             {
@@ -321,3 +306,18 @@ class GreedTilemap extends LdtkTilemap<Enum_TileTags>
 typedef EntityLayer = TypedEntityLayer<FlxBasic>;
 
 class TypedEntityLayer<T:FlxBasic> extends FlxTypedContainer<T>{}
+
+enum abstract EntityTags(String) from String
+{
+    /** Whether this object has physics */
+    var MOVES = "moves";
+    
+    /** Whether this object should collide with other collidables */
+    var COLLIDES = "collides";
+    
+    /** Only used in the editor */
+    var FG = "fg";
+    
+    /** Only used in the editor */
+    var BG = "bg";
+}

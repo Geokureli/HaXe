@@ -52,7 +52,7 @@ class Controls extends flixel.addons.input.FlxControls<Action>
         return
             [ Action.ACCEPT=> [FlxKey.K     , FlxKey.Z]
             , Action.BACK  => [FlxKey.L     , FlxKey.X]
-            , Action.JUMP  => [FlxKey.K     , FlxKey.Z, FlxKey.UP]
+            , Action.JUMP  => [FlxKey.K     , FlxKey.Z]
             , Action.UP    => [FlxKey.UP    , FlxKey.W]
             , Action.DOWN  => [FlxKey.DOWN  , FlxKey.S]
             , Action.LEFT  => [FlxKey.LEFT  , FlxKey.A]

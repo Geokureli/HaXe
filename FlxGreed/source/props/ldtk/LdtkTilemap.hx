@@ -155,7 +155,8 @@ abstract LdtkTileLayerTools(Tileset) from Tileset
     )
     {
         final tiles = createTileArray(layer);
-        final graphic = getPath(layer.tileset);
+        // final graphic = getPath(layer.tileset);
+        final graphic = data.Global.getMainGraphic();
         final tileWidth = layer.tileset.tileGridSize;
         final tileHeight = layer.tileset.tileGridSize;
         tilemap.loadMapFromArray(tiles, layer.cWid, layer.cHei, graphic, tileWidth, tileHeight, null, 0, 0);

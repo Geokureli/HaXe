@@ -1,5 +1,6 @@
 package states;
 
+import flixel.tweens.FlxTween;
 import flixel.text.FlxBitmapText;
 import data.ICollectable;
 import data.Global;
@@ -12,18 +13,53 @@ import props.GreedLevel;
 import props.Hero;
 import props.collectables.Coin;
 import props.collectables.Treasure;
+import states.EndState;
+
+typedef GameProgress = { coinsCollected:Int, gemsCollected:Int, coinsTotal:Int, gemsTotal:Int };
 
 class CollectState extends PlayState
 {
     final hud = new Hud();
+    final progress:GameProgress;
+    
+    public function new (?levelId:String, ?progress:GameProgress)
+    {
+        this.progress = progress ?? { coinsCollected:0, gemsCollected:0, coinsTotal:0, gemsTotal:0 };
+        
+        super(levelId);
+    }
     
     override function create():Void
     {
         super.create();
         
-        level.onCollect.add(hud.onCollect);
         hud.totalCoins = level.totalCoins;
         add(hud);
+    }
+    
+    override function onCollect(collector:Hero, collectable:ICollectable)
+    {
+        super.onCollect(collector, collectable);
+        
+        hud.onCollect(collector, collectable);
+        
+        switch (levelData.identifier)
+        {
+            case "Level_1":
+                final text = level.textsById["disgust"];
+                
+                if (hud.gemsCollected >= 3)
+                    text.text = "Heh, nice job, you little rat";
+                else
+                    text.text = "Don't half-ass the job, get all 3 gems";
+                
+                if (text.visible == false)
+                {
+                    text.visible = true;
+                    text.alpha = 0;
+                    FlxTween.tween(text, { alpha: 1.0 }, 0.5);
+                }
+        }
     }
     
     override function checkWinCondition()
@@ -34,24 +70,81 @@ class CollectState extends PlayState
             ) && level.isHeroAtEnd();
     }
     
+    override function onComplete()
+    {
+        #if debug
+        // press shift on complete to pretend we got everything
+        if (FlxG.keys.pressed.SHIFT)
+        {
+            progress.coinsCollected += hud.totalCoins;
+            progress.coinsTotal += hud.totalCoins;
+            progress.gemsCollected += 3;
+            progress.gemsTotal += 3;
+        }
+        else
+        #end
+        {
+            progress.coinsCollected += hud.coinsCollected;
+            progress.coinsTotal += hud.totalCoins;
+            progress.gemsCollected += hud.gemsCollected;
+            progress.gemsTotal += 3;
+        }
+        super.onComplete();
+    }
+    
     override function switchToLevel(levelId:String)
     {
-        FlxG.switchState(()->new CollectState(levelId));
+        FlxG.switchState(()->new CollectState(levelId, progress));
+    }
+    
+    override function allLevelsComplete()
+    {
+        FlxG.switchState(()->new EndState(progress));
+    }
+}
+
+class HellState extends PlayState
+{
+    public function new (?levelId:String)
+    {
+        super(levelId);
+    }
+    
+    override function create():Void
+    {
+        super.create();
+        
+        level.onCollect.add((hero, _)->hero.onSpike());
+    }
+    
+    override function checkWinCondition()
+    {
+        return level.isHeroAtEnd();
+    }
+    
+    override function switchToLevel(levelId:String)
+    {
+        FlxG.switchState(()->new HellState(levelId));
+    }
+    
+    override function allLevelsComplete()
+    {
+        FlxG.switchState(()->new EndState());
     }
 }
 
 class PlayState extends flixel.FlxState
 {
-    var level:GreedLevel;
+    public var level(default, null):GreedLevel;
     final levelData:Ldtk_Level;
     
     public function new (?levelId:String)
     {
-        super();
-        
         levelData = levelId != null
             ? Global.project.getLevel(levelId)
             : Global.project.all_levels.Level_1;
+        
+        super();
         
         if (levelData == null)
             throw 'no level found with id:$levelId';
@@ -65,7 +158,14 @@ class PlayState extends flixel.FlxState
         
         level = new GreedLevel();
         level.loadLtdk(levelData);
+        level.onCollect.add(onCollect);
         add(level);
+        
+        switch (levelData.identifier)
+        {
+            case "Level_1":
+                level.textsById["disgust"].visible = false;
+        }
     }
     
     override function update(elapsed:Float)
@@ -84,6 +184,8 @@ class PlayState extends flixel.FlxState
         if (checkWinCondition() #if debug || Global.controls.justReleased.check(PAUSE) #end)
             onComplete();
     }
+    
+    function onCollect(collector:Hero, collectable:ICollectable) {}
     
     function checkWinCondition()
     {
@@ -195,7 +297,7 @@ abstract UiCoin(FlxSprite) to FlxSprite
     inline public function new (x = 0.0, y = 0.0)
     {
         this = new FlxSprite(x, y);
-        this.loadGraphic("assets/images/props-normal.png", true, 16, 16);
+        this.loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
         setFrame(false);
         this.scrollFactor.set(0, 0);
         this.offset.x = 4;
@@ -216,7 +318,7 @@ abstract UiGem(FlxSprite) to FlxSprite
     inline public function new (x = 0.0, y = 0.0, type:TreasureType)
     {
         this = new FlxSprite(x, y);
-        this.loadGraphic("assets/images/props-normal.png", true, 16, 16);
+        this.loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
         setFrame(type, false);
         this.scrollFactor.set(0, 0);
     }

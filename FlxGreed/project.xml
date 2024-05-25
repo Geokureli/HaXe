@@ -30,12 +30,9 @@
     
     <!--_________________________PATHS SETTINGS_________________________-->
     
-    <set name="BUILD_DIR" value="../export" />
+    <set name="BUILD_DIR" value="export" />
     <classpath name="source" />
-    <assets path="assets" rename="assets" exclude="*.wav|*.ogg|*.db|*.ase" />
-    
-    <app path="export/release" unless="debug"/>
-    <app path="export" if="debug" />
+    <assets path="assets" rename="assets" exclude="*.wav|*.ogg|*.db|*.ase|*exclude*" />
     
     <!-- _________________________ LIBRARIES _________________________ -->
 

@@ -13,7 +13,7 @@ class Button extends FlxSprite implements data.IEntityRef
     {
         super(x, y);
         
-        loadGraphic("assets/images/props-normal.png", true, 16, 16);
+        loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
         animation.add("off", [22]);
         animation.add("on" , [23]);
         animation.play("off");

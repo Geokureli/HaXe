@@ -2,12 +2,16 @@ package props;
 
 import data.ICollectable;
 import data.Global;
+import data.Ldtk;
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.math.FlxMath;
+import props.GreedLevel;
 import props.collectables.Coin;
 import props.collectables.Treasure;
+import states.PlayState;
 
 typedef JumpData = { minJump:Float, maxJump:Float, toApex:Float };
 typedef MoveData = { speed:Float, speedUp:Float };
@@ -41,6 +45,9 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     public var state(default, null):HeroState = PLATFORMING;
     
+    public var isTouchingLadder = false;
+    final hitbox = new FlxObject();
+    
     public function new(x = 0.0, y = 0.0)
     {
         super(x, y);
@@ -71,6 +78,8 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     override function destroy()
     {
         super.destroy();
+        
+        hitbox.destroy();
     }
     
     public function canPassClouds()
@@ -129,14 +138,98 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         setupVariableJump(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
     }
     
-    override function onLand()
+    function setHitbox(x = 0.0, y = 0.0, ?width:Float, ?height:Float)
     {
-        setStandardJump();
+        hitbox.x = this.x + x;
+        hitbox.y = this.y + y;
+        hitbox.last.x = this.last.x + x;
+        hitbox.last.y = this.last.y + y;
+        hitbox.width = width == null ? this.width : width;
+        hitbox.height = height == null ? this.height : height;
+    }
+    
+    function checkTouchingLadder(tiles:GreedTilemap)
+    {
+        setHitbox((width - 1) / 2, 0, 1, null);
+        return tiles.overlapsTag(hitbox, LADDER);
     }
     
     override function update(elapsed:Float)
     {
         super.update(elapsed);
+        
+        final tiles = cast(FlxG.state, PlayState).level.tiles;
+        
+        if (tiles.overlapsTag(this, HURT))
+            onSpike();
+        
+        isTouchingLadder = checkTouchingLadder(tiles);
+        
+        switch (state)
+        {
+            case PLATFORMING:
+                updatePlatforming(elapsed);
+            case CLIMBING:
+                updateClimbing(elapsed);
+        }
+    }
+    
+    function startClimbing()
+    {
+        state = CLIMBING;
+        setStandardJump();
+        acceleration.y = 0;
+        velocity.set(0, 0);
+    }
+    
+    function updateClimbing(elapsed:Float)
+    {
+        if (isTouchingLadder == false)
+        {
+            startPlatforming();
+            return;
+        }
+        
+        if (controls.justPressed.check(JUMP))
+        {
+            startPlatforming();
+            jump(true);
+            _jumpTimer = 0;
+            animation.play("jump");
+            return;
+        }
+        
+        final u = controls.pressed.check(UP);
+        final d = controls.pressed.check(DOWN);
+        final l = controls.pressed.check(LEFT);
+        final r = controls.pressed.check(RIGHT);
+        
+        final TILE = 16;
+        velocity.x = 3.0 * TILE * ((r ? 1 : 0) - (l ? 1 : 0));
+        velocity.y = 6.0 * TILE * ((d ? 1 : 0) - (u ? 1 : 0));
+        
+        animation.play(velocity.isZero() ? "c_idle" : "climb");
+    }
+    
+    function startPlatforming()
+    {
+        state = PLATFORMING;
+        setStandardJump();
+    }
+    
+    override function onLand()
+    {
+        if (state == PLATFORMING)
+            setStandardJump();
+    }
+    
+    function updatePlatforming(elapsed:Float)
+    {
+        if (isTouchingLadder && controls.pressed.any([DOWN, UP]))
+        {
+            startClimbing();
+            return;
+        }
         
         final jump = controls.pressed.check(JUMP);
         maxVelocity.y = jump ? Math.abs(_jumpVelocity) : 0;

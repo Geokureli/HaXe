@@ -27,7 +27,7 @@ class MenuState extends flixel.FlxState
     {
         super.update(elapsed);
         
-        if (FlxG.mouse.pressed)
+        if (FlxG.keys.justPressed.ANY || FlxG.gamepads.anyPressed(ANY))
             FlxG.switchState(nextState);
     }
 }

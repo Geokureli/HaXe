@@ -10,7 +10,7 @@ class Gate extends FlxSprite implements data.IResizable
     {
         super(x, y);
         
-        loadGraphic("assets/images/greed_props.png", true, 16, 16);
+        loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
         animation.add("idle", [24]);
         animation.play("idle");
         immovable = true;
