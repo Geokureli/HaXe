@@ -1,5 +1,6 @@
 package props;
 
+import flixel.FlxObject;
 import flixel.FlxSprite;
 
 class Safe extends FlxSprite
@@ -9,10 +10,11 @@ class Safe extends FlxSprite
         super(x, y);
         
         loadGraphic("assets/images/greed_props.png", true, 16, 16);
-        animation.add("idle", [31]);
+        animation.add("idle", [29]);
         animation.play("idle");
         
         acceleration.y = 1000;
         drag.x = 400;
+        collisionXDrag = ALWAYS;
     }
 }

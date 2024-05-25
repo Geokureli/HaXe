@@ -13,13 +13,13 @@ class Button extends FlxSprite implements data.IEntityRef
     {
         super(x, y);
         
-        loadGraphic("assets/images/greed_props.png", true, 16, 16);
-        animation.add("off", [18]);
-        animation.add("on" , [19]);
+        loadGraphic("assets/images/props-normal.png", true, 16, 16);
+        animation.add("off", [22]);
+        animation.add("on" , [23]);
         animation.play("off");
         
-        offset.y = 4;
-        height -= 4;
+        offset.y = 6;
+        height -= 6;
     }
     
     override function destroy()

@@ -1,9 +1,7 @@
 package props;
 
-import flixel.math.FlxPoint;
-import ldtk.Layer_Entities;
-import flixel.group.FlxContainer;
 import data.Ldtk;
+import data.ICollectable;
 import data.IEntityRef;
 import data.IPlatformer;
 import data.IResizable;
@@ -11,12 +9,20 @@ import flixel.FlxG;
 import flixel.FlxBasic;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
 import flixel.group.FlxContainer;
+import flixel.group.FlxGroup;
+import flixel.math.FlxPoint;
 import flixel.tile.FlxTile;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxSignal;
+import ldtk.Layer_Entities;
 import ldtk.Json;
+import props.collectables.Coin;
+import props.collectables.Treasure;
+import props.ldtk.LdtkLevel;
+import props.ldtk.LdtkTilemap;
+import props.ui.Arrow;
+import props.ui.Text;
 
 enum abstract EntityTags(String) from String
 {
@@ -33,11 +39,7 @@ enum abstract EntityTags(String) from String
     var BG = "bg";
 }
 
-/**
- * ...
- * @author George
- */
-class GreedLevel extends flixel.group.FlxContainer
+class GreedLevel extends LdtkLevel
 {
     public final tiles = new GreedTilemap();
     public final bg = new EntityLayer();
@@ -48,12 +50,14 @@ class GreedLevel extends flixel.group.FlxContainer
     
     public final refs = new Map<String, IEntityRef>();
     public final colliders = new FlxTypedGroup<FlxObject>();
-    public final coins = new FlxTypedGroup<Coin>();
+    public final collectibles = new FlxGroup();
     public final springs = new FlxTypedGroup<Spring>();
     public final gates = new FlxTypedGroup<Gate>();
     public final buttons = new FlxTypedGroup<Button>();
     public final safes = new FlxTypedGroup<Safe>();
     public final texts = new FlxTypedGroup<Text>();
+    
+    public final onCollect = new FlxTypedSignal<(collector:Hero, collectable:ICollectable)->Void>();
     
     public function new()
     {
@@ -69,7 +73,7 @@ class GreedLevel extends flixel.group.FlxContainer
         refs.clear();
         
         colliders.clear();
-        coins.clear();
+        collectibles.clear();
         springs.clear();
         gates.clear();
         buttons.clear();
@@ -77,14 +81,15 @@ class GreedLevel extends flixel.group.FlxContainer
         texts.clear();
     }
     
-    public function loadLtdk(level:Ldtk_Level)
+    override function loadLtdk(level:Ldtk_Level)
     {
+        super.loadLtdk(level);
+        
         add(bg);
         add(tiles);
         add(fg);
         
         tiles.loadLdtk(level.l_Tiles);
-        colliders.add(tiles);
         
         for (data in level.l_BG.getAllUntyped())
         {
@@ -97,6 +102,15 @@ class GreedLevel extends flixel.group.FlxContainer
             final entity = createEntity(data);
             fg.add(entity);
         }
+        
+        // Make sure hero was created, and in the FG
+        final fgHero = fg.getFirst((o)->o is Hero);
+        if (fgHero == null)
+            throw 'No Hero found in Foreground';
+        
+        // bring to front
+        fg.remove(hero);
+        fg.add(hero);
         
         initCam();
         resolveEntityRefs();
@@ -130,19 +144,19 @@ class GreedLevel extends flixel.group.FlxContainer
                 hero;
             case Coin:
                 final coin = new Coin();
-                coins.add(coin);
+                collectibles.add(coin);
                 coin;
             case Emerald:
                 final emerald = new Treasure(EMERALD);
-                coins.add(emerald);
+                collectibles.add(emerald);
                 emerald;
             case Ruby:
                 final ruby = new Treasure(RUBY);
-                coins.add(ruby);
+                collectibles.add(ruby);
                 ruby;
             case Diamond:
                 final diamond = new Treasure(DIAMOND);
-                coins.add(diamond);
+                collectibles.add(diamond);
                 diamond;
             case Text:
                 final textData:Entity_Text = cast data;
@@ -168,6 +182,11 @@ class GreedLevel extends flixel.group.FlxContainer
                 button;
             case Door:
                 door = new Door();
+            
+            case ArrowLeft : new Arrow(LEFT );
+            case ArrowRight: new Arrow(RIGHT);
+            case ArrowUp   : new Arrow(UP   );
+            case ArrowDown : new Arrow(DOWN );
         }
         
         initEntity(entity, data);
@@ -177,8 +196,8 @@ class GreedLevel extends flixel.group.FlxContainer
     
     function initEntity(obj:FlxObject, data:Ldtk_Entity)
     {
-        obj.x = data.pixelX - (data.pivotX * data.width);
-        obj.y = data.pixelY - (data.pivotY * data.height);
+        obj.x = data.pixelX;// + (data.pivotX * data.width);
+        obj.y = data.pixelY;// + (data.pivotY * data.height);
         
         if (obj is IEntityRef)
         {
@@ -199,16 +218,28 @@ class GreedLevel extends flixel.group.FlxContainer
     {
         super.update(elapsed);
         
+        FlxG.collide(colliders, tiles);
         FlxG.collide(colliders, colliders);
         
-        FlxG.overlap(hero, coins, collectCoin);
-        FlxG.overlap(hero, springs, onSpring, (hero, spring)->hero.velocity.y > 0);
+        if (tiles.overlapsTag(hero, HURT))
+            hero.onSpike();
+        
+        if (tiles.overlapsTag(hero, LADDER))
+        {
+            //TODO:
+        }
+        
+        FlxG.overlap(hero, collectibles, (h, c)->collect(h, cast(c, ICollectable)));
+        FlxG.overlap(hero, springs, onSpring, (hero, spring)->hero.isLandingOn(spring));
+        
+        FlxG.overlap(colliders, buttons, (_, button:Button)->button.press());
     }
     
-    function collectCoin(hero:Hero, coin:Coin)
+    function collect(hero:Hero, collectable:ICollectable)
     {
-        hero.onCollect(coin);
-        coin.onCollect();
+        hero.onCollect(collectable);
+        collectable.onCollect(hero);
+        onCollect.dispatch(hero, collectable);
     }
     
     function onSpring(hero:Hero, spring:Spring)
@@ -218,48 +249,40 @@ class GreedLevel extends flixel.group.FlxContainer
     }
 }
 
-class GreedTilemap extends LdtkTilemap
+class GreedTilemap extends LdtkTilemap<Enum_TileTags>
 {
-    public final hurtCallback = new FlxTypedSignal<(FlxTile, FlxObject)->Void>();
-    final clouds = new FlxTypedGroup<FlxTile>();
-    final hurt = new FlxTypedGroup<FlxTile>();
-    
     override function destroy()
     {
-        hurtCallback.removeAll();
-        clouds.clear();
-        
         super.destroy();
     }
     
-    override function handleTileTags(index:Int, tags:Array<Enum_TileTags>)
+    override function loadLdtk(layer:Layer_Tiles)
     {
-        final tile = _tileObjects[index];
+        super.loadLdtk(layer);
         
-        if (tags.contains(SOLID))
+        for (tile in _tileObjects)
         {
-            tile.allowCollisions = ANY;
-        }
-        
-        if (tags.contains(HURT))
-        {
-            tile.callbackFunction = function (tile, object)
+            tile.visible = true;
+            tile.allowCollisions = NONE;
+            
+            final tags = tile.tags;
+            if (tags.contains(EDITOR_ONLY))
             {
-                hurtCallback.dispatch(cast tile, object);
+                tile.debugBoundingBoxColor = 0xFFFF00FF;
             }
-            hurt.add(tile);
+            
+            if (tags.contains(SOLID))
+            {
+                tile.allowCollisions = ANY;
+            }
+            
+            // if (tags.contains(HURT)) {}
+            
+            if (tags.contains(CLOUD))
+            {
+                tile.allowCollisions = UP;
+            }
         }
-        
-        if (tags.contains(CLOUD))
-        {
-            tile.allowCollisions = UP;
-            clouds.add(tile);
-        }
-    }
-    
-    public function isCloud(tile:FlxTile)
-    {
-        return clouds.members.contains(tile);
     }
     
     override function overlapsWithCallback(object:FlxObject, ?callback:(FlxObject, FlxObject)->Bool, flipCallbackParams = false, ?position:FlxPoint):Bool
@@ -267,16 +290,20 @@ class GreedTilemap extends LdtkTilemap
         // check if object can go through cloud tiles
         if (object is IPlatformer && (cast object:IPlatformer).canPassClouds())
         {
-            function checkClouds(tile:FlxObject, _)
+            function checkClouds(tile:LdtkTile<Enum_TileTags>, _)
             {
                 // if it's a cloud, pass through
-                if (isCloud(cast tile))
+                if (tile.hasTag(CLOUD) && object.y <= tile.y)
                     return false;
+                
+                // No callback
+                if (callback == null)
+                    return true;
                 
                 return flipCallbackParams ? callback(object, tile) : callback(tile, object);
             }
             // Find which tile(s) the platformer is overlapping
-            return super.overlapsWithCallback(object, checkClouds, true, position);
+            return super.overlapsWithCallback(object, cast checkClouds, false, position);
         }
         
         // normal collision

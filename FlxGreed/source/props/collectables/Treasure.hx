@@ -1,15 +1,20 @@
-package props;
+package props.collectables;
 
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 
-class Treasure extends Coin
+// TODO: Don't extend Coin, here. Have both implement ICollectible
+class Treasure extends flixel.FlxSprite implements data.ICollectable
 {
     public var type:TreasureType;
     public function new (x = 0.0, y = 0.0, ?type:TreasureType)
     {
-        super();
+        super(x, y);
         
+        loadGraphic("assets/images/props-normal.png", true, 16, 16);
+        animation.add("emerald", [36]);
+        animation.add("diamond", [37]);
+        animation.add("ruby", [38]);
         if (type != null)
             setType(type);
     }
@@ -19,7 +24,7 @@ class Treasure extends Coin
         animation.play(type.anim);
     }
     
-    override function onCollect()
+    public function onCollect(collector:Hero)
     {
         solid = false;
         // FlxG.sound
@@ -34,8 +39,7 @@ enum abstract TreasureType(String) from String
     var DIAMOND = "diamond";
     var RUBY = "ruby";
     
-    @:allow(props.Treasure)
-    var anim(get, never):String;
+    public var anim(get, never):String;
     
     inline function get_anim() return this;
 }

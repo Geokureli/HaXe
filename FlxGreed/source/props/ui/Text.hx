@@ -1,4 +1,4 @@
-package props;
+package props.ui;
 
 import flixel.text.FlxBitmapText;
 

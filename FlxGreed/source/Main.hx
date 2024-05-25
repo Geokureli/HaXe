@@ -19,13 +19,13 @@ class Main extends krakel.Shell
         super.setDefaults();
         
         _frameRate = 60;
-        _scale = 2;
-        _introState = PlayState.new;
+        _scale = 4;
+        _introState = ()->new PlayState();
         // _introState = ()->new IntroState(PlayState.new);
     }
 }
 
-class IntroState extends krakel.State
+class IntroState extends flixel.FlxState
 {
     var nextState:NextState;
     public function new (nextState:NextState)
@@ -35,25 +35,8 @@ class IntroState extends krakel.State
         super();
     }
     
-    override function setDefaults()
+    override function create()
     {
-        super.setDefaults();
-    }
-    
-    override function addBG()
-    {
-        super.addBG();
-    }
-    
-    override function addMG()
-    {
-        super.addMG();
-    }
-    
-    override function addFG()
-    {
-        super.addFG();
-        
         final text = new FlxBitmapText("Greed");
         text.screenCenter();
         add(text);

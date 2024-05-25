@@ -1,32 +1,33 @@
 package states;
 
-import krakel.art.Level;
-import krakel.State;
+import flixel.FlxG;
+import flixel.text.FlxBitmapText;
+import flixel.util.typeLimit.NextState;
 
-class PlayState extends krakel.art.LevelManager
+class MenuState extends flixel.FlxState
 {
-    override public function create():Void
+    var nextState:NextState;
+    public function new (nextState:NextState)
     {
-        super.create();
+        this.nextState = nextState;
+        
+        super();
     }
     
-    override function setDefaults():Void 
+    override function create()
     {
-        super.setDefaults();
+        final text = new FlxBitmapText("Greed");
+        text.scale.set(4, 4);
+        text.updateHitbox();
+        text.screenCenter();
+        add(text);
     }
     
-    override function addBG():Void
+    override function update(elapsed:Float)
     {
-        super.addBG();
-    }
-    
-    override function addMG():Void
-    {
-        super.addMG();
-    }
-    
-    override function addFG()
-    {
-        super.addFG();
+        super.update(elapsed);
+        
+        if (FlxG.mouse.pressed)
+            FlxG.switchState(nextState);
     }
 }

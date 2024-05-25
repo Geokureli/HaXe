@@ -1,23 +1,36 @@
 package props;
 
-// import greed.schemes.Scheme;
-// import krakel.jump.JumpScheme;
+import data.ICollectable;
 import data.Global;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.math.FlxMath;
+import props.collectables.Coin;
+import props.collectables.Treasure;
+
+typedef JumpData = { minJump:Float, maxJump:Float, toApex:Float };
+typedef MoveData = { speed:Float, speedUp:Float };
+typedef FullHeroData = JumpData & MoveData;
+
 /**
  * ...
  * @author George
  */
 class Hero extends DialAPlatformer implements data.IPlatformer
 {
-    static var jumpData =
-        [ 0 => { speed:11, speedUp:0.25, maxJump:5.5, toApex:0.5 }
-        , 1 => { speed: 9, speedUp:0.35, maxJump:4.5, toApex:0.4 }
-        , 2 => { speed: 7, speedUp:0.45, maxJump:3.5, toApex:0.3 }
-        , 3 => { speed: 5, speedUp:0.55, maxJump:2.5, toApex:0.2 }
+    static var jumpData:Map<Int, FullHeroData> =
+        [ 0 => { speed:11, speedUp:0.25, minJump:1.0, maxJump:5.25, toApex:0.5 }
+        , 1 => { speed: 9, speedUp:0.35, minJump:1.0, maxJump:4.25, toApex:0.4 }
+        , 2 => { speed: 7, speedUp:0.45, minJump:1.0, maxJump:3.25, toApex:0.3 }
+        , 3 => { speed: 5, speedUp:0.55, minJump:1.0, maxJump:2.25, toApex:0.2 }
+        ];
+    
+    static var springData:Map<Int, JumpData> =
+        [ 0 => { minJump:5.0, maxJump:6.25, toApex:0.50 }
+        , 1 => { minJump:4.0, maxJump:5.25, toApex:0.45 }
+        , 2 => { minJump:3.0, maxJump:4.25, toApex:0.40 }
+        , 3 => { minJump:2.0, maxJump:3.25, toApex:0.35 }
         ];
     
     inline static final TILE_SIZE = 16;
@@ -25,6 +38,8 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     public var weight(default, null):Int;
     
     var passClouds = false;
+    
+    public var state(default, null):HeroState = PLATFORMING;
     
     public function new(x = 0.0, y = 0.0)
     {
@@ -63,25 +78,40 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         return passClouds;
     }
     
-    public function onCollect(coin:Coin)
+    public function onCollect(collectable:ICollectable)
     {
-        if (coin is Treasure)
+        if (collectable is Treasure)
         {
-            onCollectTresure(cast coin);
+            onCollectTreasure(cast collectable);
         }
     }
     
-    public function onCollectTresure(gem:Treasure)
+    public function onCollectTreasure(gem:Treasure)
     {
         setWeight(weight + 1);
     }
     
+    public function isLandingOn(object:FlxObject)
+    {
+        return velocity.y > 0 && last.y + height < object.y;
+    }
+    
     public function onSprung(spring:Spring)
     {
-        final data = jumpData[weight];
-        setupVariableJump(2.0 * 1.5 * TILE_SIZE, 2.0 * data.maxJump * TILE_SIZE, 1.5 * data.toApex);
+        final data = springData[weight];
+        setupVariableJump(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
         _jumpTimer = 0;
         jump(false);
+    }
+    
+    public function fallOut()
+    {
+        kill();// TODO:Death sequence
+    }
+    
+    public function onSpike()
+    {
+        kill();// TODO:Death sequence
     }
     
     function setWeight(weight:Int)
@@ -89,14 +119,14 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         this.weight = weight;
         
         final data = jumpData[weight];
-        setupVariableJump(1.5 * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
+        setupVariableJump(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
         setupSpeed(data.speed * TILE_SIZE, data.speedUp);
     }
     
     function setStandardJump()
     {
         final data = jumpData[weight];
-        setupVariableJump(1.5 * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
+        setupVariableJump(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
     }
     
     override function onLand()
@@ -134,4 +164,10 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         
         animation.play(action);
     }
+}
+
+enum HeroState
+{
+    PLATFORMING;
+    CLIMBING;
 }

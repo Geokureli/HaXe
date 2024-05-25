@@ -13,8 +13,8 @@ class Spring extends FlxSprite
         animation.add("trigger", [1,2,2,3,3,3,3,2,2,1,0,0,1], 20, false);
         animation.play("idle");
         
-        height = 14;
-        offset.y = 8;
+        height = 12;
+        offset.y = 10;
     }
     
     public function onSprung()
