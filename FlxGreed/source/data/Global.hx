@@ -7,6 +7,7 @@ import states.PlayState;
 
 class Global
 {
+    inline static public final TILE = 16;
     static public var project(get, null):Ldtk;
     
     static function get_project()
