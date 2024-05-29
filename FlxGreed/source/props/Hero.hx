@@ -115,11 +115,13 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     public function fallOut()
     {
+        state = DYING;
         kill();// TODO:Death sequence
     }
     
     public function onSpike()
     {
+        state = DYING;
         kill();// TODO:Death sequence
     }
     
@@ -156,17 +158,19 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     override function update(elapsed:Float)
     {
-        super.update(elapsed);
-        
         final tiles = cast(FlxG.state, PlayState).level.tiles;
         
+        // check spikes before super, ensuring it happens after collision
         if (tiles.overlapsTag(this, HURT))
             onSpike();
+        
+        super.update(elapsed);
         
         isTouchingLadder = checkTouchingLadder(tiles);
         
         switch (state)
         {
+            case DYING:// Do nothing
             case PLATFORMING:
                 updatePlatforming(elapsed);
             case CLIMBING:
@@ -263,4 +267,5 @@ enum HeroState
 {
     PLATFORMING;
     CLIMBING;
+    DYING;
 }
