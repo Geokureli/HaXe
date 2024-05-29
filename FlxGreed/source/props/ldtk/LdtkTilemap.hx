@@ -39,9 +39,9 @@ class LdtkTilemap<Tag:EnumValue> extends FlxTypedTilemap<LdtkTile<Tag>>
     }
     
     override function createTile(index, width, height, visible, allowCollisions)
-	{
-		return new LdtkTile(this, index, width, height, visible, allowCollisions);
-	}
+    {
+        return new LdtkTile(this, index, width, height, visible, allowCollisions);
+    }
     
     public function loadLdtk(layer:Layer_Tiles)
     {
