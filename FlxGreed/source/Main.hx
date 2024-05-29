@@ -20,7 +20,7 @@ class Main extends krakel.Shell
         super.setDefaults();
         
         _frameRate = 60;
-        _scale = 4;
+        _scale = 2;
         #if debug
         _introState = ()->new CollectState();
         #else
