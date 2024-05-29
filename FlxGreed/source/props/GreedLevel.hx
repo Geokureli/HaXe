@@ -1,10 +1,11 @@
 package props;
 
-import data.Ldtk;
+import data.Global;
 import data.ICollectable;
 import data.IEntityRef;
 import data.IPlatformer;
 import data.IResizable;
+import data.Ldtk;
 import flixel.FlxG;
 import flixel.FlxBasic;
 import flixel.FlxObject;
@@ -12,11 +13,13 @@ import flixel.FlxSprite;
 import flixel.group.FlxContainer;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
+import flixel.path.FlxPath;
 import flixel.tile.FlxTile;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxSignal;
 import ldtk.Layer_Entities;
 import ldtk.Json;
+import props.PlatformBlock;
 import props.collectables.Coin;
 import props.collectables.Treasure;
 import props.ldtk.LdtkLevel;
@@ -24,6 +27,7 @@ import props.ldtk.LdtkTilemap;
 import props.ui.Arrow;
 import props.ui.Text;
 import props.ui.Sign;
+import utils.FlxTweenPath;
 
 class GreedLevel extends LdtkLevel
 {
@@ -178,6 +182,29 @@ class GreedLevel extends LdtkLevel
             case Door:
                 door = new Door();
             
+            case MovingPlatform:
+                final TILE = Global.TILE;
+                final platData:Entity_MovingPlatform = cast data;
+                
+                // Make platform
+                final tileId = PlatformBlock.tileIndexFromLdtk(platData.f_tile_infos);
+                final plat = new PlatformBlock(0, 0, tileId);
+                
+                // Make path
+                final nodes = FlxTweenPath.nodesFromLdtk(platData.f_path, data.pixelX, data.pixelY, true);
+                final speed = platData.f_speed;
+                final loop = FlxTweenPath.loopFromLdtk(platData.f_loop);
+                plat.tweenPath = new FlxTweenPath(nodes, plat, speed * TILE);
+                plat.tweenPath.loopType = loop;
+                
+                // Classic path (for testing)
+                // plat.path = new FlxPath();
+                // plat.path.centerMode = CENTER;
+                // plat.path.start(nodes, speed * TILE, LOOP_FORWARD, false, true);
+                // plat.path.loopType = loop;
+                
+                plat;
+            
             case ArrowLeft : new Arrow(LEFT );
             case ArrowRight: new Arrow(RIGHT);
             case ArrowUp   : new Arrow(UP   );
@@ -241,6 +268,16 @@ class GreedLevel extends LdtkLevel
 
 class GreedTilemap extends LdtkTilemap<Enum_TileTags>
 {
+    public function new()
+    {
+        super();
+        
+        #if debug
+        debugBoundingBoxColorNotSolid = 0x00000000;
+        ignoreDrawDebug = true;
+        #end
+    }
+    
     override function destroy()
     {
         super.destroy();
@@ -259,7 +296,7 @@ class GreedTilemap extends LdtkTilemap<Enum_TileTags>
             #if debug
             if (tags.contains(EDITOR_ONLY))
             {
-                tile.debugBoundingBoxColor = 0xFFFF00FF;
+                // tile.debugBoundingBoxColor = 0xFFFF00FF;
             }
             #end
             
