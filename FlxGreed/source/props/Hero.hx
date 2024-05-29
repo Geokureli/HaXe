@@ -6,8 +6,11 @@ import data.Ldtk;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.addons.input.FlxControls;
+import flixel.addons.util.FlxFSM;
 import flixel.math.FlxPoint;
 import flixel.math.FlxMath;
+import input.Controls;
 import props.GreedLevel;
 import props.collectables.Coin;
 import props.collectables.Treasure;
@@ -43,10 +46,16 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     var passClouds = false;
     
+    public final fsm:FlxFSM<Hero>;
     public var state(default, null):HeroState = PLATFORMING;
     
     public var isTouchingLadder = false;
     final hitbox = new FlxObject();
+    
+    public var pressed(get, never):FlxControlList<Action>;
+    public var justPressed(get, never):FlxControlList<Action>;
+    public var justReleased(get, never):FlxControlList<Action>;
+    public var released(get, never):FlxControlList<Action>;
     
     public function new(x = 0.0, y = 0.0)
     {
@@ -73,6 +82,12 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         skidDrag = true;
         coyoteTime = 0.1;
         setWeight(0);
+        
+        fsm = new FlxFSM(this);
+        fsm.transitions.add(Platforming, Climbing, (_)->isTouchingLadder && pressed.any([DOWN, UP]));
+        fsm.transitions.add(Climbing, Platforming, (_)->isTouchingLadder == false || justPressed.check(JUMP));
+        fsm.transitions.addGlobal(Dying, (_)->alive == false);
+        fsm.transitions.start(Platforming);
     }
     
     override function destroy()
@@ -115,12 +130,14 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     public function fallOut()
     {
+        alive = false;
         state = DYING;
         kill();// TODO:Death sequence
     }
     
     public function onSpike()
     {
+        alive = false;
         state = DYING;
         kill();// TODO:Death sequence
     }
@@ -167,100 +184,19 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         super.update(elapsed);
         
         isTouchingLadder = checkTouchingLadder(tiles);
-        
-        switch (state)
-        {
-            case DYING:// Do nothing
-            case PLATFORMING:
-                updatePlatforming(elapsed);
-            case CLIMBING:
-                updateClimbing(elapsed);
-        }
-    }
-    
-    function startClimbing()
-    {
-        state = CLIMBING;
-        setStandardJump();
-        acceleration.y = 0;
-        velocity.set(0, 0);
-    }
-    
-    function updateClimbing(elapsed:Float)
-    {
-        if (isTouchingLadder == false)
-        {
-            startPlatforming();
-            return;
-        }
-        
-        if (controls.justPressed.check(JUMP))
-        {
-            startPlatforming();
-            jump(true);
-            _jumpTimer = 0;
-            animation.play("jump");
-            return;
-        }
-        
-        final u = controls.pressed.check(UP);
-        final d = controls.pressed.check(DOWN);
-        final l = controls.pressed.check(LEFT);
-        final r = controls.pressed.check(RIGHT);
-        
-        final TILE = 16;
-        velocity.x = 3.0 * TILE * ((r ? 1 : 0) - (l ? 1 : 0));
-        velocity.y = 6.0 * TILE * ((d ? 1 : 0) - (u ? 1 : 0));
-        
-        animation.play(velocity.isZero() ? "c_idle" : "climb");
-    }
-    
-    function startPlatforming()
-    {
-        state = PLATFORMING;
-        setStandardJump();
+        fsm.update(elapsed);
     }
     
     override function onLand()
     {
-        if (state == PLATFORMING)
+        if (fsm.state is Platforming)
             setStandardJump();
     }
     
-    function updatePlatforming(elapsed:Float)
-    {
-        if (isTouchingLadder && controls.pressed.any([DOWN, UP]))
-        {
-            startClimbing();
-            return;
-        }
-        
-        final jump = controls.pressed.check(JUMP);
-        maxVelocity.y = jump ? Math.abs(_jumpVelocity) : 0;
-        
-        passClouds = controls.pressed.check(DOWN);
-        
-        final isSkid = (flipX && acceleration.x > 0) || (!flipX && acceleration.x < 0);
-        final onGround = getOnCoyoteGround();
-        
-        var action = "idle";
-        if (onGround)
-        {
-            if (!flipX && velocity.x < 0)
-                flipX = true;
-            else if (flipX && velocity.x > 0)
-                flipX = false;
-            
-            if (acceleration.x != 0)
-                action = (isSkid ? "walkSkid" : "walk");
-        }
-        else
-        {
-            action = (isSkid ? "jumpSkid" : "jump");
-        }
-        
-        animation.play(action);
-    }
+    inline function get_pressed() return controls.pressed;
+    inline function get_justPressed() return controls.justPressed;
+    inline function get_justReleased() return controls.justReleased;
+    inline function get_released() return controls.released;
 }
 
 enum HeroState
@@ -269,3 +205,85 @@ enum HeroState
     CLIMBING;
     DYING;
 }
+
+private class State extends FlxFSMState<Hero> {} 
+
+@:access(props.Hero)
+class Platforming extends State
+{
+	override function enter(hero:Hero, fsm:FlxFSM<Hero>)
+	{
+        hero.setStandardJump();
+	}
+
+	override function update(elapsed:Float, hero:Hero, fsm:FlxFSM<Hero>)
+	{
+        final jump = hero.pressed.check(JUMP);
+        hero.maxVelocity.y = jump ? Math.abs(hero._jumpVelocity) : 0;
+        
+        hero.passClouds = hero.pressed.check(DOWN);
+        
+        final isSkid = (hero.flipX && hero.acceleration.x > 0) || (!hero.flipX && hero.acceleration.x < 0);
+        final onGround = hero.getOnCoyoteGround();
+        
+        var action = "idle";
+        if (onGround)
+        {
+            if (!hero.flipX && hero.velocity.x < 0)
+                hero.flipX = true;
+            else if (hero.flipX && hero.velocity.x > 0)
+                hero.flipX = false;
+            
+            if (hero.acceleration.x != 0)
+                action = (isSkid ? "walkSkid" : "walk");
+        }
+        else
+        {
+            action = (isSkid ? "jumpSkid" : "jump");
+        }
+        
+        hero.animation.play(action);
+	}
+}
+
+@:access(props.Hero)
+class Climbing extends State
+{
+	override function enter(hero:Hero, fsm:FlxFSM<Hero>)
+	{
+        hero.setStandardJump();
+        hero.acceleration.y = 0;
+        hero.velocity.set(0, 0);
+	}
+
+	override function update(elapsed:Float, hero:Hero, fsm:FlxFSM<Hero>)
+	{
+        final u = hero.pressed.check(UP);
+        final d = hero.pressed.check(DOWN);
+        final l = hero.pressed.check(LEFT);
+        final r = hero.pressed.check(RIGHT);
+        
+        final TILE = 16;
+        hero.velocity.x = 3.0 * TILE * ((r ? 1 : 0) - (l ? 1 : 0));
+        hero.velocity.y = 6.0 * TILE * ((d ? 1 : 0) - (u ? 1 : 0));
+        
+        hero.animation.play(hero.velocity.isZero() ? "c_idle" : "climb");
+    }
+    
+    override function exit(hero:Hero)
+    {
+        super.exit(hero);
+        
+        if (hero.justPressed.check(JUMP))
+        {
+            hero.setStandardJump();
+            hero.jump(true);
+            hero._jumpTimer = 0;
+            hero.animation.play("jump");
+            return;
+        }
+    }
+}
+
+@:access(props.Hero)
+class Dying extends State { }

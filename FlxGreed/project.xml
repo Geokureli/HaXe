@@ -38,8 +38,7 @@
 
     <haxelib name="flixel"/>
     <haxelib name="flixel-addons"/>
-    <haxelib name="actuate"/>
-    <haxelib name="newgrounds" unless="quick_start"/>
+    <!-- <haxelib name="newgrounds" unless="quick_start"/> -->
 	<haxelib name="ldtk-haxe-api"/>
 	<haxelib name="deepnightLibs"/>
     <classpath path="../Krakel/source" />

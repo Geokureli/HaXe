@@ -196,13 +196,6 @@ class GreedLevel extends LdtkLevel
                 final loop = FlxTweenPath.loopFromLdtk(platData.f_loop);
                 plat.tweenPath = new FlxTweenPath(nodes, plat, speed * TILE);
                 plat.tweenPath.loopType = loop;
-                
-                // Classic path (for testing)
-                // plat.path = new FlxPath();
-                // plat.path.centerMode = CENTER;
-                // plat.path.start(nodes, speed * TILE, LOOP_FORWARD, false, true);
-                // plat.path.loopType = loop;
-                
                 plat;
             
             case ArrowLeft : new Arrow(LEFT );

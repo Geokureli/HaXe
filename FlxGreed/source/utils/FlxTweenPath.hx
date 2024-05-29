@@ -2,11 +2,10 @@ package utils;
 
 import data.Global;
 import data.Ldtk;
-import flixel.FlxObject;
-import flixel.tweens.FlxTween;
 import flixel.math.FlxPoint;
 import flixel.path.FlxBasePath;
 import flixel.path.FlxPath;
+import flixel.tweens.FlxTween;
 
 class FlxTweenPath extends FlxBasePath
 {
