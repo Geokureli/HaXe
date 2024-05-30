@@ -37,6 +37,21 @@ class CollectState extends PlayState
         add(hud);
     }
     
+    override function update(elapsed:Float)
+    {
+        super.update(elapsed);
+        
+        #if debug
+        if (FlxG.keys.justPressed.ONE)
+        {
+            if (FlxG.keys.pressed.SHIFT)
+                FlxG.switchState(()->new HellState("Debug"));
+            else
+                FlxG.switchState(()->new CollectState("Debug"));
+        }
+        #end
+    }
+    
     override function onCollect(collector:Hero, collectable:ICollectable)
     {
         super.onCollect(collector, collectable);
@@ -45,7 +60,7 @@ class CollectState extends PlayState
         
         switch (levelData.identifier)
         {
-            case "Level_1":
+            case "Level_0":
                 final text = level.textsById["disgust"];
                 
                 if (hud.gemsCollected >= 3)
@@ -142,7 +157,7 @@ class PlayState extends flixel.FlxState
     {
         levelData = levelId != null
             ? Global.project.getLevel(levelId)
-            : Global.project.all_levels.Level_1;
+            : Global.project.all_levels.Level_0;
         
         super();
         
@@ -163,7 +178,7 @@ class PlayState extends flixel.FlxState
         
         switch (levelData.identifier)
         {
-            case "Level_1":
+            case "Level_0":
                 level.textsById["disgust"].visible = false;
         }
     }
