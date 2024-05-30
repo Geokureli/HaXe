@@ -81,9 +81,14 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         skidDrag = true;
         coyoteTime = 0.1;
         setWeight(0);
+        
+        inline function round(n:Float) { return '${Math.round(n * 100) / 100}'; }
+        
         FlxG.watch.addFunction("gravity", ()->acceleration.y);
         FlxG.watch.addFunction("jVel", ()->_jumpVelocity);
         FlxG.watch.addFunction("vel", ()->velocity);
+        FlxG.watch.addFunction("max", ()->maxVelocity);
+        FlxG.watch.addFunction("coyote", ()->'${round(_coyoteTimer > coyoteTime ? coyoteTime : _coyoteTimer)}/${round(coyoteTime)}');
         
         fsm = new FlxFSM(this);
         fsm.transitions.add(Platforming, Climbing, platformingToClimbing);
@@ -150,6 +155,12 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     {
         alive = false;
         kill();// TODO:Death sequence
+    }
+    
+    override function setupJump(height:Float, timeToApex:Float)
+    {
+        super.setupJump(height, timeToApex);
+        maxVelocity.y = Math.abs(_jumpVelocity);
     }
     
     function setWeight(weight:Int)
@@ -232,8 +243,6 @@ class Platforming extends State
     override function update(elapsed:Float, hero:Hero, fsm:FlxFSM<Hero>)
     {
         final jump = hero.pressed.check(JUMP);
-        // hero.maxVelocity.y = jump ? Math.abs(hero._jumpVelocity) : 0;
-        hero.maxVelocity.y = Math.abs(hero._jumpVelocity);
         
         hero.passClouds = hero.pressed.check(DOWN);
         
@@ -274,6 +283,8 @@ class Climbing extends State
 
 	override function update(elapsed:Float, hero:Hero, fsm:FlxFSM<Hero>)
 	{
+        hero._coyoteTimer = 0;// like on ground
+        
         final u = hero.pressed.check(UP);
         final d = hero.pressed.check(DOWN);
         final l = hero.pressed.check(LEFT);
