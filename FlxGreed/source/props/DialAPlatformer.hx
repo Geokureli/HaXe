@@ -37,6 +37,8 @@ class DialAPlatformer extends flixel.FlxSprite {
     var _groundDrag:Float;
     var _airAcceleration:Float;
     var _airDrag:Float;
+    var _maxJumpGravity:Float;
+    var _minJumpGravity:Float;
     
     var _jumpVelocity:Float;
     var _jumpTime = 0.0;
@@ -75,14 +77,15 @@ class DialAPlatformer extends flixel.FlxSprite {
      */
     public function setupJump(height:Float, timeToApex:Float) {
         
-        acceleration.y = 2 * height / timeToApex / timeToApex;
+        _maxJumpGravity = 2 * height / timeToApex / timeToApex;
+        _minJumpGravity = _maxJumpGravity;
         _jumpVelocity = -2 * height / timeToApex;
         _airJumpVelocity = _jumpVelocity;
         _jumpTime = 0;
         
         logParam
             ( 'setupJump($height, $timeToApex)'
-            + '\n - gravity :${acceleration.y}'
+            + '\n - gravity :${_minJumpGravity}|${_maxJumpGravity}'
             + '\n - velocity:$_jumpVelocity'
             );
     }
@@ -93,11 +96,47 @@ class DialAPlatformer extends flixel.FlxSprite {
      * @param maxHeight     The desired jump height in pixels
      * @param timeToApex    The time it takes to reach the top of the maximum jump
      */
-    public function setupVariableJump(minHeight:Float, maxHeight:Float, timeToApex:Float) {
+    public function setupVariableJumpRocketBoot(minHeight:Float, maxHeight:Float, timeToApex:Float) {
         
         setupJump(minHeight, 2 * timeToApex * minHeight / (minHeight + maxHeight));
         _jumpTime = (maxHeight - minHeight) / -_jumpVelocity;
         _airJumpTime = _jumpTime;
+        
+        logParam
+            ( 'setupVariableJump($minHeight, $maxHeight, $timeToApex)'
+            + '\n - holdTime:$_jumpTime'
+            );
+    }
+    
+    /**
+     * Sets the jump arc by setting the jump velocity and how long they can hold the jump button
+     * @param minHeight     The desired jump height in pixels
+     * @param maxHeight     The desired jump height in pixels
+     * @param timeToApex    The time it takes to reach the top of the maximum jump
+     */
+    public function setupVariableJumpIV(minHeight:Float, maxHeight:Float, timeToApex:Float) {
+        
+        setupJump(maxHeight, timeToApex);
+        _maxJumpGravity = 2 * maxHeight / timeToApex / timeToApex;
+        _minJumpGravity = _jumpVelocity * _jumpVelocity / (2 * minHeight);
+        
+        logParam
+            ( 'setupVariableJump($minHeight, $maxHeight, $timeToApex)'
+            + '\n - holdTime:$_jumpTime'
+            );
+    }
+    
+    
+    /**
+     * Sets the jump arc by setting the jump velocity and how long they can hold the jump button
+     * @param minHeight     The desired jump height in pixels
+     * @param maxHeight     The desired jump height in pixels
+     * @param timeToApex    The time it takes to reach the top of the maximum jump
+     */
+    public function setupVariableJumpHybrid(minHeight:Float, maxHeight:Float, timeToApex:Float) {
+        
+        setupVariableJumpRocketBoot(maxHeight / 2, maxHeight, timeToApex);
+        _minJumpGravity = _jumpVelocity * _jumpVelocity / (2 * minHeight);
         
         logParam
             ( 'setupVariableJump($minHeight, $maxHeight, $timeToApex)'
@@ -240,7 +279,7 @@ class DialAPlatformer extends flixel.FlxSprite {
         //0 = v + a * t
         // --> -v = a*t
         // --> -v/a = t
-        var timeToApex = -_jumpVelocity / acceleration.y + _jumpTime;
+        var timeToApex = -_jumpVelocity / _maxJumpGravity + _jumpTime;
         maxVelocity.x = jumpDistance / timeToApex / 2;
         
         if (slowDownTime == null)

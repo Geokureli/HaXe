@@ -27,10 +27,10 @@ typedef FullHeroData = JumpData & MoveData;
 class Hero extends DialAPlatformer implements data.IPlatformer
 {
     static var jumpData:Map<Int, FullHeroData> =
-        [ 0 => { speed:11, speedUp:0.25, minJump:1.0, maxJump:5.25, toApex:0.5 }
-        , 1 => { speed: 9, speedUp:0.35, minJump:1.0, maxJump:4.25, toApex:0.4 }
-        , 2 => { speed: 7, speedUp:0.45, minJump:1.0, maxJump:3.25, toApex:0.3 }
-        , 3 => { speed: 5, speedUp:0.55, minJump:1.0, maxJump:2.25, toApex:0.2 }
+        [ 0 => { speed:11, speedUp:0.4, minJump:1.0, maxJump:5.25, toApex:0.5 }
+        , 1 => { speed: 9, speedUp:0.4, minJump:1.0, maxJump:4.25, toApex:0.4 }
+        , 2 => { speed: 7, speedUp:0.4, minJump:1.0, maxJump:3.25, toApex:0.3 }
+        , 3 => { speed: 5, speedUp:0.4, minJump:1.0, maxJump:2.25, toApex:0.2 }
         ];
     
     static var springData:Map<Int, JumpData> =
@@ -47,7 +47,6 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     var passClouds = false;
     
     public final fsm:FlxFSM<Hero>;
-    public var state(default, null):HeroState = PLATFORMING;
     
     public var isTouchingLadder = false;
     final hitbox = new FlxObject();
@@ -82,10 +81,13 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         skidDrag = true;
         coyoteTime = 0.1;
         setWeight(0);
+        FlxG.watch.addFunction("gravity", ()->acceleration.y);
+        FlxG.watch.addFunction("jVel", ()->_jumpVelocity);
+        FlxG.watch.addFunction("vel", ()->velocity);
         
         fsm = new FlxFSM(this);
-        fsm.transitions.add(Platforming, Climbing, (_)->isTouchingLadder && pressed.any([DOWN, UP]));
-        fsm.transitions.add(Climbing, Platforming, (_)->isTouchingLadder == false || justPressed.check(JUMP));
+        fsm.transitions.add(Platforming, Climbing, platformingToClimbing);
+        fsm.transitions.add(Climbing, Platforming, climbingToPlatforming);
         fsm.transitions.addGlobal(Dying, (_)->alive == false);
         fsm.transitions.start(Platforming);
     }
@@ -100,6 +102,16 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     public function canPassClouds()
     {
         return passClouds;
+    }
+    
+    function platformingToClimbing(_)
+    {
+        return isTouchingLadder && pressed.any([DOWN, UP]) && released.check(JUMP);
+    }
+    
+    function climbingToPlatforming(_)
+    {
+        return isTouchingLadder == false || justPressed.check(JUMP) || touching.has(FLOOR);
     }
     
     public function onCollect(collectable:ICollectable)
@@ -123,7 +135,7 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     public function onSprung(spring:Spring)
     {
         final data = springData[weight];
-        setupVariableJump(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
+        setupVariableJumpRocketBoot(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
         _jumpTimer = 0;
         jump(false);
     }
@@ -131,14 +143,12 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     public function fallOut()
     {
         alive = false;
-        state = DYING;
         kill();// TODO:Death sequence
     }
     
     public function onSpike()
     {
         alive = false;
-        state = DYING;
         kill();// TODO:Death sequence
     }
     
@@ -147,14 +157,14 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         this.weight = weight;
         
         final data = jumpData[weight];
-        setupVariableJump(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
+        setupVariableJumpHybrid(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
         setupSpeed(data.speed * TILE_SIZE, data.speedUp);
     }
     
     function setStandardJump()
     {
         final data = jumpData[weight];
-        setupVariableJump(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
+        setupVariableJumpHybrid(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
     }
     
     function setHitbox(x = 0.0, y = 0.0, ?width:Float, ?height:Float)
@@ -169,7 +179,16 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     function checkTouchingLadder(tiles:GreedTilemap)
     {
-        setHitbox((width - 1) / 2, 0, 1, null);
+        if (fsm.state is Platforming && pressed.check(UP))
+        {
+            // smaller hitbox so we can't climb up a ladder while standing on a ladder-cloud
+            setHitbox((width - 1) / 2, 0, 1, height / 2);
+        }
+        else
+        {
+            setHitbox((width - 1) / 2, 0, 1, null);
+        }
+        
         return tiles.overlapsTag(hitbox, LADDER);
     }
     
@@ -199,27 +218,22 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     inline function get_released() return controls.released;
 }
 
-enum HeroState
-{
-    PLATFORMING;
-    CLIMBING;
-    DYING;
-}
-
 private class State extends FlxFSMState<Hero> {} 
 
 @:access(props.Hero)
+@:access(props.DialAPlatformer)
 class Platforming extends State
 {
-	override function enter(hero:Hero, fsm:FlxFSM<Hero>)
-	{
+    override function enter(hero:Hero, fsm:FlxFSM<Hero>)
+    {
         hero.setStandardJump();
-	}
-
-	override function update(elapsed:Float, hero:Hero, fsm:FlxFSM<Hero>)
-	{
+    }
+    
+    override function update(elapsed:Float, hero:Hero, fsm:FlxFSM<Hero>)
+    {
         final jump = hero.pressed.check(JUMP);
-        hero.maxVelocity.y = jump ? Math.abs(hero._jumpVelocity) : 0;
+        // hero.maxVelocity.y = jump ? Math.abs(hero._jumpVelocity) : 0;
+        hero.maxVelocity.y = Math.abs(hero._jumpVelocity);
         
         hero.passClouds = hero.pressed.check(DOWN);
         
@@ -234,7 +248,7 @@ class Platforming extends State
             else if (hero.flipX && hero.velocity.x > 0)
                 hero.flipX = false;
             
-            if (hero.acceleration.x != 0)
+            if (hero.acceleration.x != 0 || hero.velocity.x != 0)
                 action = (isSkid ? "walkSkid" : "walk");
         }
         else
@@ -243,6 +257,8 @@ class Platforming extends State
         }
         
         hero.animation.play(action);
+        
+        hero.acceleration.y = hero.pressed.check(JUMP) ? hero._maxJumpGravity : hero._minJumpGravity;
 	}
 }
 
@@ -280,6 +296,7 @@ class Climbing extends State
             hero.jump(true);
             hero._jumpTimer = 0;
             hero.animation.play("jump");
+            hero.velocity.x = hero.maxVelocity.x * ((hero.pressed.check(RIGHT) ? 1 : 0) - (hero.pressed.check(LEFT) ? 1 : 0));
             return;
         }
     }
