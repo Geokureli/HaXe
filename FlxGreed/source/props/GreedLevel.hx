@@ -13,9 +13,12 @@ import flixel.FlxSprite;
 import flixel.group.FlxContainer;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 import flixel.path.FlxPath;
 import flixel.tile.FlxTile;
 import flixel.tile.FlxTilemap;
+import flixel.util.FlxDirectionFlags;
+import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal;
 import ldtk.Layer_Entities;
 import ldtk.Json;
@@ -259,52 +262,106 @@ class GreedLevel extends LdtkLevel
     }
 }
 
-class GreedTilemap extends LdtkTilemap<Enum_TileTags>
+typedef HitMetaData = { ?x:Int, ?y:Int, ?width:Int, ?height:Int };
+class GreedTile extends LdtkTile<Enum_TileTags>
 {
-    public function new()
+    final hit:FlxRect = FlxRect.get();
+    
+    public function new (tilemap:GreedTilemap, index, width, height)
     {
-        super();
+        hit.set(0, 0, width, height);
+        super(cast tilemap, index, width, height, true, NONE);
         
         #if debug
-        debugBoundingBoxColorNotSolid = 0x00000000;
         ignoreDrawDebug = true;
         #end
+    }
+    
+    override function overlapsObject(object:FlxObject):Bool
+    {
+        return object.x + object.width >= x + hit.left
+            && object.x < x + hit.right
+            && object.y + object.height >= y + hit.top
+            && object.y < y + hit.bottom;
     }
     
     override function destroy()
     {
         super.destroy();
+        
+        FlxDestroyUtil.put(hit);
     }
     
-    override function loadLdtk(layer:Layer_Tiles)
+    override function setMetaData(metaData:String)
     {
-        super.loadLdtk(layer);
+        super.setMetaData(metaData);
         
-        for (tile in _tileObjects)
+        try
         {
-            tile.visible = true;
-            tile.allowCollisions = NONE;
-            
-            final tags = tile.tags;
-            #if debug
-            if (tags.contains(EDITOR_ONLY))
+            final data:{ ?hit:HitMetaData } = haxe.Json.parse(metaData);
+            if (data.hit != null)
             {
-                // tile.debugBoundingBoxColor = 0xFFFF00FF;
-            }
-            #end
-            
-            if (tags.contains(SOLID))
-            {
-                tile.allowCollisions = ANY;
-            }
-            
-            // if (tags.contains(HURT)) {}
-            
-            if (tags.contains(CLOUD))
-            {
-                tile.allowCollisions = UP;
+                final hitData = data.hit;
+                hit.set
+                    ( hitData.x      ?? hit.x
+                    , hitData.y      ?? hit.y
+                    , hitData.width  ?? hit.width
+                    , hitData.height ?? hit.height
+                    );
             }
         }
+        catch(e)
+        {
+            FlxG.log.error('Error parsing tile: $index metaData: $metaData');
+        }
+    }
+    
+    override function setTags(tags:Array<Enum_TileTags>)
+    {
+        super.setTags(tags);
+        
+        visible = true;
+        allowCollisions = NONE;
+        #if debug
+        ignoreDrawDebug = tags.length == 0;
+        #end
+        
+        #if debug
+        if (tags.contains(EDITOR_ONLY))
+        {
+            debugBoundingBoxColor = 0xFFFF00FF;
+        }
+        #end
+        
+        if (tags.contains(INVISIBLE))
+        {
+            visible = false;
+        }
+        
+        if (tags.contains(SOLID))
+        {
+            allowCollisions = ANY;
+        }
+        
+        if (tags.contains(HURT)) {}
+        
+        if (tags.contains(CLOUD))
+        {
+            allowCollisions = UP;
+        }
+    }
+}
+
+class GreedTilemap extends LdtkTypedTilemap<Enum_TileTags, GreedTile>
+{
+    override function destroy()
+    {
+        super.destroy();
+    }
+    
+    override function createTile(index:Int, width:Float, height:Float):GreedTile
+    {
+        return new GreedTile(this, index, width, height);
     }
     
     override function overlapsWithCallback(object:FlxObject, ?callback:(FlxObject, FlxObject)->Bool, flipCallbackParams = false, ?position:FlxPoint):Bool

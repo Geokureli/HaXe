@@ -11,9 +11,7 @@ import flixel.tile.FlxTilemap;
 
 class LdtkTile<Tag:EnumValue> extends FlxTile
 {
-    @:allow(props.ldtk.LdtkTilemap)
-    public var metaData(default, null):Null<TileCustomMetadata>;
-    @:allow(props.ldtk.LdtkTilemap)
+    public var metaData(default, null):Null<String>;
     public var tags(default, null):Null<haxe.ds.ReadOnlyArray<Tag>>;
     
     public function new (tilemap:LdtkTilemap<Tag>, index, width, height, visible, allowCollisions)
@@ -25,9 +23,27 @@ class LdtkTile<Tag:EnumValue> extends FlxTile
     {
         return tags != null && tags.contains(tag);
     }
+    
+    public function setMetaData(data:String)
+    {
+        metaData = data;
+    }
+    
+    public function setTags(tags:Array<Tag>)
+    {
+        this.tags = tags;
+    }
 }
 
-class LdtkTilemap<Tag:EnumValue> extends FlxTypedTilemap<LdtkTile<Tag>>
+class LdtkTilemap<Tag:EnumValue> extends LdtkTypedTilemap<Tag, LdtkTile<Tag>>
+{
+    override function createTile(index, width, height)
+    {
+        return new LdtkTile(this, index, width, height, true, NONE);
+    }
+}
+
+class LdtkTypedTilemap<Tag:EnumValue, Tile:LdtkTile<Tag>> extends FlxTypedTilemap<Tile>
 {
     var ldtkData:Layer_Tiles;
     
@@ -36,11 +52,6 @@ class LdtkTilemap<Tag:EnumValue> extends FlxTypedTilemap<LdtkTile<Tag>>
         super.destroy();
         
         ldtkData = null;
-    }
-    
-    override function createTile(index, width, height, visible, allowCollisions)
-    {
-        return new LdtkTile(this, index, width, height, visible, allowCollisions);
     }
     
     public function loadLdtk(layer:Layer_Tiles)
@@ -91,12 +102,7 @@ class LdtkTilemap<Tag:EnumValue> extends FlxTypedTilemap<LdtkTile<Tag>>
                 tile.last.x = tile.x - deltaX;
                 tile.last.y = tile.y - deltaY;
                 
-                final overlapFound = ((object.x + object.width) > tile.x)
-                    && (object.x < (tile.x + tile.width))
-                    && ((object.y + object.height) > tile.y)
-                    && (object.y < (tile.y + tile.height));
-                
-                if (overlapFound)
+                if (tile.overlapsObject(object))
                 {
                     func(tile);
                 }
@@ -128,21 +134,19 @@ class LdtkTilemap<Tag:EnumValue> extends FlxTypedTilemap<LdtkTile<Tag>>
     }
     
     
-    function handleTileMetadata(index:Int, metaData:TileCustomMetadata)
+    function handleTileMetadata(index:Int, metaData:String)
     {
-        final tile = _tileObjects[index];
-        tile.metaData = metaData;
+        _tileObjects[index].setMetaData(metaData);
     }
     
     function handleTileTags(index:Int, tags:Array<Tag>)
     {
-        final tile = _tileObjects[index];
-        tile.tags = tags;
+        _tileObjects[index].setTags(tags);
     }
 }
 
 typedef TilesetDataHandler<Data, Map> = (index:Int, data:Data, tilemap:Map)->Void;
-typedef TilesetMetadataHandler<Map> = TilesetDataHandler<TileCustomMetadata, Map>;
+typedef TilesetMetadataHandler<Map> = TilesetDataHandler<String, Map>;
 typedef TilesetTagHandler<Map, Tag:EnumValue> = TilesetDataHandler<Array<Tag>, Map>;
 
 abstract LdtkTileLayerTools(Tileset) from Tileset
@@ -165,7 +169,7 @@ abstract LdtkTileLayerTools(Tileset) from Tileset
         {
             for (tileData in layer.tileset.json.customData)
             {
-                metadataHandler(tileData.tileId, tileData, tilemap);
+                metadataHandler(tileData.tileId, tileData.data, tilemap);
             }
         }
         
