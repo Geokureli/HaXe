@@ -17,7 +17,7 @@ import flixel.math.FlxRect;
 import flixel.path.FlxPath;
 import flixel.tile.FlxTile;
 import flixel.tile.FlxTilemap;
-import flixel.util.FlxDirectionFlags;
+import flixel.util.FlxDirection;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal;
 import ldtk.Layer_Entities;
@@ -201,10 +201,10 @@ class GreedLevel extends LdtkLevel
                 plat.tweenPath.loopType = loop;
                 plat;
             
-            case ArrowLeft : new Arrow(LEFT );
-            case ArrowRight: new Arrow(RIGHT);
-            case ArrowUp   : new Arrow(UP   );
-            case ArrowDown : new Arrow(DOWN );
+            case ArrowLeft : new Arrow(0, 0, LEFT );
+            case ArrowRight: new Arrow(0, 0, RIGHT);
+            case ArrowUp   : new Arrow(0, 0, UP   );
+            case ArrowDown : new Arrow(0, 0, DOWN );
             
             case SignButton : new Sign(BUTTON);
             case SignHold   : new Sign(HOLD  );
