@@ -192,7 +192,9 @@ class GreedLevel extends LdtkLevel
         }
         
         if (obj is IResizable)
+        {
             (cast obj:IResizable).setEntitySize(data.width, data.height);
+        }
         
         if (obj is ITogglable)
         {
@@ -202,16 +204,24 @@ class GreedLevel extends LdtkLevel
             entity.toggleIds = (cast data: { f_toggles:Array<EntityReferenceInfos> }).f_toggles;
         }
         
+        if (obj is ICollectable)
+        {
+            collectables.add(obj);
+        }
+        
         final tags:Array<EntityTags> = data.json.__tags;
-        if (tags.contains(COLLIDES)) colliders.add(obj);
-        if (tags.contains(COLLECTABLE)) collectables.add(obj);
-        if (!tags.contains(MOVES)) obj.moves = false;
-        if (tags.contains(FG)) fg.add(obj);
-        if (tags.contains(BG)) bg.add(obj);
+        if (tags.contains(COLLIDES)      ) colliders.add(obj);
+        if (tags.contains(MOVES) == false) obj.moves = false;
+        if (tags.contains(FG)            ) fg.add(obj);
+        if (tags.contains(BG)            ) bg.add(obj);
+        
+        // Check tags match interfaces
+        
         if (tags.contains(TOGGLE) != obj is IToggle)
             throw 'Object ${Type.getClassName(Type.getClass(obj))} needs to implement IToggle';
         
-        
+        if (tags.contains(COLLECTABLE) != obj is ICollectable)
+            throw 'Object ${Type.getClassName(Type.getClass(obj))} needs to implement ICollectable';
     }
     
     override function update(elapsed:Float)
@@ -381,15 +391,15 @@ enum abstract EntityTags(String) from String
     /** Whether this object should collide with other collidables */
     var COLLIDES = "collides";
     
+    /** Whether this object shows below the tiles */
+    var TOGGLE = "toggle";
+    
+    /** Whether this object can be collected */
+    var COLLECTABLE = "collectable";
+    
     /** Whether this object shows above the tiles */
     var FG = "fg";
     
     /** Whether this object shows below the tiles */
     var BG = "bg";
-    
-    /** Whether this object shows below the tiles */
-    var TOGGLE = "toggle";
-    
-    /** Whether this object shows below the tiles */
-    var COLLECTABLE = "collectable";
 }
