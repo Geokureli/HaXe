@@ -50,7 +50,7 @@ implements ITogglable
         tweenPath.active = isOn;
     }
     
-    public static function fromLdtk(data:Entity_MovingPlatform):MovingTiledSprite
+    public static function fromLdtk(data:Entity_MOVING_PLATFORM):MovingTiledSprite
     {
         // Make platform
         final tileId = TiledSprite.tileIndexFromLdtk(data.f_tile_infos);

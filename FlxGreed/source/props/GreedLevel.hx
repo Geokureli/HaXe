@@ -48,7 +48,7 @@ class GreedLevel extends LdtkLevel
     public final refs = new Map<String, IEntityRef>();
     public final togglables = new Array<ITogglable>();
     public final colliders = new FlxTypedGroup<FlxObject>();
-    public final collectibles = new FlxGroup();
+    public final collectables = new FlxGroup();
     public final springs = new FlxTypedGroup<Spring>();
     public final buttons = new FlxTypedGroup<Button>();
     public final textsById = new Map<String, Text>();
@@ -71,7 +71,7 @@ class GreedLevel extends LdtkLevel
         refs.clear();
         
         colliders.clear();
-        collectibles.clear();
+        collectables.clear();
         springs.clear();
         buttons.clear();
         textsById.clear();
@@ -141,47 +141,37 @@ class GreedLevel extends LdtkLevel
     {
         final entity:FlxObject = switch (data.entityType)
         {
-            case Player: hero = new Hero();
-            case Door  : door = new Door();
-            case Coin:
-                final coin = new Coin();
-                collectibles.add(coin);
-                totalCoins++;
-                coin;
-            case Emerald:
-                final emerald = new Treasure(EMERALD);
-                collectibles.add(emerald);
-                emerald;
-            case Ruby:
-                final ruby = new Treasure(RUBY);
-                collectibles.add(ruby);
-                ruby;
-            case Diamond:
-                final diamond = new Treasure(DIAMOND);
-                collectibles.add(diamond);
-                diamond;
-            case Text:
-                final textData:Entity_Text = cast data;
+            case HERO: hero = new Hero();
+            case DOOR  : door = new Door();
+            case TEXT:
+                final textData:Entity_TEXT = cast data;
                 final text = new Text(textData.f_text.split("\n").join(" "));
                 textsById[textData.f_textId] = text;
                 text;
-            case Spring:
+            case SPRING:
                 final spring = new Spring();
                 springs.add(spring);
                 spring;
-            case Button:
+            case BUTTON:
                 final button = new Button();
                 buttons.add(button);
                 button;
-            case Safe          : new Safe();
-            case Gate          : new Gate();
-            case MovingPlatform: MovingTiledSprite.fromLdtk(cast data);
-            case ArrowLeft     : new Arrow(0, 0, LEFT );
-            case ArrowRight    : new Arrow(0, 0, RIGHT);
-            case ArrowUp       : new Arrow(0, 0, UP   );
-            case ArrowDown     : new Arrow(0, 0, DOWN );
-            case SignButton    : new Sign(BUTTON);
-            case SignHold      : new Sign(HOLD  );
+                
+            case COIN:
+                totalCoins++;
+                new Coin();
+            case EMERALD        : new Treasure(EMERALD);
+            case RUBY           : new Treasure(RUBY);
+            case DIAMOND        : new Treasure(DIAMOND);
+            case SAFE           : new Safe();
+            case GATE           : new Gate();
+            case MOVING_PLATFORM: MovingTiledSprite.fromLdtk(cast data);
+            case ARROW_LEFT     : new Arrow(0, 0, LEFT );
+            case ARROW_RIGHT    : new Arrow(0, 0, RIGHT);
+            case ARROW_UP       : new Arrow(0, 0, UP   );
+            case ARROW_DOWN     : new Arrow(0, 0, DOWN );
+            case SIGN_BUTTON    : new Sign(BUTTON);
+            case SIGN_HOLD      : new Sign(HOLD  );
         }
         
         initEntity(entity, data);
@@ -214,6 +204,7 @@ class GreedLevel extends LdtkLevel
         
         final tags:Array<EntityTags> = data.json.__tags;
         if (tags.contains(COLLIDES)) colliders.add(obj);
+        if (tags.contains(COLLECTABLE)) collectables.add(obj);
         if (!tags.contains(MOVES)) obj.moves = false;
         if (tags.contains(FG)) fg.add(obj);
         if (tags.contains(BG)) bg.add(obj);
@@ -230,7 +221,7 @@ class GreedLevel extends LdtkLevel
         FlxG.collide(colliders, tiles);
         FlxG.collide(colliders, colliders);
         
-        FlxG.overlap(hero, collectibles, (h, c)->collect(h, cast(c, ICollectable)));
+        FlxG.overlap(hero, collectables, (h, c)->collect(h, cast(c, ICollectable)));
         FlxG.overlap(hero, springs, onSpring, (hero, spring)->hero.isLandingOn(spring));
         
         FlxG.overlap(colliders, buttons, (_, button:Button)->button.press());
@@ -398,4 +389,7 @@ enum abstract EntityTags(String) from String
     
     /** Whether this object shows below the tiles */
     var TOGGLE = "toggle";
+    
+    /** Whether this object shows below the tiles */
+    var COLLECTABLE = "collectable";
 }

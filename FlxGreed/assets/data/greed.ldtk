@@ -113,7 +113,7 @@
 		}
 	], "entities": [
 		{
-			"identifier": "Player",
+			"identifier": "HERO",
 			"uid": 5,
 			"tags": [ "fg", "moves", "collides" ],
 			"exportToToc": false,
@@ -148,9 +148,9 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "Coin",
+			"identifier": "COIN",
 			"uid": 8,
-			"tags": ["fg"],
+			"tags": [ "fg", "collectable" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -183,9 +183,9 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "Ruby",
+			"identifier": "RUBY",
 			"uid": 11,
-			"tags": ["fg"],
+			"tags": [ "fg", "collectable" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -218,9 +218,9 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "Emerald",
+			"identifier": "EMERALD",
 			"uid": 12,
-			"tags": ["fg"],
+			"tags": [ "fg", "collectable" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -253,9 +253,9 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "Diamond",
+			"identifier": "DIAMOND",
 			"uid": 13,
-			"tags": ["fg"],
+			"tags": [ "fg", "collectable" ],
 			"exportToToc": false,
 			"allowOutOfBounds": false,
 			"doc": null,
@@ -288,7 +288,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "Text",
+			"identifier": "TEXT",
 			"uid": 15,
 			"tags": ["bg"],
 			"exportToToc": false,
@@ -398,7 +398,7 @@
 			]
 		},
 		{
-			"identifier": "Spring",
+			"identifier": "SPRING",
 			"uid": 18,
 			"tags": ["fg"],
 			"exportToToc": false,
@@ -433,7 +433,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "Gate",
+			"identifier": "GATE",
 			"uid": 19,
 			"tags": [ "fg", "collides" ],
 			"exportToToc": false,
@@ -506,7 +506,7 @@
 			]
 		},
 		{
-			"identifier": "Button",
+			"identifier": "BUTTON",
 			"uid": 21,
 			"tags": [ "fg", "toggle" ],
 			"exportToToc": false,
@@ -541,7 +541,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "Safe",
+			"identifier": "SAFE",
 			"uid": 22,
 			"tags": [ "fg", "moves", "collides" ],
 			"exportToToc": false,
@@ -614,7 +614,7 @@
 			]
 		},
 		{
-			"identifier": "Door",
+			"identifier": "DOOR",
 			"uid": 26,
 			"tags": ["fg"],
 			"exportToToc": false,
@@ -649,7 +649,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "ArrowLeft",
+			"identifier": "ARROW_LEFT",
 			"uid": 29,
 			"tags": ["bg"],
 			"exportToToc": false,
@@ -684,7 +684,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "ArrowRight",
+			"identifier": "ARROW_RIGHT",
 			"uid": 30,
 			"tags": ["bg"],
 			"exportToToc": false,
@@ -719,7 +719,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "ArrowUp",
+			"identifier": "ARROW_UP",
 			"uid": 31,
 			"tags": ["bg"],
 			"exportToToc": false,
@@ -754,7 +754,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "ArrowDown",
+			"identifier": "ARROW_DOWN",
 			"uid": 32,
 			"tags": ["bg"],
 			"exportToToc": false,
@@ -789,7 +789,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "SignHold",
+			"identifier": "SIGN_HOLD",
 			"uid": 38,
 			"tags": ["bg"],
 			"exportToToc": false,
@@ -824,7 +824,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "SignButton",
+			"identifier": "SIGN_BUTTON",
 			"uid": 39,
 			"tags": ["bg"],
 			"exportToToc": false,
@@ -859,7 +859,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "MovingPlatform",
+			"identifier": "MOVING_PLATFORM",
 			"uid": 41,
 			"tags": [ "bg", "moves", "collides" ],
 			"exportToToc": false,
@@ -1218,7 +1218,7 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "Button",
+							"__identifier": "BUTTON",
 							"__grid": [6,8],
 							"__pivot": [0,0.375],
 							"__tags": [ "fg", "toggle" ],
@@ -1234,7 +1234,7 @@
 							"__worldY": 662
 						},
 						{
-							"__identifier": "Gate",
+							"__identifier": "GATE",
 							"__grid": [4,6],
 							"__pivot": [0,0],
 							"__tags": [ "fg", "collides" ],
@@ -1258,10 +1258,10 @@
 							"__worldY": 624
 						},
 						{
-							"__identifier": "Emerald",
+							"__identifier": "EMERALD",
 							"__grid": [12,12],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#00FF00",
 							"iid": "06f47490-fec0-11ee-808e-f968e210a724",
@@ -1274,10 +1274,10 @@
 							"__worldY": 730
 						},
 						{
-							"__identifier": "Ruby",
+							"__identifier": "RUBY",
 							"__grid": [28,2],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 32, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
 							"iid": "11d81560-fec0-11ee-808e-6733ff2fadf7",
@@ -1290,10 +1290,10 @@
 							"__worldY": 560
 						},
 						{
-							"__identifier": "Diamond",
+							"__identifier": "DIAMOND",
 							"__grid": [28,18],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 16, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#0000FF",
 							"iid": "157f7280-fec0-11ee-808e-3f665eb883ec",
@@ -1306,7 +1306,7 @@
 							"__worldY": 816
 						},
 						{
-							"__identifier": "Door",
+							"__identifier": "DOOR",
 							"__grid": [2,7],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1322,7 +1322,7 @@
 							"__worldY": 648
 						},
 						{
-							"__identifier": "Player",
+							"__identifier": "HERO",
 							"__grid": [1,17],
 							"__pivot": [0.375,0.313],
 							"__tags": [ "fg", "moves", "collides" ],
@@ -1338,10 +1338,10 @@
 							"__worldY": 810
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [12,3],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "6461db50-fec0-11ee-808e-0d797c42e525",
@@ -1354,10 +1354,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [12,4],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "64e2a410-fec0-11ee-808e-4fa647833a19",
@@ -1370,10 +1370,10 @@
 							"__worldY": 595
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [13,4],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "6545aba0-fec0-11ee-808e-3d3f0eedc907",
@@ -1386,10 +1386,10 @@
 							"__worldY": 595
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [13,3],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "6602e120-fec0-11ee-808e-fd90f8e802db",
@@ -1402,10 +1402,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [17,4],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "76374950-fec0-11ee-808e-432327f324e0",
@@ -1418,10 +1418,10 @@
 							"__worldY": 595
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [17,3],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "768e1be0-fec0-11ee-808e-096481a595b3",
@@ -1434,10 +1434,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [18,3],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "76e20840-fec0-11ee-808e-bdd6b884e41a",
@@ -1450,10 +1450,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [18,4],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "772c7ec0-fec0-11ee-808e-017186387c7c",
@@ -1466,10 +1466,10 @@
 							"__worldY": 595
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [15,7],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "8a733000-fec0-11ee-808e-3d66689acb30",
@@ -1482,10 +1482,10 @@
 							"__worldY": 643
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [27,14],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "994dad80-fec0-11ee-808e-a7d2acbba3d0",
@@ -1498,10 +1498,10 @@
 							"__worldY": 755
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [19,15],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "a1089710-fec0-11ee-808e-418eea5e1fc1",
@@ -1514,10 +1514,10 @@
 							"__worldY": 771
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [19,16],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "a15c3550-fec0-11ee-808e-296f5c211d11",
@@ -1530,10 +1530,10 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [19,17],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "a1c55760-fec0-11ee-808e-39b43f4dc01a",
@@ -1546,10 +1546,10 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [16,12],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "a33f4d30-fec0-11ee-808e-254901b2b00c",
@@ -1562,10 +1562,10 @@
 							"__worldY": 732
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [8,12],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "a7b43380-fec0-11ee-808e-cbb731ed93cf",
@@ -1578,10 +1578,10 @@
 							"__worldY": 732
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [3,16],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "a9b92b40-fec0-11ee-808e-735d8f184e99",
@@ -1594,10 +1594,10 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [4,16],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "aa113650-fec0-11ee-808e-958cf55e2048",
@@ -1610,10 +1610,10 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [28,4],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "af7dea20-fec0-11ee-808e-cb8e5c12b5cc",
@@ -1626,10 +1626,10 @@
 							"__worldY": 595
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [28,14],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "07ddf7f0-fec0-11ee-808e-47db90b1fd33",
@@ -1642,10 +1642,10 @@
 							"__worldY": 755
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [24,12],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "0926cba0-fec0-11ee-808e-4712c0f77051",
@@ -1658,10 +1658,10 @@
 							"__worldY": 723
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [25,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "09c1fa30-fec0-11ee-808e-630e5236d1e9",
@@ -1674,10 +1674,10 @@
 							"__worldY": 691
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [26,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "0b6d3930-fec0-11ee-808e-9b7fa9fe68b7",
@@ -1690,7 +1690,7 @@
 							"__worldY": 691
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [17,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1706,7 +1706,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [16,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1722,7 +1722,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [15,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1738,7 +1738,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [14,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1754,7 +1754,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [13,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1770,7 +1770,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [12,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1786,7 +1786,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [11,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1802,7 +1802,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [18,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1818,7 +1818,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [19,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -1834,7 +1834,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "ArrowLeft",
+							"__identifier": "ARROW_LEFT",
 							"__grid": [1,17],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1850,7 +1850,7 @@
 							"__worldY": 800
 						},
 						{
-							"__identifier": "ArrowRight",
+							"__identifier": "ARROW_RIGHT",
 							"__grid": [2,17],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1866,7 +1866,7 @@
 							"__worldY": 800
 						},
 						{
-							"__identifier": "ArrowUp",
+							"__identifier": "ARROW_UP",
 							"__grid": [3,15],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1882,7 +1882,7 @@
 							"__worldY": 768
 						},
 						{
-							"__identifier": "ArrowDown",
+							"__identifier": "ARROW_DOWN",
 							"__grid": [15,10],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1898,7 +1898,7 @@
 							"__worldY": 688
 						},
 						{
-							"__identifier": "ArrowDown",
+							"__identifier": "ARROW_DOWN",
 							"__grid": [28,16],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1914,7 +1914,7 @@
 							"__worldY": 784
 						},
 						{
-							"__identifier": "ArrowUp",
+							"__identifier": "ARROW_UP",
 							"__grid": [26,14],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1930,7 +1930,7 @@
 							"__worldY": 752
 						},
 						{
-							"__identifier": "ArrowUp",
+							"__identifier": "ARROW_UP",
 							"__grid": [15,4],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1946,7 +1946,7 @@
 							"__worldY": 592
 						},
 						{
-							"__identifier": "ArrowUp",
+							"__identifier": "ARROW_UP",
 							"__grid": [7,15],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1962,7 +1962,7 @@
 							"__worldY": 768
 						},
 						{
-							"__identifier": "SignHold",
+							"__identifier": "SIGN_HOLD",
 							"__grid": [6,15],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1978,7 +1978,7 @@
 							"__worldY": 775
 						},
 						{
-							"__identifier": "SignHold",
+							"__identifier": "SIGN_HOLD",
 							"__grid": [14,4],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -1994,7 +1994,7 @@
 							"__worldY": 600
 						},
 						{
-							"__identifier": "Text",
+							"__identifier": "TEXT",
 							"__grid": [1,3],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -2019,7 +2019,7 @@
 							"__worldY": 576
 						},
 						{
-							"__identifier": "Text",
+							"__identifier": "TEXT",
 							"__grid": [2,13],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -2041,7 +2041,7 @@
 							"__worldY": 736
 						},
 						{
-							"__identifier": "Text",
+							"__identifier": "TEXT",
 							"__grid": [18,12],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -2739,7 +2739,7 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "Player",
+							"__identifier": "HERO",
 							"__grid": [1,24],
 							"__pivot": [0.375,0.313],
 							"__tags": [ "fg", "moves", "collides" ],
@@ -2755,10 +2755,10 @@
 							"__worldY": 810
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [11,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "226ed2c0-fec0-11ee-808e-215f53c8bb2d",
@@ -2771,10 +2771,10 @@
 							"__worldY": 771
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [21,23],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "3473dc40-fec0-11ee-808e-830f42027841",
@@ -2787,7 +2787,7 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [21,25],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -2803,10 +2803,10 @@
 							"__worldY": 821
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [36,18],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "75084cf0-fec0-11ee-808e-13279ca5ff02",
@@ -2819,10 +2819,10 @@
 							"__worldY": 707
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [37,17],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "75c4bf20-fec0-11ee-808e-af848d8b1437",
@@ -2835,10 +2835,10 @@
 							"__worldY": 691
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [35,17],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "763979f0-fec0-11ee-808e-6192038ec856",
@@ -2851,10 +2851,10 @@
 							"__worldY": 691
 						},
 						{
-							"__identifier": "Diamond",
+							"__identifier": "DIAMOND",
 							"__grid": [32,21],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 16, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#0000FF",
 							"iid": "78695240-fec0-11ee-808e-f3a959d80dc8",
@@ -2867,10 +2867,10 @@
 							"__worldY": 752
 						},
 						{
-							"__identifier": "Ruby",
+							"__identifier": "RUBY",
 							"__grid": [22,10],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 32, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
 							"iid": "d0a4e820-fec0-11ee-808e-77cf9117d4b8",
@@ -2883,10 +2883,10 @@
 							"__worldY": 576
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [25,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d20625d0-fec0-11ee-808e-7dc2673e530b",
@@ -2899,10 +2899,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [26,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d26c3aa0-fec0-11ee-808e-4df212410deb",
@@ -2915,10 +2915,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [27,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d2d73170-fec0-11ee-808e-699a88740edb",
@@ -2931,10 +2931,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [28,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d33a6010-fec0-11ee-808e-eb9a1a486bc5",
@@ -2947,10 +2947,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [29,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d3a9eac0-fec0-11ee-808e-3bc5ca80ff0e",
@@ -2963,10 +2963,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [30,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d4059f50-fec0-11ee-808e-69b1f145c89d",
@@ -2979,10 +2979,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [31,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d47acf50-fec0-11ee-808e-1bdd93628fa2",
@@ -2995,10 +2995,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [32,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d4e291d0-fec0-11ee-808e-99a25119e6b4",
@@ -3011,10 +3011,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [33,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d5345b50-fec0-11ee-808e-c9562b14a8cb",
@@ -3027,10 +3027,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [34,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d58847b0-fec0-11ee-808e-899dbc6d37ba",
@@ -3043,10 +3043,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [35,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d5e64630-fec0-11ee-808e-1b2a03c9ce74",
@@ -3059,10 +3059,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [36,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d65fe300-fec0-11ee-808e-bd62b121cea4",
@@ -3075,10 +3075,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [37,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d6c07990-fec0-11ee-808e-3d20efd9f807",
@@ -3091,10 +3091,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [38,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d96a63e0-fec0-11ee-808e-d70d9aa0b14c",
@@ -3107,10 +3107,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [24,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "ede660d0-fec0-11ee-808e-3549db2e7588",
@@ -3123,10 +3123,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [23,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "ee4e4a60-fec0-11ee-808e-27529498caa6",
@@ -3139,7 +3139,7 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [17,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3155,7 +3155,7 @@
 							"__worldY": 629
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [16,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3171,7 +3171,7 @@
 							"__worldY": 629
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [14,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3187,7 +3187,7 @@
 							"__worldY": 629
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [15,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3203,10 +3203,10 @@
 							"__worldY": 629
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [17,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "0f602c00-fec0-11ee-808e-8b0884bb3593",
@@ -3219,7 +3219,7 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [13,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3235,7 +3235,7 @@
 							"__worldY": 629
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [12,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3251,7 +3251,7 @@
 							"__worldY": 629
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [7,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3267,7 +3267,7 @@
 							"__worldY": 629
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [6,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3283,7 +3283,7 @@
 							"__worldY": 629
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [5,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3299,10 +3299,10 @@
 							"__worldY": 629
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [6,12],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "415d1ba0-fec0-11ee-808e-4bc60ba5bb80",
@@ -3315,7 +3315,7 @@
 							"__worldY": 611
 						},
 						{
-							"__identifier": "Button",
+							"__identifier": "BUTTON",
 							"__grid": [2,6],
 							"__pivot": [0,0.375],
 							"__tags": [ "fg", "toggle" ],
@@ -3331,7 +3331,7 @@
 							"__worldY": 518
 						},
 						{
-							"__identifier": "Gate",
+							"__identifier": "GATE",
 							"__grid": [36,1],
 							"__pivot": [0,0],
 							"__tags": [ "fg", "collides" ],
@@ -3355,7 +3355,7 @@
 							"__worldY": 432
 						},
 						{
-							"__identifier": "Door",
+							"__identifier": "DOOR",
 							"__grid": [38,3],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -3371,10 +3371,10 @@
 							"__worldY": 472
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [19,3],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "f0a0d900-fec0-11ee-b16e-b79e35ae28f6",
@@ -3387,10 +3387,10 @@
 							"__worldY": 467
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [1,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "083364c0-fec0-11ee-b16e-350e803c6d24",
@@ -3403,10 +3403,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Emerald",
+							"__identifier": "EMERALD",
 							"__grid": [1,6],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#00FF00",
 							"iid": "b5be1160-fec0-11ee-b16e-c1b89512de70",
@@ -3419,7 +3419,7 @@
 							"__worldY": 512
 						},
 						{
-							"__identifier": "SignButton",
+							"__identifier": "SIGN_BUTTON",
 							"__grid": [33,3],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -4589,10 +4589,10 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [6,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "f7f8eca0-fec0-11ee-b16e-6fe7a8620cc1",
@@ -4605,10 +4605,10 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [7,21],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "f884b1e0-fec0-11ee-b16e-217fe63e4b54",
@@ -4621,10 +4621,10 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [8,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "f92c8aa0-fec0-11ee-b16e-fd140cbbb78e",
@@ -4637,10 +4637,10 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [14,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "02eb5a80-fec0-11ee-b16e-172553807e52",
@@ -4653,10 +4653,10 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [16,20],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "0388fa10-fec0-11ee-b16e-b18874bc1f38",
@@ -4669,10 +4669,10 @@
 							"__worldY": 771
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [18,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "0417a580-fec0-11ee-b16e-73ad6832e3f6",
@@ -4685,10 +4685,10 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Diamond",
+							"__identifier": "DIAMOND",
 							"__grid": [11,20],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 16, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#0000FF",
 							"iid": "07126ef0-fec0-11ee-b16e-215445509427",
@@ -4701,7 +4701,7 @@
 							"__worldY": 768
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [25,22],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4717,7 +4717,7 @@
 							"__worldY": 804
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [26,22],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4733,7 +4733,7 @@
 							"__worldY": 804
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [27,22],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4749,10 +4749,10 @@
 							"__worldY": 804
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [27,21],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "4e8e4c90-fec0-11ee-b16e-bf00bc853376",
@@ -4765,10 +4765,10 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [31,17],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "6d0add50-fec0-11ee-b16e-47198c8f9f15",
@@ -4781,10 +4781,10 @@
 							"__worldY": 723
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [36,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "963d6f30-fec0-11ee-b16e-950af1836146",
@@ -4797,7 +4797,7 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Door",
+							"__identifier": "DOOR",
 							"__grid": [51,22],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4813,10 +4813,10 @@
 							"__worldY": 808
 						},
 						{
-							"__identifier": "Emerald",
+							"__identifier": "EMERALD",
 							"__grid": [78,23],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#00FF00",
 							"iid": "0ceff080-fec0-11ee-b16e-47c0489288ec",
@@ -4829,10 +4829,10 @@
 							"__worldY": 816
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [69,21],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "29751e10-fec0-11ee-b16e-4bbd1045472f",
@@ -4845,10 +4845,10 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [67,21],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "2a691b00-fec0-11ee-b16e-8f1b74abac41",
@@ -4861,10 +4861,10 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [65,21],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "2b205d10-fec0-11ee-b16e-91e0beed1fb5",
@@ -4877,7 +4877,7 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [71,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4893,7 +4893,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [70,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4909,7 +4909,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [69,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4925,7 +4925,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [68,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4941,7 +4941,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [67,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4957,7 +4957,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [66,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4973,7 +4973,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [65,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -4989,7 +4989,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [64,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -5005,7 +5005,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [63,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -5021,7 +5021,7 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [62,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -5037,10 +5037,10 @@
 							"__worldY": 660
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [65,8],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "85903810-fec0-11ee-b16e-0545a757e1ed",
@@ -5053,10 +5053,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [68,8],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "85f896d0-fec0-11ee-b16e-5f8e1fe945d5",
@@ -5069,10 +5069,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Ruby",
+							"__identifier": "RUBY",
 							"__grid": [48,11],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 32, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
 							"iid": "e5aed8f0-fec0-11ee-b16e-1bba25964aab",
@@ -5085,7 +5085,7 @@
 							"__worldY": 624
 						},
 						{
-							"__identifier": "Player",
+							"__identifier": "HERO",
 							"__grid": [2,21],
 							"__pivot": [0.375,0.313],
 							"__tags": [ "fg", "moves", "collides" ],
@@ -5101,7 +5101,7 @@
 							"__worldY": 794
 						},
 						{
-							"__identifier": "Text",
+							"__identifier": "TEXT",
 							"__grid": [72,20],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -7199,10 +7199,10 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [6,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "12f39ea0-fec0-11ee-b16e-d79ec8c2d792",
@@ -7215,10 +7215,10 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [7,21],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "13610670-fec0-11ee-b16e-c7ad519ca23c",
@@ -7231,10 +7231,10 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [8,21],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "13c91710-fec0-11ee-b16e-5b4d1b3c9430",
@@ -7247,10 +7247,10 @@
 							"__worldY": 787
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [9,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "14153b40-fec0-11ee-b16e-f79056d69781",
@@ -7263,10 +7263,10 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [15,16],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "18769990-fec0-11ee-b16e-2f8da5323d28",
@@ -7279,10 +7279,10 @@
 							"__worldY": 707
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [16,16],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "18c814f0-fec0-11ee-b16e-ff2eb7b68a77",
@@ -7295,10 +7295,10 @@
 							"__worldY": 707
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [25,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "2860b250-fec0-11ee-b16e-4ff25b1e4579",
@@ -7311,10 +7311,10 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [25,18],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "320b0fd0-fec0-11ee-b16e-5b45ff1245e1",
@@ -7327,10 +7327,10 @@
 							"__worldY": 739
 						},
 						{
-							"__identifier": "Emerald",
+							"__identifier": "EMERALD",
 							"__grid": [28,20],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#00FF00",
 							"iid": "37c917f0-fec0-11ee-b16e-f952244803d9",
@@ -7343,10 +7343,10 @@
 							"__worldY": 768
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [31,22],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "3a197090-fec0-11ee-b16e-85541ba943df",
@@ -7359,10 +7359,10 @@
 							"__worldY": 803
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [31,18],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "3aa7f4f0-fec0-11ee-b16e-2ddb15db3267",
@@ -7375,10 +7375,10 @@
 							"__worldY": 739
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [33,15],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "525e3550-fec0-11ee-b16e-2fbbf684e404",
@@ -7391,10 +7391,10 @@
 							"__worldY": 691
 						},
 						{
-							"__identifier": "Diamond",
+							"__identifier": "DIAMOND",
 							"__grid": [35,17],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 16, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#0000FF",
 							"iid": "8633dc90-fec0-11ee-b16e-6b0af690169e",
@@ -7407,10 +7407,10 @@
 							"__worldY": 720
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [37,14],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "98364e00-fec0-11ee-b16e-cdcde8ef155c",
@@ -7423,10 +7423,10 @@
 							"__worldY": 675
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [38,13],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "989c3bc0-fec0-11ee-b16e-67df9d599a63",
@@ -7439,10 +7439,10 @@
 							"__worldY": 659
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [25,10],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "bab183a0-fec0-11ee-b16e-b984d50b4c3d",
@@ -7455,10 +7455,10 @@
 							"__worldY": 611
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [29,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "bb42c720-fec0-11ee-b16e-2d87aa761111",
@@ -7471,10 +7471,10 @@
 							"__worldY": 595
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [25,8],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "bbf9bb10-fec0-11ee-b16e-f11b40375298",
@@ -7487,10 +7487,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [29,7],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "bddc84d0-fec0-11ee-b16e-9b039545f42b",
@@ -7503,10 +7503,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [25,6],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "bfad9b50-fec0-11ee-b16e-5b72e5dbe355",
@@ -7519,7 +7519,7 @@
 							"__worldY": 547
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [25,11],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7535,7 +7535,7 @@
 							"__worldY": 628
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [26,11],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7551,7 +7551,7 @@
 							"__worldY": 628
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [27,11],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7567,7 +7567,7 @@
 							"__worldY": 628
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [29,11],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7583,7 +7583,7 @@
 							"__worldY": 628
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [28,11],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7599,7 +7599,7 @@
 							"__worldY": 628
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [24,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7615,10 +7615,10 @@
 							"__worldY": 580
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [35,7],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "d4221e30-fec0-11ee-b16e-89801cbd225a",
@@ -7631,10 +7631,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [38,9],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "e1a4acd0-fec0-11ee-b16e-2f0c3a50ce1b",
@@ -7647,10 +7647,10 @@
 							"__worldY": 595
 						},
 						{
-							"__identifier": "Ruby",
+							"__identifier": "RUBY",
 							"__grid": [17,6],
 							"__pivot": [0,0],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 32, "y": 144, "w": 16, "h": 16 },
 							"__smartColor": "#FF0000",
 							"iid": "fdc413b0-fec0-11ee-b16e-01883b557d5a",
@@ -7663,7 +7663,7 @@
 							"__worldY": 544
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [10,9],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7679,7 +7679,7 @@
 							"__worldY": 596
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [7,9],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7695,10 +7695,10 @@
 							"__worldY": 596
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [11,8],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "1994e560-fec0-11ee-b16e-e326502e51d8",
@@ -7711,10 +7711,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [10,8],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "19e3c8b0-fec0-11ee-b16e-f1fefc8bf5d7",
@@ -7727,10 +7727,10 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [9,7],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "1a604bb0-fec0-11ee-b16e-ab85c9e17c88",
@@ -7743,10 +7743,10 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [7,8],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "1e7537b0-fec0-11ee-b16e-2f613f0e083f",
@@ -7759,7 +7759,7 @@
 							"__worldY": 579
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [5,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7775,7 +7775,7 @@
 							"__worldY": 580
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [3,8],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7791,10 +7791,10 @@
 							"__worldY": 580
 						},
 						{
-							"__identifier": "Coin",
+							"__identifier": "COIN",
 							"__grid": [3,7],
 							"__pivot": [0.25,0.188],
-							"__tags": ["fg"],
+							"__tags": [ "fg", "collectable" ],
 							"__tile": { "tilesetUid": 1, "x": 0, "y": 128, "w": 16, "h": 16 },
 							"__smartColor": "#FFFF00",
 							"iid": "2e832c20-fec0-11ee-b16e-353cd7b7c0e7",
@@ -7807,7 +7807,7 @@
 							"__worldY": 563
 						},
 						{
-							"__identifier": "Door",
+							"__identifier": "DOOR",
 							"__grid": [1,4],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -7823,7 +7823,7 @@
 							"__worldY": 520
 						},
 						{
-							"__identifier": "Player",
+							"__identifier": "HERO",
 							"__grid": [2,22],
 							"__pivot": [0.375,0.313],
 							"__tags": [ "fg", "moves", "collides" ],
@@ -7839,7 +7839,7 @@
 							"__worldY": 810
 						},
 						{
-							"__identifier": "ArrowUp",
+							"__identifier": "ARROW_UP",
 							"__grid": [37,21],
 							"__pivot": [0,0],
 							"__tags": ["bg"],
@@ -8931,7 +8931,7 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "Player",
+							"__identifier": "HERO",
 							"__grid": [1,13],
 							"__pivot": [0.375,0.313],
 							"__tags": [ "fg", "moves", "collides" ],
@@ -8947,7 +8947,7 @@
 							"__worldY": 218
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [6,14],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -8963,7 +8963,7 @@
 							"__worldY": 228
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [7,14],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -8979,7 +8979,7 @@
 							"__worldY": 228
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [8,14],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -8995,7 +8995,7 @@
 							"__worldY": 228
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [9,14],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -9011,7 +9011,7 @@
 							"__worldY": 228
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [10,14],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -9027,7 +9027,7 @@
 							"__worldY": 228
 						},
 						{
-							"__identifier": "Spring",
+							"__identifier": "SPRING",
 							"__grid": [11,14],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -9043,7 +9043,7 @@
 							"__worldY": 228
 						},
 						{
-							"__identifier": "MovingPlatform",
+							"__identifier": "MOVING_PLATFORM",
 							"__grid": [21,8],
 							"__pivot": [0,0],
 							"__tags": [ "bg", "moves", "collides" ],
@@ -9068,7 +9068,7 @@
 							"__worldY": 128
 						},
 						{
-							"__identifier": "MovingPlatform",
+							"__identifier": "MOVING_PLATFORM",
 							"__grid": [1,3],
 							"__pivot": [0,0],
 							"__tags": [ "bg", "moves", "collides" ],
@@ -9093,7 +9093,7 @@
 							"__worldY": 48
 						},
 						{
-							"__identifier": "Safe",
+							"__identifier": "SAFE",
 							"__grid": [35,14],
 							"__pivot": [0,0],
 							"__tags": [ "fg", "moves", "collides" ],
@@ -9109,7 +9109,7 @@
 							"__worldY": 224
 						},
 						{
-							"__identifier": "MovingPlatform",
+							"__identifier": "MOVING_PLATFORM",
 							"__grid": [39,12],
 							"__pivot": [0,0],
 							"__tags": [ "bg", "moves", "collides" ],
@@ -9142,7 +9142,7 @@
 							"__worldY": 192
 						},
 						{
-							"__identifier": "Button",
+							"__identifier": "BUTTON",
 							"__grid": [29,12],
 							"__pivot": [0,0.375],
 							"__tags": [ "fg", "toggle" ],
@@ -9158,7 +9158,7 @@
 							"__worldY": 198
 						},
 						{
-							"__identifier": "Door",
+							"__identifier": "DOOR",
 							"__grid": [45,1],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -9174,7 +9174,7 @@
 							"__worldY": 24
 						},
 						{
-							"__identifier": "Gate",
+							"__identifier": "GATE",
 							"__grid": [29,14],
 							"__pivot": [0,0],
 							"__tags": [ "fg", "collides" ],
@@ -10159,7 +10159,7 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "Door",
+							"__identifier": "DOOR",
 							"__grid": [14,13],
 							"__pivot": [0,0.25],
 							"__tags": ["fg"],
@@ -10175,7 +10175,7 @@
 							"__worldY": 1272
 						},
 						{
-							"__identifier": "Player",
+							"__identifier": "HERO",
 							"__grid": [1,13],
 							"__pivot": [0.375,0.313],
 							"__tags": [ "fg", "moves", "collides" ],
