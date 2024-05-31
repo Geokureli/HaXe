@@ -213,8 +213,11 @@ class PlayState extends flixel.FlxState
         if (Global.controls.justReleased.check(RESET))
             FlxG.resetState();
         
-        if (checkWinCondition() #if debug || Global.controls.justReleased.check(PAUSE) #end)
+        level.door.upArrow.visible = checkWinCondition();
+        if ((checkWinCondition() && level.hero.pressed.check(UP)) #if debug || Global.controls.justReleased.check(PAUSE) #end)
+        {
             onComplete();
+        }
     }
     
     function onCollect(collector:Hero, collectable:ICollectable) {}
