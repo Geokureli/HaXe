@@ -79,7 +79,7 @@ class GreedLevel extends LdtkLevel
     
     public function isHeroAtEnd()
     {
-        return hero.overlaps(door) && hero.touching.has(FLOOR);
+        return hero.overlaps(door) && hero.touching.has(FLOOR) && hero.pressed.check(UP);
     }
     
     override function loadLtdk(level:Ldtk_Level)

@@ -15,6 +15,14 @@ import props.collectables.Coin;
 import props.collectables.Treasure;
 import states.EndState;
 
+enum LevelType
+{
+    BY_ID(levelId:String);
+    LEGACY;
+    DEBUG;
+    MAIN;
+}
+
 typedef GameProgress = { coinsCollected:Int, gemsCollected:Int, coinsTotal:Int, gemsTotal:Int };
 
 class CollectState extends PlayState
@@ -22,11 +30,11 @@ class CollectState extends PlayState
     final hud = new Hud();
     final progress:GameProgress;
     
-    public function new (?levelId:String, ?progress:GameProgress)
+    public function new (level:LevelType, ?progress:GameProgress)
     {
         this.progress = progress ?? { coinsCollected:0, gemsCollected:0, coinsTotal:0, gemsTotal:0 };
         
-        super(levelId);
+        super(level);
     }
     
     override function create():Void
@@ -45,9 +53,9 @@ class CollectState extends PlayState
         if (FlxG.keys.justPressed.ONE)
         {
             if (FlxG.keys.pressed.SHIFT)
-                FlxG.switchState(()->new HellState("Debug"));
+                FlxG.switchState(()->new HellState(DEBUG));
             else
-                FlxG.switchState(()->new CollectState("Debug"));
+                FlxG.switchState(()->new CollectState(DEBUG));
         }
         #end
     }
@@ -60,7 +68,7 @@ class CollectState extends PlayState
         
         switch (levelData.identifier)
         {
-            case "Level_0":
+            case "Legacy_0":
                 final text = level.textsById["disgust"];
                 
                 if (hud.gemsCollected >= 3)
@@ -109,7 +117,7 @@ class CollectState extends PlayState
     
     override function switchToLevel(levelId:String)
     {
-        FlxG.switchState(()->new CollectState(levelId, progress));
+        FlxG.switchState(()->new CollectState(BY_ID(levelId), progress));
     }
     
     override function allLevelsComplete()
@@ -120,9 +128,9 @@ class CollectState extends PlayState
 
 class HellState extends PlayState
 {
-    public function new (?levelId:String)
+    public function new (level:LevelType)
     {
-        super(levelId);
+        super(level);
     }
     
     override function create():Void
@@ -139,7 +147,7 @@ class HellState extends PlayState
     
     override function switchToLevel(levelId:String)
     {
-        FlxG.switchState(()->new HellState(levelId));
+        FlxG.switchState(()->new HellState(BY_ID(levelId)));
     }
     
     override function allLevelsComplete()
@@ -153,16 +161,25 @@ class PlayState extends flixel.FlxState
     public var level(default, null):GreedLevel;
     final levelData:Ldtk_Level;
     
-    public function new (?levelId:String)
+    public function new (level:LevelType)
     {
-        levelData = levelId != null
-            ? Global.project.getLevel(levelId)
-            : Global.project.all_levels.Level_0;
+        levelData = switch (level)
+        {
+            case DEBUG      :
+                Global.project.all_levels.Debug;
+            case LEGACY     :
+                Global.project.all_levels.Legacy_0;
+            case MAIN       :
+                Global.project.all_levels.Level_5;
+            case BY_ID(levelId):
+                final data = Global.project.getLevel(levelId);
+                if (data == null)
+                    throw 'no level found with id:$levelId';
+                data;
+        };
         
         super();
         
-        if (levelData == null)
-            throw 'no level found with id:$levelId';
     }
     
     override function create():Void
@@ -178,7 +195,7 @@ class PlayState extends flixel.FlxState
         
         switch (levelData.identifier)
         {
-            case "Level_0":
+            case "Legacy_0":
                 level.textsById["disgust"].visible = false;
         }
     }
@@ -232,12 +249,12 @@ class PlayState extends flixel.FlxState
     
     function switchToLevel(levelId:String)
     {
-        FlxG.switchState(()->new PlayState(levelId));
+        FlxG.switchState(()->new PlayState(BY_ID(levelId)));
     }
     
     function allLevelsComplete()
     {
-        FlxG.switchState(()->new MenuState(()->new PlayState()));
+        FlxG.switchState(()->new MenuState(()->new PlayState(LEGACY)));
     }
 }
 

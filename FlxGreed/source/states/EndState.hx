@@ -109,8 +109,8 @@ class EndState extends flixel.FlxState
         {
             FlxG.switchState(
                 hellModeUnlocked
-                    ? ()->new HellState()
-                    : ()->new CollectState()
+                    ? ()->new HellState(LEGACY)
+                    : ()->new CollectState(LEGACY)
             );
         }
     }

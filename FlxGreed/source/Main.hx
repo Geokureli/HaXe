@@ -21,10 +21,11 @@ class Main extends krakel.Shell
         
         _frameRate = 60;
         _scale = 2;
+        final playState = ()->new CollectState(LEGACY);
         #if debug
-        _introState = ()->new CollectState();
+        _introState = playState;
         #else
-        _introState = ()->new MenuState(()->new CollectState());
+        _introState = ()->new MenuState(playState);
         #end
     }
 }
