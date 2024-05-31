@@ -17,7 +17,7 @@ import props.collectables.Treasure;
 import states.PlayState;
 
 typedef JumpData = { minJump:Float, maxJump:Float, toApex:Float };
-typedef MoveData = { speed:Float, speedUp:Float };
+typedef MoveData = { jumpDist:Float, speedUp:Float };
 typedef FullHeroData = JumpData & MoveData;
 
 /**
@@ -27,10 +27,10 @@ typedef FullHeroData = JumpData & MoveData;
 class Hero extends DialAPlatformer implements data.IPlatformer
 {
     static var jumpData:Map<Int, FullHeroData> =
-        [ 0 => { speed:11, speedUp:0.4, minJump:1.0, maxJump:5.25, toApex:0.5 }
-        , 1 => { speed: 9, speedUp:0.4, minJump:1.0, maxJump:4.25, toApex:0.4 }
-        , 2 => { speed: 7, speedUp:0.4, minJump:1.0, maxJump:3.25, toApex:0.3 }
-        , 3 => { speed: 5, speedUp:0.4, minJump:1.0, maxJump:2.25, toApex:0.2 }
+        [ 0 => { jumpDist:11, speedUp:0.4, minJump:1.0, maxJump:5.25, toApex:0.5 }
+        , 1 => { jumpDist: 9, speedUp:0.4, minJump:1.0, maxJump:4.25, toApex:0.4 }
+        , 2 => { jumpDist: 7, speedUp:0.4, minJump:1.0, maxJump:3.25, toApex:0.3 }
+        , 3 => { jumpDist: 5, speedUp:0.4, minJump:1.0, maxJump:2.25, toApex:0.2 }
         ];
     
     static var springData:Map<Int, JumpData> =
@@ -169,7 +169,7 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         
         final data = jumpData[weight];
         setupVariableJumpHybrid(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
-        setupSpeed(data.speed * TILE_SIZE, data.speedUp);
+        setupSpeed(data.jumpDist * TILE_SIZE, data.speedUp);
     }
     
     function setStandardJump()

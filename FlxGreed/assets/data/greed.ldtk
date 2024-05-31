@@ -43,7 +43,7 @@
 	"defs": { "layers": [
 		{
 			"__type": "Entities",
-			"identifier": "FG",
+			"identifier": "Props",
 			"type": "Entities",
 			"uid": 3,
 			"doc": "Foreground Entities",
@@ -63,42 +63,7 @@
 			"parallaxFactorY": 0,
 			"parallaxScaling": true,
 			"requiredTags": [],
-			"excludedTags": ["bg"],
-			"autoTilesKilledByOtherLayerUid": null,
-			"uiFilterTags": [],
-			"useAsyncRender": false,
-			"intGridValues": [],
-			"intGridValuesGroups": [],
-			"autoRuleGroups": [],
-			"autoSourceLayerDefUid": null,
-			"tilesetDefUid": null,
-			"tilePivotX": 0,
-			"tilePivotY": 0,
-			"biomeFieldUid": null
-		},
-		{
-			"__type": "Entities",
-			"identifier": "BG",
-			"type": "Entities",
-			"uid": 9,
-			"doc": "Background Entities",
-			"uiColor": null,
-			"gridSize": 16,
-			"guideGridWid": 0,
-			"guideGridHei": 0,
-			"displayOpacity": 1,
-			"inactiveOpacity": 0.6,
-			"hideInList": false,
-			"hideFieldsWhenInactive": true,
-			"canSelectWhenInactive": true,
-			"renderInWorldView": true,
-			"pxOffsetX": 0,
-			"pxOffsetY": 0,
-			"parallaxFactorX": 0,
-			"parallaxFactorY": 0,
-			"parallaxScaling": true,
-			"requiredTags": [],
-			"excludedTags": ["fg"],
+			"excludedTags": [],
 			"autoTilesKilledByOtherLayerUid": null,
 			"uiFilterTags": [],
 			"useAsyncRender": false,
@@ -1192,7 +1157,7 @@
 			"fieldInstances": [],
 			"layerInstances": [
 				{
-					"__identifier": "FG",
+					"__identifier": "Props",
 					"__type": "Entities",
 					"__cWid": 30,
 					"__cHei": 20,
@@ -1830,33 +1795,7 @@
 							"fieldInstances": [],
 							"__worldX": 304,
 							"__worldY": 660
-						}
-					]
-				},
-				{
-					"__identifier": "BG",
-					"__type": "Entities",
-					"__cWid": 30,
-					"__cHei": 20,
-					"__gridSize": 16,
-					"__opacity": 1,
-					"__pxTotalOffsetX": 0,
-					"__pxTotalOffsetY": 0,
-					"__tilesetDefUid": null,
-					"__tilesetRelPath": null,
-					"iid": "525df451-fec0-11ee-808e-2b19c192623b",
-					"levelId": 17,
-					"layerDefUid": 9,
-					"pxOffsetX": 0,
-					"pxOffsetY": 0,
-					"visible": true,
-					"optionalRules": [],
-					"intGridCsv": [],
-					"autoLayerTiles": [],
-					"seed": 6639217,
-					"overrideTilesetUid": null,
-					"gridTiles": [],
-					"entityInstances": [
+						},
 						{
 							"__identifier": "ArrowLeft",
 							"__grid": [1,17],
@@ -2085,28 +2024,6 @@
 							],
 							"__worldX": 288,
 							"__worldY": 720
-						},
-						{
-							"__identifier": "Text",
-							"__grid": [20,3],
-							"__pivot": [0,0],
-							"__tags": ["bg"],
-							"__tile": null,
-							"__smartColor": "#000000",
-							"iid": "0da22e40-fec0-11ee-a0a6-5da55224e247",
-							"width": 64,
-							"height": 48,
-							"defUid": 15,
-							"px": [320,48],
-							"fieldInstances": [
-								{ "__identifier": "text", "__type": "String", "__value": "More weight means lower jumps and it's harder to change direction", "__tile": null, "defUid": 16, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["More weight means lower jumps and it's harder to change direction"]
-								}] },
-								{ "__identifier": "textId", "__type": "String", "__value": null, "__tile": null, "defUid": 40, "realEditorValues": [] }
-							],
-							"__worldX": 320,
-							"__worldY": 576
 						}
 					]
 				},
@@ -2761,7 +2678,7 @@
 			"fieldInstances": [],
 			"layerInstances": [
 				{
-					"__identifier": "FG",
+					"__identifier": "Props",
 					"__type": "Entities",
 					"__cWid": 40,
 					"__cHei": 27,
@@ -3463,33 +3380,7 @@
 							"fieldInstances": [],
 							"__worldX": 496,
 							"__worldY": 512
-						}
-					]
-				},
-				{
-					"__identifier": "BG",
-					"__type": "Entities",
-					"__cWid": 40,
-					"__cHei": 27,
-					"__gridSize": 16,
-					"__opacity": 1,
-					"__pxTotalOffsetX": 0,
-					"__pxTotalOffsetY": 0,
-					"__tilesetDefUid": null,
-					"__tilesetRelPath": null,
-					"iid": "af38ae54-fec0-11ee-808e-6dcf032389f8",
-					"levelId": 34,
-					"layerDefUid": 9,
-					"pxOffsetX": 0,
-					"pxOffsetY": 0,
-					"visible": true,
-					"optionalRules": [],
-					"intGridCsv": [],
-					"autoLayerTiles": [],
-					"seed": 6639217,
-					"overrideTilesetUid": null,
-					"gridTiles": [],
-					"entityInstances": [
+						},
 						{
 							"__identifier": "SignButton",
 							"__grid": [33,3],
@@ -4637,7 +4528,7 @@
 			"fieldInstances": [],
 			"layerInstances": [
 				{
-					"__identifier": "FG",
+					"__identifier": "Props",
 					"__type": "Entities",
 					"__cWid": 80,
 					"__cHei": 25,
@@ -5171,33 +5062,7 @@
 							"fieldInstances": [],
 							"__worldX": 1158,
 							"__worldY": 794
-						}
-					]
-				},
-				{
-					"__identifier": "BG",
-					"__type": "Entities",
-					"__cWid": 80,
-					"__cHei": 25,
-					"__gridSize": 16,
-					"__opacity": 1,
-					"__pxTotalOffsetX": 0,
-					"__pxTotalOffsetY": 0,
-					"__tilesetDefUid": null,
-					"__tilesetRelPath": null,
-					"iid": "ca3560f1-fec0-11ee-b16e-bb91d4c09eea",
-					"levelId": 35,
-					"layerDefUid": 9,
-					"pxOffsetX": 0,
-					"pxOffsetY": 0,
-					"visible": true,
-					"optionalRules": [],
-					"intGridCsv": [],
-					"autoLayerTiles": [],
-					"seed": 9295992,
-					"overrideTilesetUid": null,
-					"gridTiles": [],
-					"entityInstances": [
+						},
 						{
 							"__identifier": "Text",
 							"__grid": [72,20],
@@ -7273,7 +7138,7 @@
 			"fieldInstances": [],
 			"layerInstances": [
 				{
-					"__identifier": "FG",
+					"__identifier": "Props",
 					"__type": "Entities",
 					"__cWid": 40,
 					"__cHei": 25,
@@ -7935,33 +7800,7 @@
 							"fieldInstances": [],
 							"__worldX": 2438,
 							"__worldY": 810
-						}
-					]
-				},
-				{
-					"__identifier": "BG",
-					"__type": "Entities",
-					"__cWid": 40,
-					"__cHei": 25,
-					"__gridSize": 16,
-					"__opacity": 1,
-					"__pxTotalOffsetX": 0,
-					"__pxTotalOffsetY": 0,
-					"__tilesetDefUid": null,
-					"__tilesetRelPath": null,
-					"iid": "c1c46672-fec0-11ee-b16e-55026cfacd50",
-					"levelId": 36,
-					"layerDefUid": 9,
-					"pxOffsetX": 0,
-					"pxOffsetY": 0,
-					"visible": true,
-					"optionalRules": [],
-					"intGridCsv": [],
-					"autoLayerTiles": [],
-					"seed": 655210,
-					"overrideTilesetUid": null,
-					"gridTiles": [],
-					"entityInstances": [
+						},
 						{
 							"__identifier": "ArrowUp",
 							"__grid": [37,21],
@@ -9031,7 +8870,7 @@
 			"fieldInstances": [],
 			"layerInstances": [
 				{
-					"__identifier": "FG",
+					"__identifier": "Props",
 					"__type": "Entities",
 					"__cWid": 26,
 					"__cHei": 16,
@@ -9183,31 +9022,6 @@
 							"__worldY": 228
 						}
 					]
-				},
-				{
-					"__identifier": "BG",
-					"__type": "Entities",
-					"__cWid": 26,
-					"__cHei": 16,
-					"__gridSize": 16,
-					"__opacity": 1,
-					"__pxTotalOffsetX": 0,
-					"__pxTotalOffsetY": 0,
-					"__tilesetDefUid": null,
-					"__tilesetRelPath": null,
-					"iid": "b914b6b1-fec0-11ee-a0a6-c5b232f03a1c",
-					"levelId": 49,
-					"layerDefUid": 9,
-					"pxOffsetX": 0,
-					"pxOffsetY": 0,
-					"visible": true,
-					"optionalRules": [],
-					"intGridCsv": [],
-					"autoLayerTiles": [],
-					"seed": 3186195,
-					"overrideTilesetUid": null,
-					"gridTiles": [],
-					"entityInstances": []
 				},
 				{
 					"__identifier": "Tiles",

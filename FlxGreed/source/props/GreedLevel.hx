@@ -37,6 +37,7 @@ class GreedLevel extends LdtkLevel
     public final tiles = new GreedTilemap();
     public final bg = new EntityLayer();
     public final fg = new EntityLayer();
+    public final props = new FlxGroup();
     
     public var hero:Hero;
     public var door:Door;
@@ -51,6 +52,7 @@ class GreedLevel extends LdtkLevel
     public final safes = new FlxTypedGroup<Safe>();
     public final texts = new FlxTypedGroup<Text>();
     public final textsById = new Map<String, Text>();
+    
     
     public final onCollect = new FlxTypedSignal<(collector:Hero, collectable:ICollectable)->Void>();
     
@@ -91,16 +93,10 @@ class GreedLevel extends LdtkLevel
         
         tiles.loadLdtk(level.l_Tiles);
         
-        for (data in level.l_BG.getAllUntyped())
+        for (data in level.l_Props.getAllUntyped())
         {
             final entity = createEntity(data);
-            bg.add(entity);
-        }
-        
-        for (data in level.l_FG.getAllUntyped())
-        {
-            final entity = createEntity(data);
-            fg.add(entity);
+            props.add(entity);
         }
         
         // Make sure hero was created, and in the FG
@@ -109,7 +105,7 @@ class GreedLevel extends LdtkLevel
             throw 'No Hero found in Foreground';
         
         // bring to front
-        fg.remove(hero);
+        fg.remove(hero, true);
         fg.add(hero);
         
         initCam();
@@ -233,6 +229,8 @@ class GreedLevel extends LdtkLevel
         final tags:Array<EntityTags> = data.json.__tags;
         if (tags.contains(COLLIDES)) colliders.add(obj);
         if (!tags.contains(MOVES)) obj.moves = false;
+        if (tags.contains(FG)) fg.add(obj);
+        if (tags.contains(BG)) bg.add(obj);
     }
     
     override function update(elapsed:Float)
@@ -402,9 +400,9 @@ enum abstract EntityTags(String) from String
     /** Whether this object should collide with other collidables */
     var COLLIDES = "collides";
     
-    /** Only used in the editor */
+    /** Whether this object shows above the tiles */
     var FG = "fg";
     
-    /** Only used in the editor */
+    /** Whether this object shows below the tiles */
     var BG = "bg";
 }
