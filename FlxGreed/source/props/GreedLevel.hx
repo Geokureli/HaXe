@@ -5,6 +5,8 @@ import data.ICollectable;
 import data.IEntityRef;
 import data.IPlatformer;
 import data.IResizable;
+import data.ITogglable;
+import data.IToggle;
 import data.Ldtk;
 import flixel.FlxG;
 import flixel.FlxBasic;
@@ -22,7 +24,7 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal;
 import ldtk.Layer_Entities;
 import ldtk.Json;
-import props.PlatformBlock;
+import props.MovingTiledSprite;
 import props.collectables.Coin;
 import props.collectables.Treasure;
 import props.ldtk.LdtkLevel;
@@ -37,20 +39,18 @@ class GreedLevel extends LdtkLevel
     public final tiles = new GreedTilemap();
     public final bg = new EntityLayer();
     public final fg = new EntityLayer();
-    public final props = new FlxGroup();
     
     public var hero:Hero;
     public var door:Door;
     public var totalCoins = 0;
     
+    public final props = new FlxGroup();
     public final refs = new Map<String, IEntityRef>();
+    public final togglables = new Array<ITogglable>();
     public final colliders = new FlxTypedGroup<FlxObject>();
     public final collectibles = new FlxGroup();
     public final springs = new FlxTypedGroup<Spring>();
-    public final gates = new FlxTypedGroup<Gate>();
     public final buttons = new FlxTypedGroup<Button>();
-    public final safes = new FlxTypedGroup<Safe>();
-    public final texts = new FlxTypedGroup<Text>();
     public final textsById = new Map<String, Text>();
     
     
@@ -67,15 +67,14 @@ class GreedLevel extends LdtkLevel
         hero = null;
         door = null;
         
+        props.clear();
         refs.clear();
         
         colliders.clear();
         collectibles.clear();
         springs.clear();
-        gates.clear();
         buttons.clear();
-        safes.clear();
-        texts.clear();
+        textsById.clear();
     }
     
     public function isHeroAtEnd()
@@ -121,13 +120,20 @@ class GreedLevel extends LdtkLevel
     
     function resolveEntityRefs()
     {
-        for (gate in gates)
+        for (entity in togglables)
         {
-            if (refs.exists(gate.buttonId) == false)
-                throw 'No button found with id: ${gate.buttonId}';
-            
-            final button:Button = cast(refs[gate.buttonId], Button);
-            button.onPress.add(gate.onButtonPress);
+            if (entity.toggleIds != null)
+            {
+                for (id in entity.toggleIds)
+                {
+                    if (refs.exists(id.entityIid) == false)
+                        throw 'No Toggle found with id: $id';
+                    
+                    final toggle = cast(refs[id.entityIid], IToggle);
+                    toggle.onToggle.add(entity.toggle);
+                    entity.toggle(toggle.isOn);
+                }
+            }
         }
     }
     
@@ -135,9 +141,8 @@ class GreedLevel extends LdtkLevel
     {
         final entity:FlxObject = switch (data.entityType)
         {
-            case Player:
-                hero = new Hero();
-                hero;
+            case Player: hero = new Hero();
+            case Door  : door = new Door();
             case Coin:
                 final coin = new Coin();
                 collectibles.add(coin);
@@ -158,52 +163,25 @@ class GreedLevel extends LdtkLevel
             case Text:
                 final textData:Entity_Text = cast data;
                 final text = new Text(textData.f_text.split("\n").join(" "));
-                texts.add(text);
                 textsById[textData.f_textId] = text;
                 text;
             case Spring:
                 final spring = new Spring();
                 springs.add(spring);
                 spring;
-            case Safe:
-                final safe = new Safe();
-                safes.add(safe);
-                safe;
-            case Gate:
-                final gate = new Gate();
-                gate.buttonId = cast (data, Entity_Gate).f_button.entityIid;
-                gates.add(gate);
-                gate;
             case Button:
                 final button = new Button();
                 buttons.add(button);
                 button;
-            case Door:
-                door = new Door();
-            
-            case MovingPlatform:
-                final TILE = Global.TILE;
-                final platData:Entity_MovingPlatform = cast data;
-                
-                // Make platform
-                final tileId = PlatformBlock.tileIndexFromLdtk(platData.f_tile_infos);
-                final plat = new PlatformBlock(0, 0, tileId);
-                
-                // Make path
-                final nodes = FlxTweenPath.nodesFromLdtk(platData.f_path, data.pixelX, data.pixelY, true);
-                final speed = platData.f_speed;
-                final loop = FlxTweenPath.loopFromLdtk(platData.f_loop);
-                plat.tweenPath = new FlxTweenPath(nodes, plat, speed * TILE);
-                plat.tweenPath.loopType = loop;
-                plat;
-            
-            case ArrowLeft : new Arrow(0, 0, LEFT );
-            case ArrowRight: new Arrow(0, 0, RIGHT);
-            case ArrowUp   : new Arrow(0, 0, UP   );
-            case ArrowDown : new Arrow(0, 0, DOWN );
-            
-            case SignButton : new Sign(BUTTON);
-            case SignHold   : new Sign(HOLD  );
+            case Safe          : new Safe();
+            case Gate          : new Gate();
+            case MovingPlatform: MovingTiledSprite.fromLdtk(cast data);
+            case ArrowLeft     : new Arrow(0, 0, LEFT );
+            case ArrowRight    : new Arrow(0, 0, RIGHT);
+            case ArrowUp       : new Arrow(0, 0, UP   );
+            case ArrowDown     : new Arrow(0, 0, DOWN );
+            case SignButton    : new Sign(BUTTON);
+            case SignHold      : new Sign(HOLD  );
         }
         
         initEntity(entity, data);
@@ -226,11 +204,23 @@ class GreedLevel extends LdtkLevel
         if (obj is IResizable)
             (cast obj:IResizable).setEntitySize(data.width, data.height);
         
+        if (obj is ITogglable)
+        {
+            togglables.push(cast obj);
+            
+            final entity:ITogglable = cast obj;
+            entity.toggleIds = (cast data: { f_toggles:Array<EntityReferenceInfos> }).f_toggles;
+        }
+        
         final tags:Array<EntityTags> = data.json.__tags;
         if (tags.contains(COLLIDES)) colliders.add(obj);
         if (!tags.contains(MOVES)) obj.moves = false;
         if (tags.contains(FG)) fg.add(obj);
         if (tags.contains(BG)) bg.add(obj);
+        if (tags.contains(TOGGLE) != obj is IToggle)
+            throw 'Object ${Type.getClassName(Type.getClass(obj))} needs to implement IToggle';
+        
+        
     }
     
     override function update(elapsed:Float)
@@ -405,4 +395,7 @@ enum abstract EntityTags(String) from String
     
     /** Whether this object shows below the tiles */
     var BG = "bg";
+    
+    /** Whether this object shows below the tiles */
+    var TOGGLE = "toggle";
 }

@@ -10,7 +10,7 @@ import flixel.tweens.FlxTween;
 class FlxTweenPath extends FlxBasePath
 {
     public var speed:Float;
-    public var anchorMode:FlxPathAnchorMode = CENTER;
+    public var anchorMode:FlxPathAnchorMode = TOP_LEFT;
     
     var tweens:FlxTweenManager = new FlxTweenManager();
     var currentTween:FlxTween;
@@ -33,17 +33,15 @@ class FlxTweenPath extends FlxBasePath
         
         if (finished == false)
         {
-            final offset = anchorMode.computeAnchorOffset(target);
             currentTween = tweens.linearMotion
                 ( target
-                , current.x - offset.x
-                , current.y - offset.y
-                , next.x - offset.x
-                , next.y - offset.y
+                , current.x
+                , current.y
+                , next.x
+                , next.y
                 , speed
                 , false
                 );
-            offset.put();
         }
     }
     
@@ -52,16 +50,15 @@ class FlxTweenPath extends FlxBasePath
         tweens.update(elapsed);
     }
     
-    public static function nodesFromLdtk(points:Array<ldtk.Point>, startX:Float, startY:Float, center = false):Array<FlxPoint>
+    public static function nodesFromLdtk(points:Array<ldtk.Point>, startX:Float, startY:Float):Array<FlxPoint>
     {
         final TILE = Global.TILE;
-        final offset = center ? TILE / 2 : 0;
         final nodes = points.map(function (p)
         {
-            return FlxPoint.get(p.cx * TILE + offset, p.cy * TILE + offset);
+            return FlxPoint.get(p.cx * TILE, p.cy * TILE);
         });
         
-        nodes.unshift(FlxPoint.get(startX + offset, startY + offset));
+        nodes.unshift(FlxPoint.get(startX, startY));
         return nodes;
     }
     

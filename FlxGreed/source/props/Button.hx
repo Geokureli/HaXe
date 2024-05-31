@@ -1,13 +1,17 @@
 package props;
 
+import data.IToggle;
 import flixel.FlxSprite;
 import flixel.util.FlxSignal;
 
-class Button extends FlxSprite implements data.IEntityRef
+/* A button is a toggle that can't be untoggled */
+class Button
+extends FlxSprite
+implements IToggle
 {
     public var entityId:String;
     public var isOn(default, null) = false;
-    public final onPress = new FlxSignal();
+    public final onToggle = new FlxTypedSignal<(Bool)->Void>();
     
     public function new (x = 0.0, y = 0.0)
     {
@@ -26,12 +30,13 @@ class Button extends FlxSprite implements data.IEntityRef
     {
         super.destroy();
         
-        onPress.removeAll();
+        onToggle.removeAll();
     }
     
     public function press()
     {
         animation.play("on");
-        onPress.dispatch();
+        isOn = true;
+        onToggle.dispatch(isOn);
     }
 }

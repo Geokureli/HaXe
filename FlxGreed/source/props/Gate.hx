@@ -1,10 +1,15 @@
 package props;
 
+import data.IToggle;
+import ldtk.Json;
 import flixel.FlxSprite;
 
-class Gate extends FlxSprite implements data.IResizable
+class Gate
+extends FlxSprite
+implements data.IResizable
+implements data.ITogglable
 {
-    public var buttonId:String;
+    public var toggleIds:Array<EntityReferenceInfos>;
     
     public function new (x = 0.0, y = 0.0)
     {
@@ -24,8 +29,8 @@ class Gate extends FlxSprite implements data.IResizable
         this.height = height;
     }
     
-    public function onButtonPress()
+    public function toggle(isOn:Bool)
     {
-        kill();
+        isOn ? kill() : revive();
     }
 }
