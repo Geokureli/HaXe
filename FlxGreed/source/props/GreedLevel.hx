@@ -254,24 +254,15 @@ class GreedLevel extends LdtkLevel
 typedef HitMetaData = { ?x:Int, ?y:Int, ?width:Int, ?height:Int };
 class GreedTile extends LdtkTile<Enum_TileTags>
 {
-    final hit:FlxRect = FlxRect.get();
+    var hit:FlxRect;
     
     public function new (tilemap:GreedTilemap, index, width, height)
     {
-        hit.set(0, 0, width, height);
         super(cast tilemap, index, width, height, true, NONE);
         
         #if debug
         ignoreDrawDebug = true;
         #end
-    }
-    
-    override function overlapsObject(object:FlxObject):Bool
-    {
-        return object.x + object.width >= x + hit.left
-            && object.x < x + hit.right
-            && object.y + object.height >= y + hit.top
-            && object.y < y + hit.bottom;
     }
     
     override function destroy()
