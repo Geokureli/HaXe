@@ -163,16 +163,17 @@ class PlayState extends flixel.FlxState
     
     public function new (level:LevelType)
     {
+        final world = Global.project.all_worlds.Default;
         levelData = switch (level)
         {
             case DEBUG      :
-                Global.project.all_levels.Debug;
+                world.all_levels.Debug;
             case LEGACY     :
-                Global.project.all_levels.Legacy_0;
+                world.all_levels.Legacy_0;
             case MAIN       :
-                Global.project.all_levels.Level_5;
+                world.all_levels.Level_5;
             case BY_ID(levelId):
-                final data = Global.project.getLevel(levelId);
+                final data = world.getLevel(levelId);
                 if (data == null)
                     throw 'no level found with id:$levelId';
                 data;
@@ -236,7 +237,7 @@ class PlayState extends flixel.FlxState
             if (neighbor.dir == East)
             {
                 final iid = neighbor.levelIid;
-                for (lvl in Global.project.levels)
+                for (lvl in Global.project.all_worlds.Default.levels)
                 {
                     if (lvl.iid == iid)
                     {
