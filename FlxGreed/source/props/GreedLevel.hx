@@ -3,6 +3,7 @@ package props;
 import data.Global;
 import data.ICollectable;
 import data.IEntityRef;
+import data.IPathFollower;
 import data.IPlatformer;
 import data.IResizable;
 import data.ITogglable;
@@ -24,7 +25,7 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal;
 import ldtk.Layer_Entities;
 import ldtk.Json;
-import props.MovingTiledSprite;
+import props.platforms.MovingPlatform;
 import props.collectables.Coin;
 import props.collectables.Treasure;
 import props.ldtk.LdtkLevel;
@@ -32,7 +33,7 @@ import props.ldtk.LdtkTilemap;
 import props.ui.Arrow;
 import props.ui.Text;
 import props.ui.Sign;
-import utils.FlxTweenPath;
+import utils.SimplePath;
 
 class GreedLevel extends LdtkLevel
 {
@@ -165,7 +166,7 @@ class GreedLevel extends LdtkLevel
             case DIAMOND        : new Treasure(DIAMOND);
             case SAFE           : new Safe();
             case GATE           : new Gate();
-            case MOVING_PLATFORM: MovingTiledSprite.fromLdtk(cast data);
+            case MOVING_PLATFORM: MovingPlatform.fromLdtk(cast data);
             case ARROW_LEFT     : new Arrow(0, 0, LEFT );
             case ARROW_RIGHT    : new Arrow(0, 0, RIGHT);
             case ARROW_UP       : new Arrow(0, 0, UP   );
@@ -207,6 +208,11 @@ class GreedLevel extends LdtkLevel
         if (obj is ICollectable)
         {
             collectables.add(obj);
+        }
+        
+        if (obj is IPathFollower)
+        {
+            (cast obj:IPathFollower).simplePath = SimplePath.fromLdtk(obj, data);
         }
         
         final tags:Array<EntityTags> = data.json.__tags;

@@ -1,84 +1,32 @@
-package props;
+package props.platforms;
 
 import data.Global;
 import data.Ldtk;
-import data.IToggle;
-import data.ITogglable;
 import ldtk.Json;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.math.FlxPoint;
-import flixel.path.FlxBasePath;
-import flixel.path.FlxPath;
-import utils.FlxTweenPath;
+import utils.SimplePath;
 
-inline final TILE = Global.TILE;
-
-class MovingTiledSprite
-extends TiledSprite
-implements ITogglable
-{
-    public var toggleIds:Array<EntityReferenceInfos>;
-    public var tweenPath:FlxTweenPath;
-    
-    public function new (x = 0.0, y = 0.0, tile = 5)
-    {
-        super(x, y, tile);
-        
-        immovable = true;
-    }
-    
-    override function update(elapsed:Float)
-    {
-        super.update(elapsed);
-        
-        if (tweenPath != null && tweenPath.active && tweenPath.exists)
-            tweenPath.update(elapsed);
-    }
-    
-    override function draw()
-    {
-        if (tweenPath != null && tweenPath.visible && tweenPath.exists)
-            tweenPath.draw();
-        
-        super.draw();
-    }
-    
-    public function toggle(isOn:Bool)
-    {
-        tweenPath.active = isOn;
-    }
-    
-    public static function fromLdtk(data:Entity_MOVING_PLATFORM):MovingTiledSprite
-    {
-        // Make platform
-        final tileId = TiledSprite.tileIndexFromLdtk(data.f_tile_infos);
-        final plat = new MovingTiledSprite(data.pixelX, data.pixelY, tileId);
-        
-        // Make path
-        final nodes = FlxTweenPath.nodesFromLdtk(data.f_path, data.pixelX, data.pixelY);
-        final speed = data.f_speed;
-        final loop = FlxTweenPath.loopFromLdtk(data.f_loop);
-        plat.tweenPath = new FlxTweenPath(nodes, plat, speed * TILE);
-        plat.tweenPath.loopType = loop;
-        return plat;
-    }
-}
 
 class TiledSprite
 extends FlxSprite
 implements data.IResizable
 {
+    inline static final TILE = Global.TILE;
+    
     var cols:Int = 1;
     var rows:Int = 1;
     
-    public function new (x = 0.0, y = 0.0, tile = 5)
+    public function new (x = 0.0, y = 0.0, tile = 5, cols = 1, rows = 1)
     {
         super(x, y);
         
-        loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
+        loadGraphic(Global.getMainGraphic(), true, 16, 16);
         setTile(tile);
+        
+        if (cols * rows > 1)
+            setEntityGridSize(cols, rows);
     }
     
     public function setTile(tile = 5)
@@ -95,6 +43,12 @@ implements data.IResizable
         rows = Math.round(this.height / TILE);
         origin.set(0, 0);
     }
+    
+    inline public function setEntityGridSize(cols:Int, rows:Int)
+    {
+        setEntitySize(cols * TILE, rows * TILE);
+    }
+    
     override function draw()
     {
         final oldX = x;
