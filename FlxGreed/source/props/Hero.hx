@@ -51,11 +51,6 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     public var isTouchingLadder = false;
     final hitbox = new FlxObject();
     
-    public var pressed(get, never):FlxControlList<Action>;
-    public var justPressed(get, never):FlxControlList<Action>;
-    public var justReleased(get, never):FlxControlList<Action>;
-    public var released(get, never):FlxControlList<Action>;
-    
     public function new(x = 0.0, y = 0.0)
     {
         super(x, y);
@@ -111,12 +106,12 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     function platformingToClimbing(_)
     {
-        return isTouchingLadder && pressed.any([DOWN, UP]) && released.check(JUMP);
+        return isTouchingLadder && anyPressed([DOWN, UP]) && released(JUMP);
     }
     
     function climbingToPlatforming(_)
     {
-        return isTouchingLadder == false || justPressed.check(JUMP) || touching.has(FLOOR);
+        return isTouchingLadder == false || justPressed(JUMP) || touching.has(FLOOR);
     }
     
     public function onCollect(collectable:ICollectable)
@@ -190,7 +185,7 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     function checkTouchingLadder(tiles:GreedTilemap)
     {
-        if (fsm.state is Platforming && pressed.check(UP))
+        if (fsm.state is Platforming && pressed(UP))
         {
             // smaller hitbox so we can't climb up a ladder while standing on a ladder-cloud
             setHitbox((width - 1) / 2, 0, 1, height / 2);
@@ -222,11 +217,6 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         if (fsm.state is Platforming)
             setStandardJump();
     }
-    
-    inline function get_pressed() return controls.pressed;
-    inline function get_justPressed() return controls.justPressed;
-    inline function get_justReleased() return controls.justReleased;
-    inline function get_released() return controls.released;
 }
 
 private class State extends FlxFSMState<Hero> {} 
@@ -242,9 +232,9 @@ class Platforming extends State
     
     override function update(elapsed:Float, hero:Hero, fsm:FlxFSM<Hero>)
     {
-        final jump = hero.pressed.check(JUMP);
+        final jump = hero.pressed(JUMP);
         
-        hero.passClouds = hero.pressed.check(DOWN);
+        hero.passClouds = hero.pressed(DOWN);
         
         final isSkid = (hero.flipX && hero.acceleration.x > 0) || (!hero.flipX && hero.acceleration.x < 0);
         final onGround = hero.getOnCoyoteGround();
@@ -267,7 +257,7 @@ class Platforming extends State
         
         hero.animation.play(action);
         
-        hero.acceleration.y = hero.pressed.check(JUMP) ? hero._maxJumpGravity : hero._minJumpGravity;
+        hero.acceleration.y = hero.pressed(JUMP) ? hero._maxJumpGravity : hero._minJumpGravity;
 	}
 }
 
@@ -285,10 +275,10 @@ class Climbing extends State
 	{
         hero._coyoteTimer = 0;// like on ground
         
-        final u = hero.pressed.check(UP);
-        final d = hero.pressed.check(DOWN);
-        final l = hero.pressed.check(LEFT);
-        final r = hero.pressed.check(RIGHT);
+        final u = hero.pressed(UP);
+        final d = hero.pressed(DOWN);
+        final l = hero.pressed(LEFT);
+        final r = hero.pressed(RIGHT);
         
         final TILE = 16;
         hero.velocity.x = 3.0 * TILE * ((r ? 1 : 0) - (l ? 1 : 0));
@@ -301,13 +291,13 @@ class Climbing extends State
     {
         super.exit(hero);
         
-        if (hero.justPressed.check(JUMP))
+        if (hero.justPressed(JUMP))
         {
             hero.setStandardJump();
             hero.jump(true);
             hero._jumpTimer = 0;
             hero.animation.play("jump");
-            hero.velocity.x = hero.maxVelocity.x * ((hero.pressed.check(RIGHT) ? 1 : 0) - (hero.pressed.check(LEFT) ? 1 : 0));
+            hero.velocity.x = hero.maxVelocity.x * ((hero.pressed(RIGHT) ? 1 : 0) - (hero.pressed(LEFT) ? 1 : 0));
             return;
         }
     }

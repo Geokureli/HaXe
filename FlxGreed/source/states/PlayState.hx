@@ -210,11 +210,13 @@ class PlayState extends flixel.FlxState
         if (level.hero.alive == false)
             FlxG.resetState();
         
-        if (Global.controls.justReleased.check(RESET))
+        final controls = Global.controls;
+        
+        if (controls.justReleased(RESET))
             FlxG.resetState();
         
         level.door.upArrow.visible = checkWinCondition();
-        if ((checkWinCondition() && level.hero.pressed.check(UP)) #if debug || Global.controls.justReleased.check(PAUSE) #end)
+        if ((checkWinCondition() && controls.pressed(UP)) #if debug || controls.justReleased(PAUSE) #end)
         {
             onComplete();
         }

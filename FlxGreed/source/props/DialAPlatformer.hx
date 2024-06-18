@@ -70,6 +70,16 @@ class DialAPlatformer extends flixel.FlxSprite {
         this.controls = Global.controls;
     }
     
+    public function pressed(action:Action):Bool return controls.pressed(action);
+    public function justPressed(action:Action):Bool return controls.justPressed(action);
+    public function justReleased(action:Action):Bool return controls.justReleased(action);
+    public function released(action:Action):Bool return controls.released(action);
+    
+    public function anyPressed(actions:Array<Action>):Bool return controls.anyPressed(actions);
+    public function anyJustPressed(actions:Array<Action>):Bool return controls.anyJustPressed(actions);
+    public function anyJustReleased(actions:Array<Action>):Bool return controls.anyJustReleased(actions);
+    public function anyReleased(actions:Array<Action>):Bool return controls.anyReleased(actions);
+    
     /**
      * Sets the jump arc by setting the gravity and jump velocity
      * @param height        The desired jump height in pixels
@@ -319,8 +329,8 @@ class DialAPlatformer extends flixel.FlxSprite {
     
     override function update(elapsed:Float):Void {
         
-        final pressedJump = controls.pressed.check(JUMP);
-        final justPressedJump = controls.justPressed.check(JUMP);
+        final pressedJump = pressed(JUMP);
+        final justPressedJump = justPressed(JUMP);
         
         // Determine direction, set acceleration after jump
         var currentAcceleration = 0.0;
@@ -328,7 +338,7 @@ class DialAPlatformer extends flixel.FlxSprite {
         if (_wallJumpXTimer < _wallJumpXTime)
             accelSign = FlxMath.signOf(velocity.x);
         else
-            accelSign = (controls.pressed.check(RIGHT) ? 1 : 0) - (controls.pressed.check(LEFT) ? 1 : 0);
+            accelSign = (pressed(RIGHT) ? 1 : 0) - (pressed(LEFT) ? 1 : 0);
         
         var isSkidding = accelSign != 0 && velocity.x != 0 && !FlxMath.sameSign(velocity.x, accelSign);
         
