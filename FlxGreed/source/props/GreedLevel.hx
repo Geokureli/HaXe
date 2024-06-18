@@ -2,6 +2,7 @@ package props;
 
 import data.Global;
 import data.ICollectable;
+import data.IEntity;
 import data.IEntityRef;
 import data.IPathFollower;
 import data.IPlatformer;
@@ -228,6 +229,12 @@ class GreedLevel extends LdtkLevel
         
         if (tags.contains(COLLECTABLE) != obj is ICollectable)
             throw 'Object ${Type.getClassName(Type.getClass(obj))} needs to implement ICollectable';
+        
+        // call last
+        if (obj is IEntity)
+        {
+            (cast obj:IEntity).onEntityInit();
+        }
     }
     
     override function update(elapsed:Float)
