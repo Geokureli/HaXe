@@ -1,7 +1,7 @@
 package input;
 
-import flixel.input.gamepad.FlxGamepadInputID;
-import flixel.input.keyboard.FlxKey;
+import flixel.input.gamepad.FlxGamepadInputID as GPad;
+import flixel.input.keyboard.FlxKey as Key;
 
 /**
  * Since, in many cases multiple actions should use similar keys, we don't want the
@@ -10,15 +10,15 @@ import flixel.input.keyboard.FlxKey;
  */
 enum Action
 {
-    UP;
-    DOWN;
-    LEFT;
-    RIGHT;
-    JUMP;
-    ACCEPT;
-    BACK;
-    PAUSE;
-    RESET;
+    @:group("Move") @:inputs([Key.UP    , Key.W, GPad.DPAD_UP   , GPad.LEFT_STICK_DIGITAL_UP    ]) UP;
+    @:group("Move") @:inputs([Key.DOWN  , Key.S, GPad.DPAD_DOWN , GPad.LEFT_STICK_DIGITAL_DOWN  ]) DOWN;
+    @:group("Move") @:inputs([Key.LEFT  , Key.A, GPad.DPAD_LEFT , GPad.LEFT_STICK_DIGITAL_LEFT  ]) LEFT;
+    @:group("Move") @:inputs([Key.RIGHT , Key.D, GPad.DPAD_RIGHT, GPad.LEFT_STICK_DIGITAL_RIGHT ]) RIGHT;
+    @:group("Menu") @:inputs([Key.K     , Key.Z, GPad.A         ]) ACCEPT;
+    @:group("Menu") @:inputs([Key.L     , Key.X, GPad.B         ]) BACK;
+    @:group("Menu") @:inputs([Key.ENTER , Key.P, GPad.START     ]) PAUSE;
+    @:group("Menu") @:inputs([Key.ESCAPE, Key.R, GPad.BACK      ]) RESET;
+    @:inputs([Key.K , Key.Z, GPad.A]) JUMP;
 }
 
 /**
@@ -36,44 +36,4 @@ class ControlGroup<Action>
     }
 }
 
-class Controls extends flixel.addons.input.FlxControls<Action>
-{
-    public function new (name)
-    {
-        super(name);
-        
-        // add groups
-        groups.push([UP, DOWN, LEFT, RIGHT]);
-        groups.push([ACCEPT, BACK, PAUSE, RESET]);
-    }
-    
-    function getDefaultKeyMappings()
-    {
-        return
-            [ Action.ACCEPT=> [FlxKey.K     , FlxKey.Z]
-            , Action.BACK  => [FlxKey.L     , FlxKey.X]
-            , Action.JUMP  => [FlxKey.K     , FlxKey.Z]
-            , Action.UP    => [FlxKey.UP    , FlxKey.W]
-            , Action.DOWN  => [FlxKey.DOWN  , FlxKey.S]
-            , Action.LEFT  => [FlxKey.LEFT  , FlxKey.A]
-            , Action.RIGHT => [FlxKey.RIGHT , FlxKey.D]
-            , Action.PAUSE => [FlxKey.ENTER , FlxKey.P]
-            , Action.RESET => [FlxKey.ESCAPE, FlxKey.R]
-            ];
-    }
-    
-    function getDefaultButtonMappings()
-    {
-        return
-            [ Action.ACCEPT=> [FlxGamepadInputID.A         ]
-            , Action.BACK  => [FlxGamepadInputID.B         ]
-            , Action.JUMP  => [FlxGamepadInputID.A         ]
-            , Action.PAUSE => [FlxGamepadInputID.START     ]
-            , Action.RESET => [FlxGamepadInputID.BACK      ]
-            , Action.UP    => [FlxGamepadInputID.DPAD_UP   , FlxGamepadInputID.LEFT_STICK_DIGITAL_UP    ]
-            , Action.DOWN  => [FlxGamepadInputID.DPAD_DOWN , FlxGamepadInputID.LEFT_STICK_DIGITAL_DOWN  ]
-            , Action.LEFT  => [FlxGamepadInputID.DPAD_LEFT , FlxGamepadInputID.LEFT_STICK_DIGITAL_LEFT  ]
-            , Action.RIGHT => [FlxGamepadInputID.DPAD_RIGHT, FlxGamepadInputID.LEFT_STICK_DIGITAL_RIGHT ]
-            ];
-    }
-}
+class Controls extends flixel.addons.input.FlxControls<Action> {}

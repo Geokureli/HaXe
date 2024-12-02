@@ -70,15 +70,15 @@ class DialAPlatformer extends flixel.FlxSprite {
         this.controls = Global.controls;
     }
     
-    public function pressed(action:Action):Bool return controls.pressed(action);
-    public function justPressed(action:Action):Bool return controls.justPressed(action);
-    public function justReleased(action:Action):Bool return controls.justReleased(action);
-    public function released(action:Action):Bool return controls.released(action);
+    public function pressed(action:Action):Bool return controls.pressed.check(action);
+    public function justPressed(action:Action):Bool return controls.justPressed.check(action);
+    public function justReleased(action:Action):Bool return controls.justReleased.check(action);
+    public function released(action:Action):Bool return controls.released.check(action);
     
-    public function anyPressed(actions:Array<Action>):Bool return controls.anyPressed(actions);
-    public function anyJustPressed(actions:Array<Action>):Bool return controls.anyJustPressed(actions);
-    public function anyJustReleased(actions:Array<Action>):Bool return controls.anyJustReleased(actions);
-    public function anyReleased(actions:Array<Action>):Bool return controls.anyReleased(actions);
+    public function anyPressed(actions:Array<Action>):Bool return controls.pressed.any(actions);
+    public function anyJustPressed(actions:Array<Action>):Bool return controls.justPressed.any(actions);
+    public function anyJustReleased(actions:Array<Action>):Bool return controls.justReleased.any(actions);
+    public function anyReleased(actions:Array<Action>):Bool return controls.released.any(actions);
     
     /**
      * Sets the jump arc by setting the gravity and jump velocity
