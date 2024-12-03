@@ -35,13 +35,7 @@ class LdtkTile<Tag:EnumValue> extends FlxTile
     }
 }
 
-class LdtkTilemap<Tag:EnumValue> extends LdtkTypedTilemap<Tag, LdtkTile<Tag>>
-{
-    override function createTile(index, width, height)
-    {
-        return new LdtkTile(this, index, width, height, true, NONE);
-    }
-}
+typedef LdtkTilemap<Tag:EnumValue> = LdtkTypedTilemap<Tag, LdtkTile<Tag>>;
 
 class LdtkTypedTilemap<Tag:EnumValue, Tile:LdtkTile<Tag>> extends FlxTypedTilemap<Tile>
 {
@@ -91,6 +85,11 @@ class LdtkTypedTilemap<Tag:EnumValue, Tile:LdtkTile<Tag>> extends FlxTypedTilema
     function handleTileTags(index:Int, tags:Array<Tag>)
     {
         _tileObjects[index].setTags(tags);
+    }
+    
+    override function createTile(index, width, height)
+    {
+        return cast new LdtkTile(cast this, index, width, height, true, NONE);
     }
 }
 

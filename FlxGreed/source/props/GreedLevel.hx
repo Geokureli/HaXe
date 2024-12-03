@@ -148,7 +148,8 @@ class GreedLevel extends LdtkLevel
             case TEXT:
                 final textData:Entity_TEXT = cast data;
                 final text = new Text(textData.f_text.split("\n").join(" "));
-                textsById[textData.f_textId] = text;
+                if (textData.f_textId != null)
+                    textsById[textData.f_textId] = text;
                 text;
             case SPRING:
                 final spring = new Spring();
@@ -213,7 +214,8 @@ class GreedLevel extends LdtkLevel
         
         if (obj is IPathFollower)
         {
-            (cast obj:IPathFollower).simplePath = SimplePath.fromLdtk(obj, data);
+            final follower:IPathFollower = cast obj;
+            follower.simplePath = SimplePath.fromLdtk(obj, data);
         }
         
         final tags:Array<EntityTags> = data.json.__tags;

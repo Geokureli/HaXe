@@ -6,7 +6,7 @@ import flixel.FlxSprite;
 @:forward
 abstract Arrow(FlxSprite) to FlxSprite
 {
-    inline public function new (x = 0.0, y = 0.0, direction:FlxDirection)
+    inline public function new (x = 0.0, y = 0.0, ?direction:FlxDirection)
     {
         this = new FlxSprite(x, y);
         

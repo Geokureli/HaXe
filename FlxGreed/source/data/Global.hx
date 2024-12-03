@@ -8,16 +8,15 @@ import states.PlayState;
 class Global
 {
     inline static public final TILE = 16;
-    static public var project(get, null):Ldtk;
+    static public var project(default, null):Ldtk;
+    static public var controls(default, null):Controls;
     
-    static function get_project()
+    static public function init()
     {
-        if (project == null)
-            project = new Ldtk();
-        
-        return project;
+        project = new Ldtk();
+        controls = new Controls("p1");
+        FlxG.inputs.addInput(controls);
     }
-    
     
     public static function isHellMode()
     {
@@ -30,6 +29,4 @@ class Global
             return "assets/images/props-hell.png";
         return "assets/images/props-normal.png";
     }
-    
-    static public final controls = new Controls("p1");
 }
