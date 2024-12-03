@@ -17,7 +17,8 @@ import states.EndState;
 
 enum LevelType
 {
-    BY_ID(levelId:String);
+    BY_ID(worldId:String, levelId:String);
+    INSTANCE(level:Ldtk_Level);
     LEGACY;
     DEBUG;
     MAIN;
@@ -115,9 +116,9 @@ class CollectState extends PlayState
         super.onComplete();
     }
     
-    override function switchToLevel(levelId:String)
+    override function switchToLevel(level:LevelType)
     {
-        FlxG.switchState(()->new CollectState(BY_ID(levelId), progress));
+        FlxG.switchState(()->new CollectState(level, progress));
     }
     
     override function allLevelsComplete()
@@ -145,9 +146,9 @@ class HellState extends PlayState
         return level.isHeroAtEnd();
     }
     
-    override function switchToLevel(levelId:String)
+    override function switchToLevel(level:LevelType)
     {
-        FlxG.switchState(()->new HellState(BY_ID(levelId)));
+        FlxG.switchState(()->new HellState(level));
     }
     
     override function allLevelsComplete()
@@ -163,16 +164,20 @@ class PlayState extends flixel.FlxState
     
     public function new (level:LevelType)
     {
-        final world = Global.project.all_worlds.Default;
         levelData = switch (level)
         {
+            case INSTANCE(level):
+                level;
             case DEBUG      :
-                world.all_levels.Debug;
+                Global.project.all_worlds.Debug.all_levels.Debug_0;
             case LEGACY     :
-                world.all_levels.Legacy_0;
+                Global.project.all_worlds.Legacy.all_levels.Level_0;
             case MAIN       :
-                world.all_levels.Level_5;
-            case BY_ID(levelId):
+                Global.project.all_worlds.Legacy.all_levels.Level_4;
+            case BY_ID(worldId, levelId):
+                final world = Global.project.getWorld(worldId);
+                if (world == null)
+                    throw 'no world found with id:$worldId';
                 final data = world.getLevel(levelId);
                 if (data == null)
                     throw 'no level found with id:$levelId';
@@ -232,30 +237,40 @@ class PlayState extends flixel.FlxState
     
     function onComplete()
     {
-        for (neighbor in level.ldtkData.neighbours)
+        final level = getNextLevel();
+        if (level.f_enabled)
         {
-            if (neighbor.dir == East)
-            {
-                final iid = neighbor.levelIid;
-                for (lvl in Global.project.all_worlds.Default.levels)
-                {
-                    if (lvl.iid == iid)
-                    {
-                        switchToLevel(lvl.identifier);
-                        
-                        return;
-                    }
-                }
-            }
+            switchToLevel(INSTANCE(level));
+            return;
         }
         
         // No neighbors found to the east
         allLevelsComplete();
     }
     
-    function switchToLevel(levelId:String)
+    function getNextLevel():Null<Ldtk_Level>
     {
-        FlxG.switchState(()->new PlayState(BY_ID(levelId)));
+        final world = Global.project.getWorldOf(level.ldtkData.iid);
+        switch world.layout
+        {
+            case Free | GridVania:
+                for (neighbor in level.ldtkData.neighbours)
+                {
+                    if (neighbor.dir == East)
+                        return Global.project.getLevel(neighbor.levelIid);
+                }
+            case LinearHorizontal | LinearVertical:
+                final index = world.levels.indexOf(level.ldtkData);
+                if (world.levels.length > index)
+                    return world.levels[index + 1];
+        }
+        
+        return null;
+    }
+    
+    function switchToLevel(level:LevelType)
+    {
+        FlxG.switchState(()->new PlayState(level));
     }
     
     function allLevelsComplete()

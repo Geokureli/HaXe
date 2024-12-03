@@ -8,12 +8,12 @@ import states.PlayState;
 class Global
 {
     inline static public final TILE = 16;
-    static public var project(default, null):Ldtk;
+    static public var project(default, null):LdtkProject;
     static public var controls(default, null):Controls;
     
     static public function init()
     {
-        project = new Ldtk();
+        project = new LdtkProject();
         controls = new Controls("p1");
         FlxG.inputs.addInput(controls);
     }
