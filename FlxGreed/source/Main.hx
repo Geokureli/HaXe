@@ -9,7 +9,7 @@ class Main extends openfl.display.Sprite
         super();
         
         final playState = ()->new states.PlayState.CollectState(LEGACY);
-        #if debug
+        #if (debug && !force_menu)
         final introState = playState;
         #else
         final introState = ()->new states.MenuState(playState);
