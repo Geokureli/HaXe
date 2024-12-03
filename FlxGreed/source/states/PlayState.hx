@@ -217,7 +217,7 @@ class PlayState extends flixel.FlxState
             FlxG.resetState();
         
         level.door.upArrow.visible = checkWinCondition();
-        if ((checkWinCondition() && controls.pressed.UP) #if debug || controls.justReleased.PAUSE #end)
+        if ((checkWinCondition() && controls.MOVE.pressed.up) #if debug || controls.justReleased.PAUSE #end)
         {
             onComplete();
         }

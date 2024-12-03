@@ -2,6 +2,8 @@ package input;
 
 import flixel.input.gamepad.FlxGamepadInputID as GPad;
 import flixel.input.keyboard.FlxKey as Key;
+import flixel.addons.input.FlxControlInputType;
+import flixel.addons.input.FlxControlInputType.FlxKeyInputType.Arrows as ArrowKeys;
 
 /**
  * Since, in many cases multiple actions should use similar keys, we don't want the
@@ -10,10 +12,8 @@ import flixel.input.keyboard.FlxKey as Key;
  */
 enum Action
 {
-    @:group("Move") @:inputs([Key.UP    , Key.W, GPad.DPAD_UP   , GPad.LEFT_STICK_DIGITAL_UP    ]) UP;
-    @:group("Move") @:inputs([Key.DOWN  , Key.S, GPad.DPAD_DOWN , GPad.LEFT_STICK_DIGITAL_DOWN  ]) DOWN;
-    @:group("Move") @:inputs([Key.LEFT  , Key.A, GPad.DPAD_LEFT , GPad.LEFT_STICK_DIGITAL_LEFT  ]) LEFT;
-    @:group("Move") @:inputs([Key.RIGHT , Key.D, GPad.DPAD_RIGHT, GPad.LEFT_STICK_DIGITAL_RIGHT ]) RIGHT;
+    
+    @:inputs([WASD, ArrowKeys, DPad, LeftStickDigital]) @:analog(x, y) MOVE;
     @:group("Menu") @:inputs([Key.K     , Key.Z, GPad.A         ]) ACCEPT;
     @:group("Menu") @:inputs([Key.L     , Key.X, GPad.B         ]) BACK;
     @:group("Menu") @:inputs([Key.ENTER , Key.P, GPad.START     ]) PAUSE;

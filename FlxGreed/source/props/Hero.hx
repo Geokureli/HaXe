@@ -106,12 +106,12 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     function platformingToClimbing(_)
     {
-        return isTouchingLadder && anyPressed([DOWN, UP]) && released(JUMP);
+        return isTouchingLadder && controls.MOVE.pressed.any(DOWN | UP) && controls.released.JUMP;
     }
     
     function climbingToPlatforming(_)
     {
-        return isTouchingLadder == false || justPressed(JUMP) || touching.has(FLOOR);
+        return isTouchingLadder == false || controls.justPressed.JUMP || touching.has(FLOOR);
     }
     
     public function onCollect(collectable:ICollectable)
@@ -185,7 +185,7 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     function checkTouchingLadder(tiles:GreedTilemap)
     {
-        if (fsm.state is Platforming && pressed(UP))
+        if (fsm.state is Platforming && controls.MOVE.pressed.up)
         {
             // smaller hitbox so we can't climb up a ladder while standing on a ladder-cloud
             setHitbox((width - 1) / 2, 0, 1, height / 2);
@@ -232,9 +232,9 @@ class Platforming extends State
     
     override function update(elapsed:Float, hero:Hero, fsm:FlxFSM<Hero>)
     {
-        final jump = hero.pressed(JUMP);
+        final jump = hero.controls.pressed.JUMP;
         
-        hero.passClouds = hero.pressed(DOWN);
+        hero.passClouds = hero.controls.MOVE.pressed.down;
         
         final isSkid = (hero.flipX && hero.acceleration.x > 0) || (!hero.flipX && hero.acceleration.x < 0);
         final onGround = hero.getOnCoyoteGround();
@@ -257,7 +257,7 @@ class Platforming extends State
         
         hero.animation.play(action);
         
-        hero.acceleration.y = hero.pressed(JUMP) ? hero._maxJumpGravity : hero._minJumpGravity;
+        hero.acceleration.y = hero.controls.pressed.JUMP ? hero._maxJumpGravity : hero._minJumpGravity;
 	}
 }
 
@@ -275,10 +275,10 @@ class Climbing extends State
 	{
         hero._coyoteTimer = 0;// like on ground
         
-        final u = hero.pressed(UP);
-        final d = hero.pressed(DOWN);
-        final l = hero.pressed(LEFT);
-        final r = hero.pressed(RIGHT);
+        final u = hero.controls.MOVE.pressed.up;
+        final d = hero.controls.MOVE.pressed.down;
+        final l = hero.controls.MOVE.pressed.left;
+        final r = hero.controls.MOVE.pressed.right;
         
         final TILE = 16;
         hero.velocity.x = 3.0 * TILE * ((r ? 1 : 0) - (l ? 1 : 0));
@@ -291,13 +291,13 @@ class Climbing extends State
     {
         super.exit(hero);
         
-        if (hero.justPressed(JUMP))
+        if (hero.controls.justPressed.JUMP)
         {
             hero.setStandardJump();
             hero.jump(true);
             hero._jumpTimer = 0;
             hero.animation.play("jump");
-            hero.velocity.x = hero.maxVelocity.x * ((hero.pressed(RIGHT) ? 1 : 0) - (hero.pressed(LEFT) ? 1 : 0));
+            hero.velocity.x = hero.maxVelocity.x * hero.controls.MOVE.x;
             return;
         }
     }
