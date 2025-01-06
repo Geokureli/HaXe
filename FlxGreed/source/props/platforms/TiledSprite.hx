@@ -1,5 +1,8 @@
 package props.platforms;
 
+import flixel.system.FlxAssets;
+import flixel.FlxCamera;
+import flixel.math.FlxRect;
 import data.Ldtk;
 import ldtk.Json;
 import flixel.FlxBasic;
@@ -50,16 +53,27 @@ implements props.i.Collidable
     
     public function setEntitySize(width:Int, height:Int)
     {
-        this.width = width;
-        this.height = height;
-        cols = Math.round(this.width  / TILE);
-        rows = Math.round(this.height / TILE);
-        origin.set(0, 0);
+        setEntityGridSize
+            ( Math.round(width  / TILE)
+            , Math.round(height / TILE)
+            );
     }
     
-    inline public function setEntityGridSize(cols:Int, rows:Int)
+    public function setEntityGridSize(cols:Int, rows:Int)
     {
-        setEntitySize(cols * TILE, rows * TILE);
+        this.cols = cols;
+        this.rows = rows;
+        this.width = TILE * cols;
+        this.height = TILE * rows;
+        origin.set(0, 0);
+        trace('$ID - fw: ${frameWidth} Fh: ${frameHeight}');
+    }
+    
+    override function loadGraphic(graphic:FlxGraphicAsset, animated:Bool = false, frameWidth:Int = 0, frameHeight:Int = 0, unique:Bool = false, ?key:String):FlxSprite
+    {
+        final result = super.loadGraphic(graphic, animated, frameWidth, frameHeight, unique, key);
+        trace('loadGraphic.$ID - fw: $frameWidth, fh: $frameHeight');
+        return result;
     }
     
     public function onProcess(object:FlxObject)
@@ -114,6 +128,28 @@ implements props.i.Collidable
         if (FlxG.debugger.drawDebug)
           drawDebug();
         #end
+    }
+    
+    override function getGraphicBounds(?rect:FlxRect):FlxRect
+    {
+        rect = super.getGraphicBounds(rect);
+        rect.setSize(rect.width * cols, rect.height * rows);
+        return rect;
+    }
+    
+    override function getScreenBounds(?newRect:FlxRect, ?camera:FlxCamera):FlxRect
+    {
+        newRect = getGraphicBounds(newRect);
+        
+        if (camera == null)
+            camera = FlxG.camera;
+        
+        _scaledOrigin.set(origin.x * scale.x, origin.y * scale.y);
+        newRect.x += -Std.int(camera.scroll.x * scrollFactor.x) - offset.x + origin.x - _scaledOrigin.x;
+        newRect.y += -Std.int(camera.scroll.y * scrollFactor.y) - offset.y + origin.y - _scaledOrigin.y;
+        if (isPixelPerfectRender(camera))
+            newRect.floor();
+        return newRect.getRotatedBounds(angle, _scaledOrigin, newRect);
     }
     
     static public function tileIndexFromLdtk(tileData:Null<TilesetRect>):Int

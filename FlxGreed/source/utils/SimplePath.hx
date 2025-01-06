@@ -2,6 +2,7 @@ package utils;
 
 import data.Ldtk;
 import flixel.FlxCamera;
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.math.FlxPoint;
 import flixel.path.FlxBasePath;
@@ -74,12 +75,17 @@ class SimplePath extends flixel.path.FlxBasePath
         final nodeRest = pathData.f_nodeRest;
         final nodes = nodesFromLdtk(pathData.f_path, data.pixelX, data.pixelY);
         
-        final path = new SimplePath(nodes, target, speed);
+        final path = new SimplePath(nodes, target, speed, nodeRest, endRest);
         if (pathData.f_loop != null)
         {
             path.loopType = SimplePath.loopFromLdtk(pathData.f_loop);
         }
         path.visible = pathData.f_showPath;
+        
+        // if (pathData.f_loop == LOOP)
+        // {
+        //     FlxG.debugger.track(path, 'path.${path.ID}');
+        // }
         
         return path;
     }
@@ -145,7 +151,7 @@ class SimplePath extends flixel.path.FlxBasePath
     
     public static function createTrackerProfile()
     {
-        return new TrackerProfile(SimplePath, ['currentIndex', 'nextIndex', 'rest']);
+        return new TrackerProfile(SimplePath, ['currentIndex', 'nextIndex', 'rest', 'endRest', "nodeRest"]);
     }
 }
 

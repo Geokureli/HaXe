@@ -24,6 +24,14 @@ implements props.i.PathFollower
     
     override function update(elapsed:Float)
     {
+        if (path.loopType == LOOP)
+        {
+            final rect = getScreenBounds();
+            FlxG.watch.addQuick('loop:$ID-1', 'cols: $cols, rows: $rows, r.w: ${rect.width}, r.h: ${rect.height}');
+            FlxG.watch.addQuick('loop:$ID-2', 'fw: ${frameWidth}, fh: ${frameHeight}, s: $scale');
+            rect.put();
+        }
+        
         super.update(elapsed);
         
         if (path != null && path.active && path.exists)
@@ -48,9 +56,6 @@ implements props.i.PathFollower
         // Make platform
         final tileId = TiledSprite.tileIndexFromLdtk(data.f_tile_infos);
         final plat = new MovingPlatform(data.pixelX, data.pixelY, tileId);
-        
-        if (data.f_loop == LOOP)
-            FlxG.watch.add(plat, "path", 'plat.${plat.ID}');
         
         return plat;
     }
