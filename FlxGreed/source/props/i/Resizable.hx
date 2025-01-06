@@ -1,6 +1,6 @@
-package data;
+package props.i;
 
-interface IResizable
+interface Resizable
 {
     function setEntitySize(width:Int, height:Int):Void;
 }

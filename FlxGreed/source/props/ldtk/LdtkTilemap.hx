@@ -108,7 +108,7 @@ abstract LdtkTileLayerTools(Tileset) from Tileset
     {
         final tiles = createTileArray(layer);
         // final graphic = getPath(layer.tileset);
-        final graphic = data.Global.getMainGraphic();
+        final graphic = G.getMainGraphic();
         @:privateAccess
         final tileset:Tileset = layer.untypedTileset;
         final tileWidth = tileset.tileGridSize;

@@ -5,13 +5,13 @@ import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 
-class Coin extends FlxSprite implements data.ICollectable
+class Coin extends FlxSprite implements props.i.Collectable
 {
     public function new(x = 0.0, y = 0.0)
     {
         super(x, y);
         
-        loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
+        loadGraphic(G.getMainGraphic(), true, 16, 16);
         animation.add("idle", [32, 33, 34, 35], 10);
         animation.add("collect", [32, 33, 34, 35], 20);
         animation.play("idle");

@@ -1,13 +1,13 @@
 package props;
 
-import data.IToggle;
+import props.i.Toggle;
 import ldtk.Json;
 import flixel.FlxSprite;
 
 class Gate
 extends FlxSprite
-implements data.IResizable
-implements data.ITogglable
+implements props.i.Resizable
+implements props.i.Togglable
 {
     public var toggleIds:Array<EntityReferenceInfos>;
     
@@ -15,7 +15,7 @@ implements data.ITogglable
     {
         super(x, y);
         
-        loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
+        loadGraphic(G.getMainGraphic(), true, 16, 16);
         animation.add("idle", [24]);
         animation.play("idle");
         immovable = true;

@@ -1,10 +1,8 @@
 package props;
 
-import data.Global;
-import flixel.math.FlxMath;
-import flixel.input.keyboard.FlxKey;
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.math.FlxMath;
 import input.Controls;
 
 class DialAPlatformer extends flixel.FlxSprite {
@@ -67,7 +65,7 @@ class DialAPlatformer extends flixel.FlxSprite {
     public function new (x = 0.0, y = 0.0, graphic = null) {
         super(x, y, graphic);
         
-        this.controls = Global.controls;
+        this.controls = G.controls;
     }
     
     /**

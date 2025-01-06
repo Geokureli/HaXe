@@ -1,6 +1,5 @@
 package states;
 
-import data.Global;
 import flixel.util.typeLimit.NextState;
 import flixel.FlxG;
 import flixel.text.FlxBitmapText;

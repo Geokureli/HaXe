@@ -1,6 +1,6 @@
-package data;
+package props.i;
 
-interface IEntity
+interface Entity
 {
     function onEntityInit():Void;
 }

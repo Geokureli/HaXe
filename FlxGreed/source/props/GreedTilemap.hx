@@ -1,14 +1,5 @@
 package props;
 
-import data.Global;
-import data.ICollectable;
-import data.IEntity;
-import data.IEntityRef;
-import data.IPathFollower;
-import data.IPlatformer;
-import data.IResizable;
-import data.ITogglable;
-import data.IToggle;
 import data.Ldtk;
 import flixel.FlxG;
 import flixel.FlxBasic;
@@ -26,12 +17,13 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal;
 import ldtk.Json;
 import ldtk.Layer_Entities;
-import props.platforms.MovingPlatform;
-import props.platforms.ScalePlatform;
 import props.collectables.Coin;
 import props.collectables.Treasure;
+import props.i.*;
 import props.ldtk.LdtkLevel;
 import props.ldtk.LdtkTilemap;
+import props.platforms.MovingPlatform;
+import props.platforms.ScalePlatform;
 import props.ui.Arrow;
 import props.ui.Text;
 import props.ui.Sign;
@@ -141,7 +133,7 @@ class GreedTilemap extends LdtkTypedTilemap<Enum_TileTags, GreedTile>
     override function objectOverlapsTiles<TObj:FlxObject>(object:TObj, ?callback:(GreedTile, TObj) -> Bool, ?position:FlxPoint, isCollision:Bool = true):Bool
     {
         // check if object can go through cloud tiles
-        if (object is IPlatformer && (cast object:IPlatformer).canPassClouds())
+        if (object is Platformer && (cast object:Platformer).canPassClouds())
         {
             function checkClouds(tile:GreedTile, _)
             {

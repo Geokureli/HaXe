@@ -1,6 +1,6 @@
-package data;
+package props.i;
 
-interface ICollectable
+interface Collectable
 {
     function onCollect(object:props.Hero):Void;
 }

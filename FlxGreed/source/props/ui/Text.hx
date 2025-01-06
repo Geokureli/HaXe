@@ -1,16 +1,16 @@
 package props.ui;
 
-import data.IResizable;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.input.mouse.FlxMouseEvent;
 import flixel.math.FlxPoint;
 import flixel.text.FlxBitmapText;
+import props.i.Resizable;
 
-class Text extends FlxBitmapText implements IResizable
+class Text extends FlxBitmapText implements Resizable
 {
     #if debug
-    inline static final TILE = data.Global.TILE;
+    inline static final TILE = G.TILE;
     
     final handleSprite:FlxSprite;
     var handle:DragHandle = NONE;

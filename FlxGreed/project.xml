@@ -38,12 +38,12 @@
 
     <haxelib name="flixel"/>
     <haxelib name="flixel-addons"/>
+    <haxelib name="flixel-controls"/>
     <!-- <haxelib name="newgrounds" unless="quick_start"/> -->
 	<haxelib name="ldtk-haxe-api"/>
 	<haxelib name="deepnightLibs"/>
     <classpath path="../Krakel/source" />
     <classpath path="../../lib/HxAssert/src" />
-    <classpath path="../../test/FlxControls/Lib" />
     
     <!--In case you want to use the addons package-->
     <!--haxelib name="flixel-addons" /-->
@@ -71,6 +71,7 @@
     <!--haxedef name="FLX_NO_TOUCH" if="desktop" /-->
     <!--haxedef name="FLX_NO_GAMEPAD" /-->
     <haxedef name="FLX_NO_HEALTH"/>
+    <haxedef name="FLX_NO_PATH"/>
     
     <!--Disable the Flixel core sound tray-->
     <!--haxedef name="FLX_NO_SOUND_TRAY" /-->

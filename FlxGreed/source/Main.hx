@@ -1,4 +1,3 @@
-import data.Global;
 import flixel.FlxG;
 
 
@@ -46,7 +45,7 @@ class BootState extends flixel.FlxState
     {
         super.create();
         
-        Global.init();
+        G.init();
         FlxG.autoPause = false;
         FlxG.mouse.useSystemCursor = true;
     }

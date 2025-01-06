@@ -1,9 +1,9 @@
-package data;
+package props.i;
 
 import ldtk.Json;
 import data.Ldtk;
 
-interface ITogglable
+interface Togglable
 {
     var toggleIds:Array<EntityReferenceInfos>;
     

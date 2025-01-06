@@ -1,13 +1,13 @@
 package props;
 
-import data.IToggle;
+import props.i.Toggle;
 import flixel.FlxSprite;
 import flixel.util.FlxSignal;
 
 /* A button is a toggle that can't be untoggled */
 class Button
 extends FlxSprite
-implements IToggle
+implements Toggle
 {
     public var entityId:String;
     public var isOn(default, null) = false;
@@ -17,7 +17,7 @@ implements IToggle
     {
         super(x, y);
         
-        loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
+        loadGraphic(G.getMainGraphic(), true, 16, 16);
         animation.add("off", [22]);
         animation.add("on" , [23]);
         animation.play("off");

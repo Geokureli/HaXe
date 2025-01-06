@@ -1,32 +1,45 @@
 package props.platforms;
 
-import data.Global;
 import data.Ldtk;
 import ldtk.Json;
 import flixel.FlxBasic;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import utils.SimplePath;
 
 
 class TiledSprite
 extends FlxSprite
-implements data.IResizable
+implements props.i.Resizable
+implements props.i.Collidable
 {
-    inline static final TILE = Global.TILE;
+    inline static final TILE = G.TILE;
     
     var cols:Int = 1;
     var rows:Int = 1;
+    final tile:Int;
     
-    public function new (x = 0.0, y = 0.0, tile = 5, cols = 1, rows = 1)
+    public function new (x = 0.0, y = 0.0, tile = 5, cols = 1, rows = 1, setCollision = true)
     {
+        this.tile = tile;
         super(x, y);
         
-        loadGraphic(Global.getMainGraphic(), true, 16, 16);
+        loadGraphic(G.getMainGraphic(), true, 16, 16);
         setTile(tile);
         
         if (cols * rows > 1)
             setEntityGridSize(cols, rows);
+        
+        if (setCollision)
+        {
+            allowCollisions = switch (tile)
+            {
+                case 2: UP;
+                case 5: ANY;
+                default: ANY;
+            };
+        }
     }
     
     public function setTile(tile = 5)
@@ -48,6 +61,16 @@ implements data.IResizable
     {
         setEntitySize(cols * TILE, rows * TILE);
     }
+    
+    public function onProcess(object:FlxObject)
+    {
+        if (allowCollisions == UP && object is Hero)
+            return false == (cast object:Hero).canPassClouds();
+        
+        return true;
+    }
+    
+    public function onCollide(object:FlxObject){}
     
     override function draw()
     {
@@ -95,7 +118,7 @@ implements data.IResizable
     
     static public function tileIndexFromLdtk(tileData:Null<TilesetRect>):Int
     {
-        final tileset = Global.project.all_tilesets.Tiles;
+        final tileset = G.project.all_tilesets.Tiles;
         if (tileset.json.uid != tileData.tilesetUid)
             throw 'Unexpected tileset uid: ${tileData.tilesetUid}';//TODO:
         

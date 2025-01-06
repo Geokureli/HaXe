@@ -12,13 +12,13 @@ import flixel.addons.input.FlxControlInputType.FlxKeyInputType.Arrows as ArrowKe
  */
 enum Action
 {
-    
     @:inputs([WASD, ArrowKeys, DPad, LeftStickDigital]) @:analog(x, y) MOVE;
-    @:group("Menu") @:inputs([Key.K     , Key.Z, GPad.A         ]) ACCEPT;
-    @:group("Menu") @:inputs([Key.L     , Key.X, GPad.B         ]) BACK;
-    @:group("Menu") @:inputs([Key.ENTER , Key.P, GPad.START     ]) PAUSE;
-    @:group("Menu") @:inputs([Key.ESCAPE, Key.R, GPad.BACK      ]) RESET;
-    @:inputs([Key.K , Key.Z, GPad.A]) JUMP;
+    @:group("Menu") @:inputs([Key.K     , Key.Z, GPad.A    ]) ACCEPT;
+    @:group("Menu") @:inputs([Key.L     , Key.X, GPad.B    ]) BACK;
+    @:group("Menu") @:inputs([Key.ENTER , Key.P, GPad.START]) PAUSE;
+    @:group("Menu") @:inputs([Key.ESCAPE, Key.R, GPad.BACK ]) RESET;
+    @:group("Game") @:inputs([Key.K , Key.Z, GPad.A]) JUMP;
+    @:group("Game") @:inputs([Key.L , Key.X, GPad.X]) USE;
 }
 
 /**

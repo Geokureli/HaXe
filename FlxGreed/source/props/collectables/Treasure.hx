@@ -4,14 +4,14 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 
 // TODO: Don't extend Coin, here. Have both implement ICollectible
-class Treasure extends flixel.FlxSprite implements data.ICollectable
+class Treasure extends flixel.FlxSprite implements props.i.Collectable
 {
     public var type:TreasureType;
     public function new (x = 0.0, y = 0.0, ?type:TreasureType)
     {
         super(x, y);
         
-        loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
+        loadGraphic(G.getMainGraphic(), true, 16, 16);
         animation.add("emerald", [36]);
         animation.add("diamond", [37]);
         animation.add("ruby", [38]);

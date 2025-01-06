@@ -1,8 +1,8 @@
-package data;
+package props.i;
 
 import flixel.util.FlxSignal;
 
-interface IToggle extends IEntityRef
+interface Toggle extends Referable
 {
     var isOn(default, null):Bool;
     final onToggle:FlxTypedSignal<(Bool)->Void>;

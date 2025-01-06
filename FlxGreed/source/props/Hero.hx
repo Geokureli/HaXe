@@ -1,7 +1,5 @@
 package props;
 
-import data.ICollectable;
-import data.Global;
 import data.Ldtk;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -14,6 +12,8 @@ import input.Controls;
 import props.GreedLevel;
 import props.collectables.Coin;
 import props.collectables.Treasure;
+import props.i.Collectable;
+import props.i.Tossable;
 import states.PlayState;
 
 typedef JumpData = { minJump:Float, maxJump:Float, toApex:Float };
@@ -24,7 +24,9 @@ typedef FullHeroData = JumpData & MoveData;
  * ...
  * @author George
  */
-class Hero extends DialAPlatformer implements data.IPlatformer
+class Hero extends DialAPlatformer
+implements props.i.Platformer
+implements props.i.Weighted
 {
     static var jumpData:Map<Int, FullHeroData> =
         [ 0 => { jumpDist:11, speedUp:0.4, minJump:1.0, maxJump:5.25, toApex:0.5 }
@@ -42,14 +44,20 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     inline static final TILE_SIZE = 16;
     
-    public var weight(default, null):Int;
+    var jumpWeight:Int;
+    var numTreasure:Int;
     
     var passClouds = false;
+    
+    /** Prevents you from picking up the thing you just tossed, until letting go of USE **/
+    var justTossed = false;
     
     public final fsm:FlxFSM<Hero>;
     
     public var isTouchingLadder = false;
     final hitbox = new FlxObject();
+    
+    public var carrying(default, null):Null<FlxObject> = null;
     
     public function new(x = 0.0, y = 0.0)
     {
@@ -71,11 +79,11 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         animation.add("duck", [22]);
         animation.add("slide", [23]);
         
-        weight = 0;
+        numTreasure = 0;
         
         skidDrag = true;
         coyoteTime = 0.1;
-        setWeight(0);
+        updateWeight();
         
         inline function round(n:Float) { return '${Math.round(n * 100) / 100}'; }
         
@@ -99,6 +107,11 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         hitbox.destroy();
     }
     
+    public function isUsing()
+    {
+        return controls.pressed.USE && null == carrying && false == justTossed;
+    }
+    
     public function canPassClouds()
     {
         return passClouds;
@@ -106,7 +119,10 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     function platformingToClimbing(_)
     {
-        return isTouchingLadder && controls.MOVE.pressed.any(DOWN | UP) && controls.released.JUMP;
+        return isTouchingLadder
+            && controls.MOVE.pressed.any(DOWN | UP)
+            && controls.released.JUMP
+            && carrying == null;
     }
     
     function climbingToPlatforming(_)
@@ -114,7 +130,7 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         return isTouchingLadder == false || controls.justPressed.JUMP || touching.has(FLOOR);
     }
     
-    public function onCollect(collectable:ICollectable)
+    public function onCollect(collectable:Collectable)
     {
         if (collectable is Treasure)
         {
@@ -124,7 +140,7 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     public function onCollectTreasure(gem:Treasure)
     {
-        setWeight(weight + 1);
+        addTreasure();
     }
     
     public function isLandingOn(object:FlxObject)
@@ -134,10 +150,43 @@ class Hero extends DialAPlatformer implements data.IPlatformer
     
     public function onSprung(spring:Spring)
     {
-        final data = springData[weight];
+        final data = springData[jumpWeight];
         setupVariableJumpRocketBoot(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
         _jumpTimer = 0;
         jump(false);
+    }
+    
+    public function startCarrying(obj:FlxObject)
+    {
+        carrying = obj;
+        if (obj is Tossable)
+        {
+            (cast obj:Tossable).onPickUp(this);
+        }
+        else
+        {
+            obj.active = false;
+            obj.moves = false;
+        }
+        updateWeight();
+    }
+    
+    public function tossCarrying()
+    {
+        carrying.velocity.x = this.velocity.x + 200 * (flipX ? -1 : 1);
+        carrying.velocity.y = this.velocity.y - 200;
+        if (carrying is Tossable)
+        {
+            (cast carrying:Tossable).onToss(this);
+        }
+        else
+        {
+            carrying.active = true;
+            carrying.moves = true;
+        }
+        carrying = null;
+        updateWeight();
+        justTossed = true;
     }
     
     public function fallOut()
@@ -158,18 +207,31 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         maxVelocity.y = Math.abs(_jumpVelocity);
     }
     
-    function setWeight(weight:Int)
+    public function getTotalWeight():Float
     {
-        this.weight = weight;
+        return mass + jumpWeight;
+    }
+    
+    function addTreasure()
+    {
+        numTreasure++;
+        updateWeight();
+    }
+    
+    function updateWeight()
+    {
+        jumpWeight = numTreasure;
+        if (carrying != null)
+            jumpWeight += Math.round(G.utils.getObjWeight(carrying));
         
-        final data = jumpData[weight];
+        final data = jumpData[jumpWeight];
         setupVariableJumpHybrid(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
         setupSpeed(data.jumpDist * TILE_SIZE, data.speedUp);
     }
     
     function setStandardJump()
     {
-        final data = jumpData[weight];
+        final data = jumpData[jumpWeight];
         setupVariableJumpHybrid(data.minJump * TILE_SIZE, data.maxJump * TILE_SIZE, data.toApex);
     }
     
@@ -210,6 +272,17 @@ class Hero extends DialAPlatformer implements data.IPlatformer
         
         isTouchingLadder = checkTouchingLadder(tiles);
         fsm.update(elapsed);
+        
+        if (carrying != null)
+        {
+            carrying.x = x + width / 2 + (flipX ? -carrying.width : 0);
+            carrying.y = y;
+            
+            if (controls.justPressed.USE)
+                tossCarrying();
+        }
+        else if (justTossed && !controls.pressed.USE)
+            justTossed = false;
     }
     
     override function onLand()

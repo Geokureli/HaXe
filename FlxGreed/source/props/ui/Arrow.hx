@@ -10,7 +10,7 @@ abstract Arrow(FlxSprite) to FlxSprite
     {
         this = new FlxSprite(x, y);
         
-        this.loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
+        this.loadGraphic(G.getMainGraphic(), true, 16, 16);
         
         if (direction != null)
             setDirection(direction);

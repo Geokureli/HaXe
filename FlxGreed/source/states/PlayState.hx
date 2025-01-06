@@ -2,8 +2,6 @@ package states;
 
 import flixel.tweens.FlxTween;
 import flixel.text.FlxBitmapText;
-import data.ICollectable;
-import data.Global;
 import data.Ldtk;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -13,6 +11,7 @@ import props.GreedLevel;
 import props.Hero;
 import props.collectables.Coin;
 import props.collectables.Treasure;
+import props.i.Collectable;
 import states.EndState;
 
 enum LevelType
@@ -61,7 +60,7 @@ class CollectState extends PlayState
         #end
     }
     
-    override function onCollect(collector:Hero, collectable:ICollectable)
+    override function onCollect(collector:Hero, collectable:Collectable)
     {
         super.onCollect(collector, collectable);
         
@@ -169,13 +168,13 @@ class PlayState extends flixel.FlxState
             case INSTANCE(level):
                 level;
             case DEBUG      :
-                Global.project.all_worlds.Debug.all_levels.Debug_0;
+                G.project.all_worlds.Debug.all_levels.Debug_0;
             case LEGACY     :
-                Global.project.all_worlds.Legacy.all_levels.Level_0;
+                G.project.all_worlds.Legacy.all_levels.Level_0;
             case MAIN       :
-                Global.project.all_worlds.Legacy.all_levels.Level_4;
+                G.project.all_worlds.Legacy.all_levels.Level_4;
             case BY_ID(worldId, levelId):
-                final world = Global.project.getWorld(worldId);
+                final world = G.project.getWorld(worldId);
                 if (world == null)
                     throw 'no world found with id:$worldId';
                 final data = world.getLevel(levelId);
@@ -216,7 +215,7 @@ class PlayState extends flixel.FlxState
         if (level.hero.alive == false)
             FlxG.resetState();
         
-        final controls = Global.controls;
+        final controls = G.controls;
         
         if (controls.justReleased.RESET)
             FlxG.resetState();
@@ -228,7 +227,7 @@ class PlayState extends flixel.FlxState
         }
     }
     
-    function onCollect(collector:Hero, collectable:ICollectable) {}
+    function onCollect(collector:Hero, collectable:Collectable) {}
     
     function checkWinCondition()
     {
@@ -238,7 +237,7 @@ class PlayState extends flixel.FlxState
     function onComplete()
     {
         final level = getNextLevel();
-        if (level.f_enabled)
+        if (level != null && level.f_enabled)
         {
             switchToLevel(INSTANCE(level));
             return;
@@ -250,19 +249,39 @@ class PlayState extends flixel.FlxState
     
     function getNextLevel():Null<Ldtk_Level>
     {
-        final world = Global.project.getWorldOf(level.ldtkData.iid);
+        final world = G.project.getWorldOf(level.ldtkData.iid);
         switch world.layout
         {
             case Free | GridVania:
                 for (neighbor in level.ldtkData.neighbours)
                 {
                     if (neighbor.dir == East)
-                        return Global.project.getLevel(neighbor.levelIid);
+                        return G.project.getLevel(neighbor.levelIid);
                 }
             case LinearHorizontal | LinearVertical:
                 final index = world.levels.indexOf(level.ldtkData);
                 if (world.levels.length > index)
                     return world.levels[index + 1];
+        }
+        
+        return null;
+    }
+    
+    function getPrevLevel():Null<Ldtk_Level>
+    {
+        final world = G.project.getWorldOf(level.ldtkData.iid);
+        switch world.layout
+        {
+            case Free | GridVania:
+                for (neighbor in level.ldtkData.neighbours)
+                {
+                    if (neighbor.dir == West)
+                        return G.project.getLevel(neighbor.levelIid);
+                }
+            case LinearHorizontal | LinearVertical:
+                final index = world.levels.indexOf(level.ldtkData);
+                if (index > 0)
+                    return world.levels[index - 1];
         }
         
         return null;
@@ -316,7 +335,7 @@ class Hud extends FlxContainer
         }
     }
     
-    public function onCollect(collector:Hero, collectable:ICollectable)
+    public function onCollect(collector:Hero, collectable:Collectable)
     {
         if (collectable is Treasure)// check first
         {
@@ -350,7 +369,7 @@ abstract UiCoin(FlxSprite) to FlxSprite
     inline public function new (x = 0.0, y = 0.0)
     {
         this = new FlxSprite(x, y);
-        this.loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
+        this.loadGraphic(G.getMainGraphic(), true, 16, 16);
         setFrame(false);
         this.scrollFactor.set(0, 0);
         this.offset.x = 4;
@@ -371,7 +390,7 @@ abstract UiGem(FlxSprite) to FlxSprite
     inline public function new (x = 0.0, y = 0.0, type:TreasureType)
     {
         this = new FlxSprite(x, y);
-        this.loadGraphic(data.Global.getMainGraphic(), true, 16, 16);
+        this.loadGraphic(G.getMainGraphic(), true, 16, 16);
         setFrame(type, false);
         this.scrollFactor.set(0, 0);
     }

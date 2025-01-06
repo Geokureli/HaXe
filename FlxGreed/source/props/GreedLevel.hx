@@ -1,14 +1,5 @@
 package props;
 
-import data.Global;
-import data.ICollectable;
-import data.IEntity;
-import data.IEntityRef;
-import data.IPathFollower;
-import data.IPlatformer;
-import data.IResizable;
-import data.ITogglable;
-import data.IToggle;
 import data.Ldtk;
 import flixel.FlxG;
 import flixel.FlxBasic;
@@ -19,6 +10,7 @@ import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.path.FlxPath;
+import flixel.system.debug.log.LogStyle;
 import flixel.tile.FlxTile;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxDirection;
@@ -26,11 +18,13 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal;
 import ldtk.Layer_Entities;
 import ldtk.Json;
-import props.platforms.MovingPlatform;
 import props.collectables.Coin;
 import props.collectables.Treasure;
+import props.i.*;
 import props.ldtk.LdtkLevel;
 import props.ldtk.LdtkTilemap;
+import props.platforms.MovingPlatform;
+import props.platforms.ScalePlatform;
 import props.ui.Arrow;
 import props.ui.Text;
 import props.ui.Sign;
@@ -47,16 +41,17 @@ class GreedLevel extends LdtkLevel
     public var totalCoins = 0;
     
     public final props = new FlxGroup();
-    public final refs = new Map<String, IEntityRef>();
-    public final togglables = new Array<ITogglable>();
+    public final refs = new Map<String, Referable>();
+    public final togglables = new Array<Togglable>();
     public final colliders = new FlxTypedGroup<FlxObject>();
     public final collectables = new FlxGroup();
+    public final canCarry = new FlxTypedGroup<FlxObject>();
     public final springs = new FlxTypedGroup<Spring>();
     public final buttons = new FlxTypedGroup<Button>();
     public final textsById = new Map<String, Text>();
     
     
-    public final onCollect = new FlxTypedSignal<(collector:Hero, collectable:ICollectable)->Void>();
+    public final onCollect = new FlxTypedSignal<(collector:Hero, collectable:Collectable)->Void>();
     
     public function new()
     {
@@ -81,6 +76,17 @@ class GreedLevel extends LdtkLevel
     
     public function isHeroAtEnd()
     {
+        if (hero == null || door == null)
+        {
+            if (hero == null)
+                FlxG.log.advanced("Missing hero", LogStyle.ERROR, true);
+            
+            if (door == null)
+                FlxG.log.advanced("Missing door", LogStyle.ERROR, true);
+            
+            return false;
+        }
+        
         return hero.overlaps(door) && hero.touching.has(FLOOR);
     }
     
@@ -94,11 +100,7 @@ class GreedLevel extends LdtkLevel
         
         tiles.loadLdtk(level.l_Tiles);
         
-        for (data in level.l_Props.getAllUntyped())
-        {
-            final entity = createEntity(data);
-            props.add(entity);
-        }
+        createProps(level.l_Props.getAllUntyped());
         
         // Make sure hero was created, and in the FG
         final fgHero = fg.getFirst((o)->o is Hero);
@@ -113,6 +115,15 @@ class GreedLevel extends LdtkLevel
         resolveEntityRefs();
     }
     
+    function createProps(list:Array<Ldtk_Entity>)
+    {
+        for (data in list)
+        {
+            final entity = createEntity(data);
+            props.add(entity);
+        }
+    }
+    
     function initCam()
     {
         final cam = FlxG.camera;
@@ -122,6 +133,15 @@ class GreedLevel extends LdtkLevel
     
     function resolveEntityRefs()
     {
+        for (prop in props.members)
+        {
+            if (prop is Linkable)
+            {
+                final linkable:Linkable = cast prop;
+                linkable.initLinks(refs.get);
+            }
+        }
+        
         for (entity in togglables)
         {
             if (entity.toggleIds != null)
@@ -131,7 +151,7 @@ class GreedLevel extends LdtkLevel
                     if (refs.exists(id.entityIid) == false)
                         throw 'No Toggle found with id: $id';
                     
-                    final toggle = cast(refs[id.entityIid], IToggle);
+                    final toggle = cast(refs[id.entityIid], Toggle);
                     toggle.onToggle.add(entity.toggle);
                     entity.toggle(toggle.isOn);
                 }
@@ -175,6 +195,7 @@ class GreedLevel extends LdtkLevel
             case ARROW_DOWN     : new Arrow(0, 0, DOWN );
             case SIGN_BUTTON    : new Sign(BUTTON);
             case SIGN_HOLD      : new Sign(HOLD  );
+            case SCALE_PLATFORM : ScalePlatform.fromLdtk(cast data);
         }
         
         initEntity(entity, data);
@@ -187,35 +208,35 @@ class GreedLevel extends LdtkLevel
         obj.x = data.pixelX;// + (data.pivotX * data.width);
         obj.y = data.pixelY;// + (data.pivotY * data.height);
         
-        if (obj is IEntityRef)
+        if (obj is Referable)
         {
-            final objRef = (cast obj:IEntityRef);
+            final objRef = (cast obj:Referable);
             objRef.entityId = data.iid;
             refs[objRef.entityId] = objRef;
         }
         
-        if (obj is IResizable)
+        if (obj is Resizable)
         {
-            (cast obj:IResizable).setEntitySize(data.width, data.height);
+            (cast obj:Resizable).setEntitySize(data.width, data.height);
         }
         
-        if (obj is ITogglable)
+        if (obj is Togglable)
         {
             togglables.push(cast obj);
             
-            final entity:ITogglable = cast obj;
+            final entity:Togglable = cast obj;
             entity.toggleIds = (cast data: { f_toggles:Array<EntityReferenceInfos> }).f_toggles;
         }
         
-        if (obj is ICollectable)
+        if (obj is Collectable)
         {
             collectables.add(obj);
         }
         
-        if (obj is IPathFollower)
+        if (obj is PathFollower)
         {
-            final follower:IPathFollower = cast obj;
-            follower.simplePath = SimplePath.fromLdtk(obj, data);
+            final follower:PathFollower = cast obj;
+            follower.path = SimplePath.fromLdtk(obj, data);
         }
         
         final tags:Array<EntityTags> = data.json.__tags;
@@ -223,19 +244,20 @@ class GreedLevel extends LdtkLevel
         if (tags.contains(MOVES) == false) obj.moves = false;
         if (tags.contains(FG)            ) fg.add(obj);
         if (tags.contains(BG)            ) bg.add(obj);
+        if (tags.contains(CARRY)         ) canCarry.add(obj);
         
         // Check tags match interfaces
         
-        if (tags.contains(TOGGLE) != obj is IToggle)
+        if (tags.contains(TOGGLE) != obj is Toggle)
             throw 'Object ${Type.getClassName(Type.getClass(obj))} needs to implement IToggle';
         
-        if (tags.contains(COLLECTABLE) != obj is ICollectable)
-            throw 'Object ${Type.getClassName(Type.getClass(obj))} needs to implement ICollectable';
+        if (tags.contains(COLLECTABLE) != obj is Collectable)
+            throw 'Object ${Type.getClassName(Type.getClass(obj))} needs to implement Collectable';
         
         // call last
-        if (obj is IEntity)
+        if (obj is Entity)
         {
-            (cast obj:IEntity).onEntityInit();
+            (cast obj:Entity).onEntityInit();
         }
     }
     
@@ -243,16 +265,19 @@ class GreedLevel extends LdtkLevel
     {
         super.update(elapsed);
         
-        FlxG.collide(colliders, tiles);
-        FlxG.collide(colliders, colliders);
+        G.collide(colliders, tiles);
+        G.collide(colliders, colliders);
         
-        FlxG.overlap(hero, collectables, (h, c)->collect(h, cast(c, ICollectable)));
-        FlxG.overlap(hero, springs, onSpring, (hero, spring)->hero.isLandingOn(spring));
+        G.overlap(hero, collectables, (h, c)->collect(h, cast(c, Collectable)));
+        G.overlap(hero, springs, onSpring, (hero, spring)->hero.isLandingOn(spring));
         
-        FlxG.overlap(colliders, buttons, (_, button:Button)->button.press());
+        if (hero.isUsing())
+            G.overlap(hero, canCarry, (hero:Hero, b)->hero.startCarrying(b));
+        
+        G.overlap(colliders, buttons, (_, button:Button)->button.press());
     }
     
-    function collect(hero:Hero, collectable:ICollectable)
+    function collect(hero:Hero, collectable:Collectable)
     {
         hero.onCollect(collectable);
         collectable.onCollect(hero);
@@ -288,4 +313,7 @@ enum abstract EntityTags(String) from String
     
     /** Whether this object shows below the tiles */
     var BG = "bg";
+    
+    /** Whether this object shows below the tiles */
+    var CARRY = "carry";
 }
